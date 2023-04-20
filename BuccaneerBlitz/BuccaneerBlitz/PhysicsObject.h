@@ -1,9 +1,4 @@
 #pragma once
-class PhysicsObject
-{
-};
-
-#pragma once
 #include <SFML/Graphics.hpp>
 
 enum class CollisionType
