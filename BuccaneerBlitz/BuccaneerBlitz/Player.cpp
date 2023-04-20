@@ -86,11 +86,11 @@ void Player::HandleCollision(SpriteObject& other)
 
 void Player::FireCannonBall(float newCooldown)
 {
-	//if (cooldownTimer.getElapsedTime().asSeconds() > cooldown)
+	if (cooldownTimer.getElapsedTime().asSeconds() > newCooldown)
 	{
 		//TODO: push back a copy of a cannon ball and make it
 		levelScreen->AddToVector(CANNONBALL);
-		//cooldownTimer.restart();
+		cooldownTimer.restart();
 	}
 }
 

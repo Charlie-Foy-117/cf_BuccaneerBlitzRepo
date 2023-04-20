@@ -86,8 +86,19 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 
 	for (size_t i = 0; i < cannonBalls.size(); i++)
 	{
-		cannonBalls[i]->SetPosition(player.GetPosition().x + player.GetWidth() / 2, player.GetPosition().y - cannonBalls.back()->GetHeight());
-		cannonBalls[i]->Draw(target);
+		if (cannonBalls[i]->GetPosition().y > 0)
+		{
+			cannonBalls[i]->Draw(target);
+		}
+		else if (cannonBalls[i]->GetPosition().y < 0)
+		{
+			if (cannonBalls[i] != nullptr)
+			{
+				//TODO: Clean up cannonballs once they pass the top of window
+				//delete cannonBalls[i];
+				//cannonBalls[i] = nullptr;
+			}
+		}
 	}
 
 	player.Draw(target);
@@ -102,7 +113,8 @@ void LevelScreen::AddToVector(Projectile projectileType)
 	switch (projectileType)
 	{
 	case CANNONBALL:
-		cannonBalls.push_back(new CannonBall);
+		cannonBalls.push_back(new CannonBall());
+		cannonBalls.back()->SetPosition(player.GetPosition().x - player.GetWidth() / 2, player.GetPosition().y + cannonBalls.back()->GetHeight());
 		break;
 
 	case ANCHOR:
@@ -112,7 +124,7 @@ void LevelScreen::AddToVector(Projectile projectileType)
 	case MULTIFIRE:
 		for (size_t i = 0; i < 3; i++)
 		{
-			cannonBalls.push_back(new CannonBall);
+			cannonBalls.push_back(new CannonBall());
 		}
 		break;
 

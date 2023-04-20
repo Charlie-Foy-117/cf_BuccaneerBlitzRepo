@@ -29,13 +29,14 @@ public:
 
     void AddToVector(Projectile projectileType);
 
+    Player player;
+
 private:
 
     void Restart();
 
     bool gameRunning;
     sf::RenderWindow* background;
-    Player player;
     SideBarrier sideBarrierLeft;
     SideBarrier sideBarrierRight;
     std::vector<CannonBall*> cannonBalls;
