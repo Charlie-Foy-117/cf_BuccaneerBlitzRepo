@@ -20,10 +20,5 @@ private:
 
     sf::Vector2f acceleration;
     sf::Vector2f velocity;
-
-    float width;
-    float height;
-
-
 };
 

@@ -1,11 +1,12 @@
 #include "SideBarrier.h"
 #include "AssetManager.h"
 
-SideBarrier::SideBarrier(sf::RenderWindow* newWindow)
+SideBarrier::SideBarrier(sf::RenderWindow* newWindow, int* newLevelNumber)
 	: SpriteObject()
+	, levelNumber(newLevelNumber)
 	, window(newWindow)
 {
-	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level1SideBarrier_PNG.png"));
+	UpdateSpriteAsset(*levelNumber);
 	ResetPosition("left");
 	ResetPosition("right");
 
@@ -39,6 +40,27 @@ void SideBarrier::ResetPosition(std::string side)
 void SideBarrier::HandleCollision(SpriteObject& other)
 {
 	SpriteObject::HandleCollision(other);
+}
+
+void SideBarrier::UpdateSpriteAsset(int newLevelNumber)
+{
+	switch (newLevelNumber)
+	{
+	case 1:
+		sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level1SideBarrier_PNG.png"));
+		break;
+
+	case 2:
+		sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level2SideBarrier_PNG.png"));
+		break;
+
+	case 3:
+		//sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level3SideBarrier_PNG.png"));
+		break;
+
+	default:
+		break;
+	}
 }
 
 

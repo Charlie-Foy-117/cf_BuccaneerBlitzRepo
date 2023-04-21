@@ -16,9 +16,7 @@ Player::Player(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen)
 	, window(newWindow)
 	, levelScreen(newLevelScreen)
 	, cooldownTimer()
-	, cooldown(3.0f)
-	, height(sprite.getGlobalBounds().height)
-	, width(sprite.getGlobalBounds().width)
+	, cooldown(1.0f)
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Player/cf_Player1_PNG.png"));
 
@@ -96,12 +94,12 @@ void Player::FireCannonBall(float newCooldown)
 
 float Player::GetHeight()
 {
-	return height;
+	return sprite.getLocalBounds().height;
 }
 
 float Player::GetWidth()
 {
-	return width;
+	return sprite.getLocalBounds().width;
 }
 
 

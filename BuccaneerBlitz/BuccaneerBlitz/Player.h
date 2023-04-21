@@ -34,8 +34,5 @@ private:
 
     sf::Clock cooldownTimer;
     float cooldown;
-
-    float width;
-    float height;
 };
 

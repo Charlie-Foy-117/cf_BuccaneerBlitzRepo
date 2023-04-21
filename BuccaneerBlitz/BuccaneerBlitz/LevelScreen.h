@@ -4,6 +4,7 @@
 #include "SideBarrier.h"
 #include "Player.h"
 #include "CannonBall.h"
+#include "Timer.h"
 
 
 enum Projectile
@@ -35,11 +36,14 @@ private:
 
     void Restart();
 
+    int levelNumber;
+
     bool gameRunning;
     sf::RenderWindow* background;
     SideBarrier sideBarrierLeft;
     SideBarrier sideBarrierRight;
     std::vector<CannonBall*> cannonBalls;
+    Timer timer;
 };
 
 

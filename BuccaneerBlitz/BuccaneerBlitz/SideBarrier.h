@@ -5,14 +5,16 @@ class SideBarrier :
 {
 public:
 
-    SideBarrier(sf::RenderWindow* newWinow);
+    SideBarrier(sf::RenderWindow* newWinow, int* newLevelNumber);
 
     void ResetPosition(std::string side);
 
     void HandleCollision(SpriteObject& other) override;
 
 private:
+    void UpdateSpriteAsset(int newLevelNumber);
 
     sf::RenderWindow* window;
+    int* levelNumber;
 };
 

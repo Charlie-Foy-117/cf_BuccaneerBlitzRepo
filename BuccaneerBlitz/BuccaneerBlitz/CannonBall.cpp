@@ -4,9 +4,7 @@
 CannonBall::CannonBall()
 	: SpriteObject()
 	, acceleration()
-	, velocity(sf::Vector2f(0, -200))
-	, width(sprite.getGlobalBounds().width)
-	, height(sprite.getGlobalBounds().height)
+	, velocity(sf::Vector2f(0, -400))
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Player/cf_CannonBall_PNG.png"));
 	sprite.setScale(0.25f, 0.25f);
@@ -31,10 +29,10 @@ void CannonBall::HandleCollision(SpriteObject& other)
 
 float CannonBall::GetWidth()
 {
-	return width;
+	return sprite.getLocalBounds().width;
 }
 
 float CannonBall::GetHeight()
 {
-	return height;
+	return sprite.getLocalBounds().height;
 }

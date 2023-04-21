@@ -4,11 +4,13 @@
 
 LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
+	, levelNumber(2)
 	, gameRunning(true)
 	, player(newGamePointer->GetWindow(), this)
-	, sideBarrierLeft(newGamePointer->GetWindow())
-	, sideBarrierRight(newGamePointer->GetWindow())
+	, sideBarrierLeft(newGamePointer->GetWindow(), &levelNumber)
+	, sideBarrierRight(newGamePointer->GetWindow(), &levelNumber)
 	, cannonBalls()
+	, timer()
 	, background(newGamePointer->GetWindow())
 {
 	Restart();
@@ -102,6 +104,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 	}
 
 	player.Draw(target);
+	timer.Draw(target);
 }
 
 void LevelScreen::TriggerEndState(bool win)
@@ -114,7 +117,7 @@ void LevelScreen::AddToVector(Projectile projectileType)
 	{
 	case CANNONBALL:
 		cannonBalls.push_back(new CannonBall());
-		cannonBalls.back()->SetPosition(player.GetPosition().x - player.GetWidth() / 2, player.GetPosition().y + cannonBalls.back()->GetHeight());
+		cannonBalls.back()->SetPosition(player.GetPosition().x + player.GetWidth() / 2, player.GetPosition().y);
 		break;
 
 	case ANCHOR:
@@ -137,7 +140,9 @@ void LevelScreen::Restart()
 {
 	sideBarrierLeft.ResetPosition("left");
 	sideBarrierRight.ResetPosition("right");
-	player.SetPosition(200, 200);
+	player.SetPosition(background->getSize().x / 2 - player.GetWidth() / 2, 200);
+	timer.SetPosition(background->getSize().x - 250, 10);
 
 	gameRunning = true;
 }
+
