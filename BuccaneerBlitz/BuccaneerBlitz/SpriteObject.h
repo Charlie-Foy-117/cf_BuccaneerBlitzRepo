@@ -28,6 +28,12 @@ public:
 
 	void SetEnumUsed(CollisionType newEnum);
 
+	float GetHeight();
+	float GetWidth();
+
+	void SetAlive(bool newAlive);
+	bool GetAlive();
+
 protected:
 
 	sf::Sprite sprite;
@@ -35,6 +41,8 @@ protected:
 	sf::Vector2f collisionOffset;
 	sf::Vector2f collisionScale;
 	CollisionType collisionType;
+
+	bool alive;
 
 private:
 

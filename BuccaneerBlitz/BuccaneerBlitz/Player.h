@@ -17,17 +17,12 @@ public:
 
     void FireCannonBall(float newCooldown);
 
-    float GetHeight();
-    float GetWidth();
-
 private:
     void UpdateAcceleration();
 
     sf::Vector2f twoFramesOldPosition;
     sf::Vector2f velocity;
     sf::Vector2f acceleration;
-
-    CannonBall cannonBall;
 
     sf::RenderWindow* window;
     LevelScreen* levelScreen;

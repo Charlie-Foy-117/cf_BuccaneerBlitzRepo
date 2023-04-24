@@ -12,7 +12,6 @@ Player::Player(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen)
 	, twoFramesOldPosition(0, 0)
 	, velocity()
 	, acceleration()
-	, cannonBall()
 	, window(newWindow)
 	, levelScreen(newLevelScreen)
 	, cooldownTimer()
@@ -91,17 +90,6 @@ void Player::FireCannonBall(float newCooldown)
 		cooldownTimer.restart();
 	}
 }
-
-float Player::GetHeight()
-{
-	return sprite.getLocalBounds().height;
-}
-
-float Player::GetWidth()
-{
-	return sprite.getLocalBounds().width;
-}
-
 
 void Player::UpdateAcceleration()
 {

@@ -9,6 +9,7 @@ SpriteObject::SpriteObject()
 	, collisionScale(1, 1)
 	, collisionType(CollisionType::AABB)
 	, colliding(false)
+	, alive(true)
 {
 }
 
@@ -19,6 +20,11 @@ void SpriteObject::Update(sf::Time frameTime)
 
 void SpriteObject::Draw(sf::RenderTarget& target)
 {
+	if (!alive)
+	{
+		return;
+	}
+
 	target.draw(sprite);
 
 	bool drawCollider = false;
@@ -89,6 +95,10 @@ void SpriteObject::SetPosition(float newX, float newY)
 
 bool SpriteObject::CheckColliding(SpriteObject other)
 {
+	if (!alive || !other.alive)
+	{
+		return false;
+	}
 	switch (collisionType)
 	{
 	case CollisionType::AABB:
@@ -127,6 +137,19 @@ bool SpriteObject::CheckColliding(SpriteObject other)
 			float combinedRadii = GetCircleColliderRadius() + other.GetCircleColliderRadius();
 
 			return sqaureDistance <= combinedRadii * combinedRadii;
+		}
+		else
+		{
+			sf::Vector2f nearestPointToCircle = GetCollisionCentre(); //actual circle centre
+			sf::FloatRect otherAABB = other.GetAABB();
+			//clamp the circle centre to min and max aabb
+			nearestPointToCircle.x = fmaxf(otherAABB.left, fminf(nearestPointToCircle.x, otherAABB.left + otherAABB.width));
+			nearestPointToCircle.y = fmaxf(otherAABB.top, fminf(nearestPointToCircle.y, otherAABB.top + otherAABB.height));
+			sf::Vector2f displacement = nearestPointToCircle - GetCollisionCentre();
+			float squareDistance = VectorHelper::SquareMagnitude(displacement);
+			float circleRadius = GetCircleColliderRadius();
+
+			return squareDistance <= circleRadius * circleRadius;
 		}
 	}
 	break;
@@ -173,6 +196,26 @@ sf::Vector2f SpriteObject::GetCollisionDepth(SpriteObject other)
 void SpriteObject::SetEnumUsed(CollisionType newEnum)
 {
 	collisionType = newEnum;
+}
+
+float SpriteObject::GetHeight()
+{
+	return sprite.getLocalBounds().height;
+}
+
+float SpriteObject::GetWidth()
+{
+	return sprite.getLocalBounds().width;
+}
+
+void SpriteObject::SetAlive(bool newAlive)
+{
+	alive = newAlive;
+}
+
+bool SpriteObject::GetAlive()
+{
+	return alive;
 }
 
 sf::Vector2f SpriteObject::GetCollisionCentre()

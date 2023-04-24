@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "CannonBall.h"
 #include "Timer.h"
+#include "Goon.h"
 
 
 enum Projectile
@@ -12,6 +13,13 @@ enum Projectile
     CANNONBALL,
     ANCHOR,
     MULTIFIRE
+};
+
+enum EnemyType
+{
+    GOON,
+    SPRAYER,
+    CHARGER
 };
 
 class Game;
@@ -29,6 +37,9 @@ public:
     void TriggerEndState(bool win);
 
     void AddToVector(Projectile projectileType);
+    void SpawnEnemy(EnemyType enemyType);
+
+    int RandomNumGen(int min, int max);
 
     Player player;
 
@@ -44,6 +55,9 @@ private:
     SideBarrier sideBarrierRight;
     std::vector<CannonBall*> cannonBalls;
     Timer timer;
+
+    sf::Clock cooldownClock;
+    std::vector<Goon*> goons;
 };
 
 

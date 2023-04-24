@@ -24,7 +24,8 @@ void CannonBall::Update(sf::Time frameTime)
 
 void CannonBall::HandleCollision(SpriteObject& other)
 {
-	sf::Vector2f depth = GetCollisionDepth(other);
+	alive = false;
+	other.SetAlive(false);
 }
 
 float CannonBall::GetWidth()

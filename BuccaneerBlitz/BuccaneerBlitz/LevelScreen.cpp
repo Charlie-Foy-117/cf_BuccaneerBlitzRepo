@@ -1,6 +1,7 @@
 #include "LevelScreen.h"
 #include "Player.h"
 #include "Game.h"
+#include <iostream>
 
 LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
@@ -11,6 +12,7 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, sideBarrierRight(newGamePointer->GetWindow(), &levelNumber)
 	, cannonBalls()
 	, timer()
+	, goons()
 	, background(newGamePointer->GetWindow())
 {
 	Restart();
@@ -18,6 +20,12 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 
 void LevelScreen::Update(sf::Time frameTime)
 {
+	//debug
+	std::cout << cannonBalls.size() << std::endl;
+	std::cout << goons.size() << std::endl;
+
+
+
 	//changing colour of background
 	background->clear(sf::Color(38, 73, 202, 255));
 
@@ -30,8 +38,19 @@ void LevelScreen::Update(sf::Time frameTime)
 		sideBarrierRight.SetColliding(false);
 		for (size_t i = 0; i < cannonBalls.size(); i++)
 		{
-			cannonBalls[i]->Update(frameTime);
-			cannonBalls[i]->SetColliding(false);
+			if (cannonBalls[i] != nullptr)
+			{
+				cannonBalls[i]->Update(frameTime);
+				cannonBalls[i]->SetColliding(false);
+			}
+		}
+		for (size_t i = 0; i < goons.size(); i++)
+		{
+			if (goons[i] != nullptr)
+			{
+				goons[i]->Update(frameTime);
+				goons[i]->SetColliding(false);
+			}
 		}
 
 		//collision updating
@@ -69,7 +88,21 @@ void LevelScreen::Update(sf::Time frameTime)
 		//cannonball
 		for (size_t i = 0; i < cannonBalls.size(); i++)
 		{
-			//if(cannonBalls[i]->CheckColliding())
+			for (size_t j = 0; j < goons.size(); j++)
+			{
+				if (cannonBalls[i] != nullptr && goons[j] != nullptr)
+				{
+					if (cannonBalls[i]->CheckColliding(*goons[j]))
+					{
+						cannonBalls[i]->SetColliding(true);
+						goons[j]->SetColliding(true);
+						cannonBalls[i]->HandleCollision(*goons[j]);
+						goons[j]->HandleCollision(*cannonBalls[i]);
+					}
+				}
+
+			}
+			
 		}
 
 
@@ -88,21 +121,61 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 
 	for (size_t i = 0; i < cannonBalls.size(); i++)
 	{
-		if (cannonBalls[i]->GetPosition().y > 0)
+		if (cannonBalls[i] != nullptr)
 		{
-			cannonBalls[i]->Draw(target);
-		}
-		else if (cannonBalls[i]->GetPosition().y < 0)
-		{
-			if (cannonBalls[i] != nullptr)
+			if (cannonBalls[i]->GetPosition().y > 0)
 			{
-				//TODO: Clean up cannonballs once they pass the top of window
-				//delete cannonBalls[i];
-				//cannonBalls[i] = nullptr;
+				cannonBalls[i]->Draw(target);
+			}
+			else if (cannonBalls[i]->GetAlive() == false)
+			{
+				delete cannonBalls[i];
+				cannonBalls[i] = nullptr;
+				cannonBalls.erase(cannonBalls.begin() + i);
+				i--;
+			}
+			else if (cannonBalls[i]->GetPosition().y < 0)
+			{
+				if (cannonBalls[i] != nullptr)
+				{
+					//TODO: Clean up cannonballs once they pass the top of window
+					delete cannonBalls[i];
+					cannonBalls[i] = nullptr;
+					cannonBalls.erase(cannonBalls.begin() + i);
+					i--;
+				}
+			}
+		}
+		
+	}
+	for (size_t i = 0; i < goons.size(); i++)
+	{
+		if (goons[i] != nullptr)
+		{
+			if (goons[i]->GetPosition().y < background->getSize().y)
+			{
+				goons[i]->Draw(target);
+			}
+			else if (goons[i]->GetAlive() == false)
+			{
+				delete goons[i];
+				goons[i] = nullptr;
+				goons.erase(goons.begin() + i);
+				i--;
+			}
+			else if (goons[i]->GetPosition().y >= background->getSize().y)
+			{
+				if (goons[i] != nullptr)
+				{
+					//TODO: Clean up goons once they pass the top of window
+					goons[i] = nullptr;
+					delete goons[i];
+					goons.erase(goons.begin() + i);
+					i--;
+				}
 			}
 		}
 	}
-
 	player.Draw(target);
 	timer.Draw(target);
 }
@@ -136,12 +209,49 @@ void LevelScreen::AddToVector(Projectile projectileType)
 	}
 }
 
+void LevelScreen::SpawnEnemy(EnemyType enemyType)
+{
+	//limits of level space
+	float xPosMin = 0 + sideBarrierLeft.GetWidth() / 2;
+	float xPosMax = background->getSize().x - sideBarrierRight.GetWidth() / 2;
+
+	//spawns enemy type decided by the function parameters when called
+	switch (enemyType)
+	{
+	case GOON:
+			goons.push_back(new Goon(this));
+			goons.back()->SetPosition(RandomNumGen(xPosMin, xPosMax), 0 - goons.back()->GetHeight());
+		break;
+
+	case CHARGER:
+
+		break;
+
+	case SPRAYER:
+		
+		break;
+
+	default:
+		break;
+	}
+	cooldownClock.restart();
+}
+
+int LevelScreen::RandomNumGen(int min, int max)
+{
+	int randNum;
+	randNum = std::rand() % max + min;
+
+	return randNum;
+}
+
 void LevelScreen::Restart()
 {
 	sideBarrierLeft.ResetPosition("left");
 	sideBarrierRight.ResetPosition("right");
 	player.SetPosition(background->getSize().x / 2 - player.GetWidth() / 2, 200);
 	timer.SetPosition(background->getSize().x - 250, 10);
+	goons.push_back(new Goon(this));
 
 	gameRunning = true;
 }
