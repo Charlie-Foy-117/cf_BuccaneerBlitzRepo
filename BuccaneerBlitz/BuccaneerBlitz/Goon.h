@@ -14,7 +14,6 @@ public:
     void HandleCollision(SpriteObject& other) override;
 
     float GetSpawnTime();
-    void SpawnGoon();
 
 private:
 
@@ -22,7 +21,5 @@ private:
     sf::Vector2f velocity;
 
     LevelScreen* levelScreen;
-
-    sf::Clock cooldownTimer;
 };
 

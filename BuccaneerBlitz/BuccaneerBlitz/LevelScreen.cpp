@@ -32,6 +32,10 @@ void LevelScreen::Update(sf::Time frameTime)
 	//when game is running
 	if (gameRunning)
 	{
+		if (cooldownClock.getElapsedTime().asSeconds() > goons.back()->GetSpawnTime())
+		{
+			SpawnEnemy(GOON);
+		}
 		player.Update(frameTime);
 		player.SetColliding(false);
 		sideBarrierLeft.SetColliding(false);

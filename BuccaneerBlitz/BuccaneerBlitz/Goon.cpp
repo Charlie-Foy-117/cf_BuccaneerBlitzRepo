@@ -15,7 +15,7 @@ Goon::Goon(LevelScreen* newLevelScreen)
 	collisionScale = sf::Vector2f(0.45f, 0.95f);
 	collisionOffset = sf::Vector2f(-128, -128);
 
-	spawnTime = 3.5f;
+	spawnTime = 2.0f;
 }
 
 void Goon::Update(sf::Time frameTime)
@@ -24,9 +24,6 @@ void Goon::Update(sf::Time frameTime)
 	sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
 	SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
 	velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
-
-	//calls every frame to check is goon can be spawned
-	SpawnGoon();
 }
 
 void Goon::HandleCollision(SpriteObject& other)
@@ -36,15 +33,5 @@ void Goon::HandleCollision(SpriteObject& other)
 float Goon::GetSpawnTime()
 {
 	return spawnTime;
-}
-
-void Goon::SpawnGoon()
-{
-	//spawns goon is elapsed time is more than 3
-	if (cooldownTimer.getElapsedTime().asSeconds() > spawnTime)
-	{
-		levelScreen->SpawnEnemy(GOON);
-		cooldownTimer.restart();
-	}
 }
 
