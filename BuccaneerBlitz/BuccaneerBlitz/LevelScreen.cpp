@@ -127,7 +127,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 			{
 				cannonBalls[i]->Draw(target);
 			}
-			else if (cannonBalls[i]->GetAlive() == false)
+			if (cannonBalls[i]->GetAlive() == false)
 			{
 				delete cannonBalls[i];
 				cannonBalls[i] = nullptr;
