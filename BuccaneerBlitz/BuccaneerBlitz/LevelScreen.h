@@ -5,17 +5,18 @@
 #include "Player.h"
 #include "CannonBall.h"
 #include "Timer.h"
+#include "Score.h"
 #include "Goon.h"
 
 
-enum Projectile
+enum class Projectile
 {
     CANNONBALL,
     ANCHOR,
     MULTIFIRE
 };
 
-enum EnemyType
+enum class EnemyType
 {
     GOON,
     SPRAYER,
@@ -33,21 +34,21 @@ public:
 
     void Update(sf::Time frameTime) override;
     void Draw(sf::RenderTarget& target) override;
+    void BackgroundColour(int currentLevel);
 
     void TriggerEndState(bool win);
 
-    void AddToVector(Projectile projectileType);
+    void SpawnProjectile(Projectile projectileType);
     void SpawnEnemy(EnemyType enemyType);
 
     int RandomNumGen(int min, int max);
 
     Player player;
 
+    int levelNumber;
 private:
 
     void Restart();
-
-    int levelNumber;
 
     bool gameRunning;
     sf::RenderWindow* background;
@@ -55,6 +56,7 @@ private:
     SideBarrier sideBarrierRight;
     std::vector<CannonBall*> cannonBalls;
     Timer timer;
+    Score score;
 
     sf::Clock cooldownClock;
     std::vector<Goon*> goons;

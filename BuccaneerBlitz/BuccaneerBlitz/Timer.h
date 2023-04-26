@@ -1,27 +1,22 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+#include "Text.h"
 
-class Timer
+class LevelScreen;
+
+class Timer:
+	public Text
 {
 public:
 
-	Timer();
+	Timer(LevelScreen* newLevelScreen);
 	void Draw(sf::RenderTarget& target);
 	void LevelTimer();
 
-	sf::Vector2f GetPosition();
-	void SetPosition(sf::Vector2f newPosition);
-	void SetPosition(float newX, float newY);
-
-	float GetWidth();
-	float GetHeight();
-
 private:
 
-	sf::Text timerText;
 	sf::Clock gameTime;
 	float levelDuration;
 
-	sf::Vector2f position;
+	LevelScreen* levelScreen;
 };
 

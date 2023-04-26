@@ -1,6 +1,7 @@
 #include "LevelScreen.h"
 #include "Player.h"
 #include "Game.h"
+#include "Timer.h"
 #include <iostream>
 
 LevelScreen::LevelScreen(Game* newGamePointer)
@@ -11,7 +12,8 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, sideBarrierLeft(newGamePointer->GetWindow(), &levelNumber)
 	, sideBarrierRight(newGamePointer->GetWindow(), &levelNumber)
 	, cannonBalls()
-	, timer()
+	, timer(this)
+	, score()
 	, goons()
 	, background(newGamePointer->GetWindow())
 {
@@ -26,15 +28,16 @@ void LevelScreen::Update(sf::Time frameTime)
 
 
 
-	//changing colour of background
-	background->clear(sf::Color(38, 73, 202, 255));
-
 	//when game is running
 	if (gameRunning)
 	{
+
+		//changing colour of background
+		BackgroundColour(levelNumber);
+
 		if (cooldownClock.getElapsedTime().asSeconds() > goons.back()->GetSpawnTime())
 		{
-			SpawnEnemy(GOON);
+			SpawnEnemy(EnemyType::GOON);
 		}
 		player.Update(frameTime);
 		player.SetColliding(false);
@@ -98,6 +101,7 @@ void LevelScreen::Update(sf::Time frameTime)
 				{
 					if (cannonBalls[i]->CheckColliding(*goons[j]))
 					{
+						score.AddScore(10);
 						cannonBalls[i]->SetColliding(true);
 						goons[j]->SetColliding(true);
 						cannonBalls[i]->HandleCollision(*goons[j]);
@@ -182,26 +186,45 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 	}
 	player.Draw(target);
 	timer.Draw(target);
+	score.Draw(target);
+}
+
+void LevelScreen::BackgroundColour(int currentLevel)
+{
+	switch (currentLevel)
+	{
+	case 1:
+		background->clear(sf::Color(38, 73, 202, 255));
+		break;
+	case 2:
+		background->clear(sf::Color(80, 104, 63, 255));
+		break;
+	case 3:
+		//background->clear(sf::Color(38, 73, 202, 255));
+		break;
+	default:
+		break;
+	}
 }
 
 void LevelScreen::TriggerEndState(bool win)
 {
 }
 
-void LevelScreen::AddToVector(Projectile projectileType)
+void LevelScreen::SpawnProjectile(Projectile projectileType)
 {
 	switch (projectileType)
 	{
-	case CANNONBALL:
+	case Projectile::CANNONBALL:
 		cannonBalls.push_back(new CannonBall());
 		cannonBalls.back()->SetPosition(player.GetPosition().x + player.GetWidth() / 2, player.GetPosition().y);
 		break;
 
-	case ANCHOR:
+	case Projectile::ANCHOR:
 		//anchor.push_back(new Anchor);
 		break;
 
-	case MULTIFIRE:
+	case Projectile::MULTIFIRE:
 		for (size_t i = 0; i < 3; i++)
 		{
 			cannonBalls.push_back(new CannonBall());
@@ -222,16 +245,16 @@ void LevelScreen::SpawnEnemy(EnemyType enemyType)
 	//spawns enemy type decided by the function parameters when called
 	switch (enemyType)
 	{
-	case GOON:
+	case EnemyType::GOON:
 			goons.push_back(new Goon(this));
-			goons.back()->SetPosition(RandomNumGen(xPosMin, xPosMax), 0 - goons.back()->GetHeight());
+			goons.back()->SetPosition((float)RandomNumGen((int)xPosMin, (int)xPosMax), 0 - goons.back()->GetHeight());
 		break;
 
-	case CHARGER:
+	case EnemyType::CHARGER:
 
 		break;
 
-	case SPRAYER:
+	case EnemyType::SPRAYER:
 		
 		break;
 
@@ -254,7 +277,8 @@ void LevelScreen::Restart()
 	sideBarrierLeft.ResetPosition("left");
 	sideBarrierRight.ResetPosition("right");
 	player.SetPosition(background->getSize().x / 2 - player.GetWidth() / 2, 200);
-	timer.SetPosition(background->getSize().x - 250, 10);
+	timer.SetPosition((float)background->getSize().x - 250, 10);
+	score.SetPosition((float)background->getSize().x - 300, timer.GetPosition().y + 200);
 	goons.push_back(new Goon(this));
 
 	gameRunning = true;
