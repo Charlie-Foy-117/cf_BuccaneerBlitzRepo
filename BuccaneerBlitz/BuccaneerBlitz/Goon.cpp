@@ -7,7 +7,6 @@ Goon::Goon(LevelScreen* newLevelScreen)
 	, velocity(0, 200)
 	, acceleration()
 	, levelScreen(newLevelScreen)
-	, cooldownTimer()
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Enemies/cf_Goon_PNG.png"));
 	sprite.setOrigin(sprite.getLocalBounds().width / 2.f, sprite.getLocalBounds().height / 2.f);
