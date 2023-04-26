@@ -15,25 +15,19 @@ CannonBall::CannonBall()
 
 void CannonBall::Update(sf::Time frameTime)
 {
-	//Velocity Verlet
 	sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
-
 	SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
 	velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
+}
+
+void CannonBall::SetVelocity(float newX, float newY)
+{
+	velocity.x = newX;
+	velocity.y = newY;
 }
 
 void CannonBall::HandleCollision(SpriteObject& other)
 {
 	alive = false;
 	other.SetAlive(false);
-}
-
-float CannonBall::GetWidth()
-{
-	return sprite.getLocalBounds().width;
-}
-
-float CannonBall::GetHeight()
-{
-	return sprite.getLocalBounds().height;
 }

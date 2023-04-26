@@ -12,6 +12,7 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, sideBarrierLeft(newGamePointer->GetWindow(), &levelNumber)
 	, sideBarrierRight(newGamePointer->GetWindow(), &levelNumber)
 	, cannonBalls()
+	, enemyCannonBalls()
 	, timer(this)
 	, score()
 	, goons()
@@ -24,6 +25,7 @@ void LevelScreen::Update(sf::Time frameTime)
 {
 	//debug
 	std::cout << cannonBalls.size() << std::endl;
+	std::cout << enemyCannonBalls.size() << std::endl;
 	std::cout << goons.size() << std::endl;
 
 
@@ -49,6 +51,14 @@ void LevelScreen::Update(sf::Time frameTime)
 			{
 				cannonBalls[i]->Update(frameTime);
 				cannonBalls[i]->SetColliding(false);
+			}
+		}
+		for (size_t i = 0; i < enemyCannonBalls.size(); i++)
+		{
+			if (enemyCannonBalls[i] != nullptr)
+			{
+				enemyCannonBalls[i]->Update(frameTime);
+				enemyCannonBalls[i]->SetColliding(false);
 			}
 		}
 		for (size_t i = 0; i < goons.size(); i++)
@@ -105,12 +115,21 @@ void LevelScreen::Update(sf::Time frameTime)
 						cannonBalls[i]->SetColliding(true);
 						goons[j]->SetColliding(true);
 						cannonBalls[i]->HandleCollision(*goons[j]);
-						goons[j]->HandleCollision(*cannonBalls[i]);
 					}
 				}
 
 			}
 			
+		}
+
+		for (size_t i = 0; i < enemyCannonBalls.size(); i++)
+		{
+			if (enemyCannonBalls[i]->CheckColliding(player))
+			{
+				enemyCannonBalls[i]->SetColliding(true);
+				player.SetColliding(true);
+				enemyCannonBalls[i]->HandleCollision(player);
+			}
 		}
 
 
@@ -131,22 +150,27 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 	{
 		if (cannonBalls[i] != nullptr)
 		{
+			//checks to see if cannonball is on screen 
 			if (cannonBalls[i]->GetPosition().y > 0)
 			{
+				//draws cannonball
 				cannonBalls[i]->Draw(target);
 			}
+			//checks if cannonball is still alive
 			if (cannonBalls[i]->GetAlive() == false)
 			{
+				//clears cannonball memory and deletes it from vector 
 				delete cannonBalls[i];
 				cannonBalls[i] = nullptr;
 				cannonBalls.erase(cannonBalls.begin() + i);
 				i--;
 			}
-			else if (cannonBalls[i]->GetPosition().y < 0)
+			//checks to see if position of cannonball is off screen
+			else if (cannonBalls[i]->GetPosition().y <= 0)
 			{
 				if (cannonBalls[i] != nullptr)
 				{
-					//TODO: Clean up cannonballs once they pass the top of window
+					//clears cannonball memory and deletes it from vector
 					delete cannonBalls[i];
 					cannonBalls[i] = nullptr;
 					cannonBalls.erase(cannonBalls.begin() + i);
@@ -155,6 +179,39 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 			}
 		}
 		
+	}
+	for (size_t i = 0; i < enemyCannonBalls.size(); i++)
+	{
+		if (enemyCannonBalls[i] != nullptr)
+		{
+			//checks to see if cannonball is on screen 
+			if (enemyCannonBalls[i]->GetPosition().y < background->getSize().y)
+			{
+				//draws cannonball
+				enemyCannonBalls[i]->Draw(target);
+			}
+			//checks if cannonball is still alive
+			if (enemyCannonBalls[i]->GetAlive() == false)
+			{
+				//clears cannonball memory and deletes it from vector
+				delete enemyCannonBalls[i];
+				enemyCannonBalls[i] = nullptr;
+				enemyCannonBalls.erase(enemyCannonBalls.begin() + i);
+				i--;
+			}
+			//checks to see if position of cannonball is off screen
+			else if (enemyCannonBalls[i]->GetPosition().y >= background->getSize().y)
+			{
+				if (enemyCannonBalls[i] != nullptr)
+				{
+					//clears cannonball memory and deletes it from vector
+					delete enemyCannonBalls[i];
+					enemyCannonBalls[i] = nullptr;
+					enemyCannonBalls.erase(enemyCannonBalls.begin() + i);
+					i--;
+				}
+			}
+		}
 	}
 	for (size_t i = 0; i < goons.size(); i++)
 	{
@@ -231,6 +288,12 @@ void LevelScreen::SpawnProjectile(Projectile projectileType)
 		}
 		break;
 
+	case Projectile::ENEMYCANNONBALL:
+		enemyCannonBalls.push_back(new CannonBall());
+		enemyCannonBalls.back()->SetVelocity(0, 400);
+		//todo: set position in front of ships that calls function
+		enemyCannonBalls.back()->SetPosition(goons.back()->GetPosition().x, goons.back()->GetPosition().y + enemyCannonBalls.back()->GetHeight());
+		break;
 	default:
 		break;
 	}

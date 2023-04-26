@@ -13,7 +13,8 @@ enum class Projectile
 {
     CANNONBALL,
     ANCHOR,
-    MULTIFIRE
+    MULTIFIRE,
+    ENEMYCANNONBALL
 };
 
 enum class EnemyType
@@ -55,6 +56,7 @@ private:
     SideBarrier sideBarrierLeft;
     SideBarrier sideBarrierRight;
     std::vector<CannonBall*> cannonBalls;
+    std::vector<CannonBall*> enemyCannonBalls;
     Timer timer;
     Score score;
 

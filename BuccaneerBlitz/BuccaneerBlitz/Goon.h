@@ -21,5 +21,8 @@ private:
     sf::Vector2f velocity;
 
     LevelScreen* levelScreen;
+
+    sf::Clock cooldownTimer;
+    float cooldown;
 };
 

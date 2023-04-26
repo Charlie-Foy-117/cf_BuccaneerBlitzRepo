@@ -10,11 +10,9 @@ public:
     CannonBall();
 
     void Update(sf::Time frameTime) override;
+    void SetVelocity(float newX, float newY);
 
     void HandleCollision(SpriteObject& other) override;
-
-    float GetWidth();
-    float GetHeight();
 
 private:
 
