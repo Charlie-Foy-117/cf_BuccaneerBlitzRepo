@@ -86,7 +86,7 @@ void Player::FireCannonBall(float newCooldown)
 	if (cooldownTimer.getElapsedTime().asSeconds() > newCooldown)
 	{
 		//TODO: push back a copy of a cannon ball and make it
-		levelScreen->SpawnProjectile(Projectile::CANNONBALL);
+		levelScreen->SpawnProjectile(Projectile::CANNONBALL, *this);
 		cooldownTimer.restart();
 	}
 }

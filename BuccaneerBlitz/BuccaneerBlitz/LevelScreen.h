@@ -39,7 +39,7 @@ public:
 
     void TriggerEndState(bool win);
 
-    void SpawnProjectile(Projectile projectileType);
+    void SpawnProjectile(Projectile projectileType, SpriteObject& spriteCaller);
     void SpawnEnemy(EnemyType enemyType);
 
     int RandomNumGen(int min, int max);

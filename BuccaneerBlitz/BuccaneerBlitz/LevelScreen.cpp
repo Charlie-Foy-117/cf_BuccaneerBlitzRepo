@@ -268,34 +268,39 @@ void LevelScreen::TriggerEndState(bool win)
 {
 }
 
-void LevelScreen::SpawnProjectile(Projectile projectileType)
+void LevelScreen::SpawnProjectile(Projectile projectileType, SpriteObject& spriteCaller)
 {
-	switch (projectileType)
+	if (spriteCaller.GetAlive() == true)
 	{
-	case Projectile::CANNONBALL:
-		cannonBalls.push_back(new CannonBall());
-		cannonBalls.back()->SetPosition(player.GetPosition().x + player.GetWidth() / 2, player.GetPosition().y);
-		break;
-
-	case Projectile::ANCHOR:
-		//anchor.push_back(new Anchor);
-		break;
-
-	case Projectile::MULTIFIRE:
-		for (size_t i = 0; i < 3; i++)
+		switch (projectileType)
 		{
+		case Projectile::CANNONBALL:
 			cannonBalls.push_back(new CannonBall());
-		}
-		break;
+			cannonBalls.back()->SetPosition(spriteCaller.GetPosition().x + spriteCaller.GetWidth() / 2, player.GetPosition().y);
+			break;
 
-	case Projectile::ENEMYCANNONBALL:
-		enemyCannonBalls.push_back(new CannonBall());
-		enemyCannonBalls.back()->SetVelocity(0, 400);
-		//todo: set position in front of ships that calls function
-		enemyCannonBalls.back()->SetPosition(goons.back()->GetPosition().x, goons.back()->GetPosition().y + enemyCannonBalls.back()->GetHeight());
-		break;
-	default:
-		break;
+		case Projectile::ANCHOR:
+			//anchor.push_back(new Anchor);
+			break;
+
+		case Projectile::MULTIFIRE:
+			for (size_t i = 0; i < 3; i++)
+			{
+				cannonBalls.push_back(new CannonBall());
+			}
+			break;
+
+		case Projectile::ENEMYCANNONBALL:
+
+			enemyCannonBalls.push_back(new CannonBall());
+			enemyCannonBalls.back()->SetVelocity(0, 400);
+			//todo: set position in front of ships that calls function
+			enemyCannonBalls.back()->SetPosition(spriteCaller.GetPosition().x, spriteCaller.GetPosition().y + enemyCannonBalls.back()->GetHeight() / 2);
+
+			break;
+		default:
+			break;
+		}
 	}
 }
 

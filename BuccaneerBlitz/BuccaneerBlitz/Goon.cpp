@@ -8,7 +8,7 @@ Goon::Goon(LevelScreen* newLevelScreen)
 	, acceleration()
 	, levelScreen(newLevelScreen)
 	, cooldownTimer()
-	, cooldown(1.5f)
+	, cooldown(2.5f)
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Enemies/cf_Goon_PNG.png"));
 	sprite.setOrigin(sprite.getLocalBounds().width / 2.f, sprite.getLocalBounds().height / 2.f);
@@ -16,7 +16,7 @@ Goon::Goon(LevelScreen* newLevelScreen)
 	collisionScale = sf::Vector2f(0.45f, 0.95f);
 	collisionOffset = sf::Vector2f(-128, -128);
 
-	spawnTime = 1.5f;
+	spawnTime = 2.0f;
 }
 
 void Goon::Update(sf::Time frameTime)
@@ -28,7 +28,7 @@ void Goon::Update(sf::Time frameTime)
 
 	if (cooldownTimer.getElapsedTime().asSeconds() > cooldown)
 	{
-		levelScreen->SpawnProjectile(Projectile::ENEMYCANNONBALL);
+		levelScreen->SpawnProjectile(Projectile::ENEMYCANNONBALL, *this);
 		cooldownTimer.restart();
 	}
 }
