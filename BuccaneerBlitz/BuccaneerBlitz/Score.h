@@ -11,6 +11,7 @@ public:
 	void ScoreCounter();
 
 	void AddScore(int newScore);
+	int GetScore();
 
 private:
 

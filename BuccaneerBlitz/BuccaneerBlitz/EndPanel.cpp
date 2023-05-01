@@ -1,0 +1,106 @@
+#include "EndPanel.h"
+#include "AssetManager.h"
+#include "Easing.h"
+
+EndPanel::EndPanel(sf::RenderWindow* newWindow)
+	: background()
+	, title()
+	, message()
+	, position()
+	, window(newWindow)
+	, animatingIn(false)
+	, animationClock()
+{
+	background.setTexture(AssetManager::RequestTexture("Assets/Graphics/UI/cf_Panel_PNG.png"));
+	background.setScale(1.5f, 1.5f);
+
+	title.setFont(AssetManager::RequestFont("Assets/Graphics/UI/cf_font.ttf"));
+	title.setCharacterSize(80);
+	title.setFillColor(sf::Color::Black);
+
+	message.setFont(AssetManager::RequestFont("Assets/Graphics/UI/cf_font.ttf"));
+	message.setCharacterSize(100);
+	message.setFillColor(sf::Color::Black);
+
+	ResetPosition();
+}
+
+void EndPanel::Update(sf::Time frameTime)
+{
+	if (animatingIn)
+	{
+		float xPos = window->getSize().x / 2.0f - background.getGlobalBounds().width / 2.0f;
+		float yPos = window->getSize().y;
+		float finalYPos = window->getSize().y / 2.0f - background.getGlobalBounds().height / 2.0f;
+
+		sf::Vector2f begin(xPos, yPos);
+		sf::Vector2f change(0, finalYPos - yPos);
+
+		float duration = 1.0f;
+		float time = animationClock.getElapsedTime().asSeconds();
+
+		sf::Vector2f newPosition = Easing::EaseOutQuad(begin, change, duration, time);
+
+		SetPosition(newPosition);
+
+		if (time >= duration)
+		{
+			SetPosition(begin + change);
+			animatingIn = false;
+		}
+	}
+}
+
+void EndPanel::Draw(sf::RenderTarget& target)
+{
+	target.draw(background);
+	target.draw(message);
+	target.draw(title);
+}
+
+void EndPanel::SetPosition(sf::Vector2f newPosition)
+{
+	background.setPosition(newPosition);
+
+	//centre the title on the x direction
+	float titleX = background.getGlobalBounds().width / 2.0f - title.getGlobalBounds().width / 2.0f;
+	title.setPosition(sf::Vector2f(newPosition.x + titleX, newPosition.y + 100));
+
+	float messageX = background.getGlobalBounds().width / 2.0f - message.getGlobalBounds().width / 2.0f;
+	float messageY = background.getGlobalBounds().height / 2.0f - message.getGlobalBounds().height / 2.0f;
+	message.setPosition(sf::Vector2f(newPosition.x + messageX, newPosition.y + messageY));
+}
+
+void EndPanel::StartAnimation()
+{
+	animatingIn = true;
+	animationClock.restart();
+}
+
+void EndPanel::ResetPosition()
+{
+	//reset position back to starting position
+	float xPos = window->getSize().x / 2.0f - background.getGlobalBounds().width / 2.0f;
+	float yPos = window->getSize().y;
+	SetPosition(sf::Vector2f(xPos, yPos));
+}
+
+void EndPanel::WinLossPanel(bool alive)
+{
+	//checks what message to display depending on the players current life status
+	if (alive)
+	{
+		title.setString("You Win!");
+	}
+	if (!alive)
+	{
+		title.setString("Out of Lives");
+	}
+}
+
+void EndPanel::AddScoreToString(int score)
+{
+	std::string scoreString = "Score: ";
+	scoreString += std::to_string((int)ceil(score));
+	message.setString(scoreString);
+}

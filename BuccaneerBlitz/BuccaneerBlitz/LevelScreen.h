@@ -7,6 +7,9 @@
 #include "Timer.h"
 #include "Score.h"
 #include "Goon.h"
+#include "Charger.h"
+#include "PirateBarricade.h"
+#include "EndPanel.h"
 
 
 enum class Projectile
@@ -24,6 +27,12 @@ enum class EnemyType
     CHARGER
 };
 
+enum class HazardType
+{
+    PIRATEBARRICADE,
+    SMALLISLAND
+};
+
 class Game;
 
 class LevelScreen :
@@ -37,31 +46,37 @@ public:
     void Draw(sf::RenderTarget& target) override;
     void BackgroundColour(int currentLevel);
 
-    void TriggerEndState(bool win);
+    void TriggerEndState();
 
     void SpawnProjectile(Projectile projectileType, SpriteObject& spriteCaller);
     void SpawnEnemy(EnemyType enemyType);
-
+    void SpawnHazard(HazardType hazardType);
+    void CheckExistence(std::vector<SpriteObject*>  spriteCaller, std::string direction, sf::RenderTarget& target);
     int RandomNumGen(int min, int max);
 
     Player player;
 
-    int levelNumber;
+    int levelStageNumber;
+    bool gameRunning;
+
 private:
 
+    void LoadLevel(int currentStage);
     void Restart();
 
-    bool gameRunning;
     sf::RenderWindow* background;
     SideBarrier sideBarrierLeft;
     SideBarrier sideBarrierRight;
     std::vector<CannonBall*> cannonBalls;
     std::vector<CannonBall*> enemyCannonBalls;
+    std::vector<PirateBarricade*> pirateBarricades;
     Timer timer;
     Score score;
+    EndPanel endPanel;
 
-    sf::Clock cooldownClock;
+    std::vector<sf::Clock*> cooldownClocks;
     std::vector<Goon*> goons;
+    std::vector<Charger*> chargers;
 };
 
 

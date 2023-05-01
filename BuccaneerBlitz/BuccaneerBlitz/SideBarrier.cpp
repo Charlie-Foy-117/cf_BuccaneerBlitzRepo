@@ -20,14 +20,10 @@ void SideBarrier::ResetPosition(std::string side)
 	{
 		SetPosition(sf::Vector2f(0, 0));
 		sprite.setScale(1.0f, 1.05f);
-		collisionScale = sf::Vector2f(0.5f, 1.0f);
-		collisionOffset = sf::Vector2f(-65, 0);
 	}
 	if (side == "right")
 	{
 		sprite.setScale(1.0f, 1.05f);
-		collisionScale = sf::Vector2f(0.5f, 1.0f);
-		collisionOffset = sf::Vector2f(60, 0);
 		SetPosition(sf::Vector2f(xPos, 0));
 	}
 	else

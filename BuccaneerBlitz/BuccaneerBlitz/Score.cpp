@@ -26,3 +26,8 @@ void Score::AddScore(int newScore)
 {
 	score += newScore;
 }
+
+int Score::GetScore()
+{
+	return score;
+}

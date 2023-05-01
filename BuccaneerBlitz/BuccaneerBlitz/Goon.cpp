@@ -35,6 +35,7 @@ void Goon::Update(sf::Time frameTime)
 
 void Goon::HandleCollision(SpriteObject& other)
 {
+	levelScreen->SpawnEnemy(EnemyType::GOON);
 }
 
 float Goon::GetSpawnTime()

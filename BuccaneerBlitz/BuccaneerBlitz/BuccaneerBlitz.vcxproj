@@ -147,12 +147,17 @@
   <ItemGroup>
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="CannonBall.cpp" />
+    <ClCompile Include="Charger.cpp" />
+    <ClCompile Include="Easing.cpp" />
+    <ClCompile Include="EndPanel.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Goon.cpp" />
+    <ClCompile Include="Hazards.cpp" />
     <ClCompile Include="LevelScreen.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
+    <ClCompile Include="PirateBarricade.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="Screen.cpp" />
@@ -165,11 +170,16 @@
   <ItemGroup>
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="CannonBall.h" />
+    <ClInclude Include="Charger.h" />
+    <ClInclude Include="Easing.h" />
+    <ClInclude Include="EndPanel.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Goon.h" />
+    <ClInclude Include="Hazards.h" />
     <ClInclude Include="LevelScreen.h" />
     <ClInclude Include="PhysicsObject.h" />
+    <ClInclude Include="PirateBarricade.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Score.h" />
     <ClInclude Include="Screen.h" />
