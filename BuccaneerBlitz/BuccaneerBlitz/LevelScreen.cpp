@@ -178,16 +178,16 @@ void LevelScreen::Update(sf::Time frameTime)
 
 				}
 
-				for (size_t j = 0; j < chargers.size(); j++)
+				for (size_t k = 0; k < chargers.size(); k++)
 				{
-					if (cannonBalls[i] != nullptr && chargers[j] != nullptr)
+					if (cannonBalls[i] != nullptr && chargers[k] != nullptr)
 					{
-						if (cannonBalls[i]->CheckColliding(*goons[j]))
+						if (cannonBalls[i]->CheckColliding(*chargers[k]))
 						{
 							score.AddScore(20);
 							cannonBalls[i]->SetColliding(true);
-							chargers[j]->SetColliding(true);
-							cannonBalls[i]->HandleCollision(*chargers[j]);
+							chargers[k]->SetColliding(true);
+							cannonBalls[i]->HandleCollision(*chargers[k]);
 						}
 					}
 				}

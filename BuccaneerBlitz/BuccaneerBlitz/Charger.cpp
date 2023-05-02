@@ -18,34 +18,29 @@ Charger::Charger(LevelScreen* newLevelScreen, Player* newPlayer)
     sprite.setRotation(180);
     sprite.scale(0.5f, 0.5f);
 
-    collisionScale = sf::Vector2f(0.45f, 0.95f);
+    collisionScale = sf::Vector2f(0.4f, 0.9f);
+	collisionOffset = sf::Vector2f(-65, -60);
 
     spawnTime = 7.0f;
 }
 
 void Charger::Update(sf::Time frameTime)
 {
-    sf::Vector2f chargerPos = sprite.getPosition();
-    
-    //calculate the distance between the enemy and the player
-    float distance = std::sqrt(std::pow(player->GetPosition().x - chargerPos.x, 2) + std::pow(player->GetPosition().y - chargerPos.y, 2));
+	//calculate direction to player
+	sf::Vector2f directionToPlayer = player->GetPosition() - GetPosition();
 
-    //calculate the direction from the enemy to the player
-    sf::Vector2f direction = player->GetPosition() - chargerPos;
+	//distance
+	float distance = std::sqrt(std::pow(directionToPlayer.x, 2) + std::pow(directionToPlayer.y, 2));
+	//normalize direction vector
+	sf::Vector2f unitDirection = directionToPlayer / distance;
 
-    //normalize the direction vector
-    if (distance != 0)
-    {
-        sf::Vector2f unitDirection = direction / distance;
+	//set velocity to unit direction multiplied by speed
+	sf::Vector2f velocity = unitDirection * speed;
 
-        // Set the enemy's velocity to the normalized direction vector multiplied by the speed
-        velocity = unitDirection * speed;
-
-        //update the enemy's position using its velocity
-        chargerPos += velocity * frameTime.asSeconds();
-    }
-    //update sprites position
-    sprite.setPosition(chargerPos);
+	//apply movement code
+	sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
+	SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
+	velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
 }
 
 void Charger::HandleCollision(SpriteObject& other)
