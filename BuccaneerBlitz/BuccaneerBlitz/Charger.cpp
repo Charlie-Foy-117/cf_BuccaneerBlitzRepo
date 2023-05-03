@@ -3,7 +3,7 @@
 #include "Player.h"
 
 Charger::Charger(LevelScreen* newLevelScreen, Player* newPlayer)
-	: Enemy()
+	: Enemy(newLevelScreen)
 	, acceleration()
 	, velocity(0, 0)
     , speed(400.0f)
@@ -27,7 +27,7 @@ Charger::Charger(LevelScreen* newLevelScreen, Player* newPlayer)
 void Charger::Update(sf::Time frameTime)
 {
 	//calculate direction to player
-	sf::Vector2f directionToPlayer = player->GetPosition() - GetPosition();
+	sf::Vector2f directionToPlayer = sf::Vector2f(player->GetPosition().x + 100, player->GetPosition().y) - GetPosition();
 
 	//distance
 	float distance = std::sqrt(std::pow(directionToPlayer.x, 2) + std::pow(directionToPlayer.y, 2));
@@ -45,6 +45,9 @@ void Charger::Update(sf::Time frameTime)
 
 void Charger::HandleCollision(SpriteObject& other)
 {
+	LoseLife();
+	DropItem();
+	other.LoseLife();
 }
 
 float Charger::GetSpawnTime()

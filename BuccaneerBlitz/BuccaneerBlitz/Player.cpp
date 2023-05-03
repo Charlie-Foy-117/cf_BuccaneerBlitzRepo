@@ -20,6 +20,8 @@ Player::Player(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen)
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Player/cf_Player1_PNG.png"));
 
 	collisionScale = sf::Vector2f(0.45f, 0.95f);
+
+	lives = 3;
 }
 
 void Player::Update(sf::Time frameTime)

@@ -78,6 +78,15 @@
     <ClCompile Include="Charger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LifeUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pickups.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LifePickup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -138,6 +147,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Charger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LifeUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pickups.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LifePickup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

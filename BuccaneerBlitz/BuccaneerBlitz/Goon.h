@@ -1,6 +1,5 @@
 #pragma once
 #include "Enemy.h"
-
 class LevelScreen;
 
 class Goon :
@@ -20,9 +19,9 @@ private:
     sf::Vector2f acceleration;
     sf::Vector2f velocity;
 
-    LevelScreen* levelScreen;
-
     sf::Clock cooldownTimer;
     float cooldown;
+
+    LevelScreen* levelScreen;
 };
 

@@ -23,8 +23,8 @@ private:
     float speed;
     float trackingDistance;
 
-    LevelScreen* levelScreen;
     Player* player;
+    LevelScreen* levelScreen;
 
     sf::Clock cooldownTimer;
     float cooldown;

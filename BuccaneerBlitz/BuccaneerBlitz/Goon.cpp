@@ -3,7 +3,7 @@
 #include "LevelScreen.h"
 
 Goon::Goon(LevelScreen* newLevelScreen)
-	: Enemy()
+	: Enemy(newLevelScreen)
 	, velocity(0, 200)
 	, acceleration()
 	, levelScreen(newLevelScreen)
@@ -35,7 +35,19 @@ void Goon::Update(sf::Time frameTime)
 
 void Goon::HandleCollision(SpriteObject& other)
 {
-	levelScreen->SpawnEnemy(EnemyType::GOON);
+	if (typeid(other).name() == typeid(Player).name())
+	{
+		LoseLife();
+		other.LoseLife();
+	}
+	else if (typeid(other).name() == typeid(CannonBall).name())
+	{
+		DropItem();
+	}
+	else
+	{
+		levelScreen->SpawnEnemy(EnemyType::GOON);
+	}
 }
 
 float Goon::GetSpawnTime()

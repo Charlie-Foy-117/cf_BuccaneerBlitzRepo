@@ -29,6 +29,6 @@ void CannonBall::SetVelocity(float newX, float newY)
 void CannonBall::HandleCollision(SpriteObject& other)
 {
 	alive = false;
-	other.SetAlive(false);
+	other.LoseLife();
 	
 }

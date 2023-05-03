@@ -10,6 +10,7 @@ SpriteObject::SpriteObject()
 	, collisionType(CollisionType::AABB)
 	, colliding(false)
 	, alive(true)
+	, lives(0)
 {
 }
 
@@ -216,6 +217,35 @@ void SpriteObject::SetAlive(bool newAlive)
 bool SpriteObject::GetAlive()
 {
 	return alive;
+}
+
+int SpriteObject::GetLives()
+{
+	return lives;
+}
+
+void SpriteObject::LoseLife()
+{
+	if (lives > 1)
+	{
+		--lives;
+	}
+	else
+	{
+		SetAlive(false);
+	}
+}
+
+void SpriteObject::GainLife()
+{
+	if (lives < 3)
+	{
+		++lives;
+	}
+	else
+	{
+		//do nothing
+	}
 }
 
 sf::Vector2f SpriteObject::GetCollisionCentre()

@@ -33,6 +33,9 @@ public:
 
 	void SetAlive(bool newAlive);
 	bool GetAlive();
+	int GetLives();
+	void LoseLife();
+	void GainLife();
 
 protected:
 
@@ -43,6 +46,8 @@ protected:
 	CollisionType collisionType;
 
 	bool alive;
+
+	int lives;
 
 private:
 

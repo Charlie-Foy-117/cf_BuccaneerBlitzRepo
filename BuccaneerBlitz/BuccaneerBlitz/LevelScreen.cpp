@@ -15,12 +15,14 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, enemyCannonBalls()
 	, timer(this)
 	, score()
+	, lifeUI()
 	, goons()
 	, chargers()
 	, pirateBarricades()
 	, endPanel(newGamePointer->GetWindow())
 	, background(newGamePointer->GetWindow())
 	, cooldownClocks()
+	, lifePickups()
 {
 	Restart();
 }
@@ -113,6 +115,15 @@ void LevelScreen::Update(sf::Time frameTime)
 				}
 			}
 
+			for (size_t i = 0; i < lifePickups.size(); i++)
+			{
+				if (lifePickups[i] != nullptr)
+				{
+					lifePickups[i]->Update(frameTime);
+					lifePickups[i]->SetColliding(false);
+				}
+			}
+
 			//collision updating
 
 			//side barriers
@@ -158,6 +169,45 @@ void LevelScreen::Update(sf::Time frameTime)
 				player.SetColliding(true);
 				sideBarrierRight.SetColliding(true);
 				sideBarrierRight.HandleCollision(player);
+			}
+			for (size_t i = 0; i < goons.size(); i++)
+			{
+				if (goons[i] != nullptr)
+				{
+					if (player.CheckColliding(*goons[i]))
+					{
+						player.SetColliding(true);
+						goons[i]->SetColliding(true);
+						player.HandleCollision(*goons[i]);
+						goons[i]->HandleCollision(player);
+					}
+				}
+			}
+			for (size_t i = 0; i < chargers.size(); i++)
+			{
+				if (chargers[i] != nullptr)
+				{
+					if (player.CheckColliding(*chargers[i]))
+					{
+						player.SetColliding(true);
+						chargers[i]->SetColliding(true);
+						player.HandleCollision(*chargers[i]);
+						chargers[i]->HandleCollision(player);
+					}
+				}
+			}
+			for (size_t i = 0; i < lifePickups.size(); i++)
+			{
+				if (lifePickups[i] != nullptr)
+				{
+					if (player.CheckColliding(*lifePickups[i]))
+					{
+						player.SetColliding(true);
+						chargers[i]->SetColliding(true);
+						player.HandleCollision(*lifePickups[i]);
+						lifePickups[i]->HandleCollision(player);
+					}
+				}
 			}
 
 			//cannonball
@@ -288,21 +338,27 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 	{
 		if (goons[i] != nullptr)
 		{
+			//checks to see if goon is on screen 
 			if (goons[i]->GetPosition().y < background->getSize().y)
 			{
+				//draws goon
 				goons[i]->Draw(target);
 			}
+			//checks if goon is still alive
 			else if (goons[i]->GetAlive() == false)
 			{
+				//clears goon memory and deletes it from vector
 				delete goons[i];
 				goons[i] = nullptr;
 				goons.erase(goons.begin() + i);
 				i--;
 			}
+			//checks to see if position of goon is off screen
 			else if (goons[i]->GetPosition().y >= background->getSize().y)
 			{
 				if (goons[i] != nullptr)
 				{
+					//clears goon memory and deletes it from vector
 					goons[i] = nullptr;
 					delete goons[i];
 					goons.erase(goons.begin() + i);
@@ -321,19 +377,19 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 			}
 			else if (chargers[i]->GetAlive() == false)
 			{
-				delete chargers[i];
-				chargers[i] = nullptr;
-				chargers.erase(chargers.begin() + i);
-				i--;
+				//delete chargers[i];
+				//chargers[i] = nullptr;
+				//chargers.erase(chargers.begin() + i);
+				//i--;
 			}
 			else if (chargers[i]->GetPosition().y >= background->getSize().y)
 			{
 				if (chargers[i] != nullptr)
 				{
-					chargers[i] = nullptr;
-					delete chargers[i];
-					chargers.erase(chargers.begin() + i);
-					i--;
+					//chargers[i] = nullptr;
+					//delete chargers[i];
+					//chargers.erase(chargers.begin() + i);
+					//i--;
 				}
 			}
 		}
@@ -370,6 +426,29 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 	player.Draw(target);
 	timer.Draw(target);
 	score.Draw(target);
+	for (size_t i = 0; i < player.GetLives(); i++)
+	{
+		lifeUI.Draw(target);
+		lifeUI.SetPosition(0 + (i * lifeUI.GetWidth() / 2), 10);
+	}
+
+	for (size_t i = 0; i < lifePickups.size(); i++)
+	{
+		if (lifePickups[i] != nullptr)
+		{
+			if (lifePickups[i]->GetAlive() == false)
+			{
+				//delete chargers[i];
+				//chargers[i] = nullptr;
+				//chargers.erase(chargers.begin() + i);
+				//i--;
+			}
+			else
+			{
+				lifePickups[i]->Draw(target);
+			}
+		}
+	}
 
 	//if game is not running draw endpanel
 	if (!gameRunning)
@@ -391,7 +470,7 @@ void LevelScreen::BackgroundColour(int currentLevel)
 	}
 	else if (currentLevel == 5 || currentLevel == 6)
 	{
-		//background->clear(sf::Color(38, 73, 202, 255));
+		background->clear(sf::Color(0, 0, 0, 255));
 	}
 	else
 	{
@@ -486,6 +565,25 @@ void LevelScreen::SpawnHazard(HazardType hazardType)
 	}
 }
 
+void LevelScreen::SpawnPickUp(PickupType pickupType, SpriteObject& spriteCaller)
+{
+	switch (pickupType)
+	{
+	case PickupType::LIFE:
+		lifePickups.push_back(new LifePickup());
+		lifePickups.back()->SetPosition(spriteCaller.GetPosition());
+		break;
+	case PickupType::ANCHOR:
+
+		break;
+	case PickupType::MULTIFIRE:
+
+		break;
+	default:
+		break;
+	}
+}
+
 void LevelScreen::CheckExistence(std::vector<SpriteObject*> spriteCaller, std::string direction, sf::RenderTarget& target)
 {
 	//check what direction the sprite is moving
@@ -574,7 +672,7 @@ void LevelScreen::Restart()
 {
 	sideBarrierLeft.ResetPosition("left");
 	sideBarrierRight.ResetPosition("right");
-	player.SetPosition(background->getSize().x / 2 - player.GetWidth() / 2, 200);
+	player.SetPosition(background->getSize().x / 2 - player.GetWidth() / 2, 600);
 	timer.SetPosition((float)background->getSize().x - 250, 10);
 	score.SetPosition((float)background->getSize().x - 300, timer.GetPosition().y + 200);
 
@@ -584,7 +682,7 @@ void LevelScreen::Restart()
 	goons.push_back(new Goon(this));
 	goons.back()->SetPosition(background->getSize().x / 2, 0);
 	chargers.push_back(new Charger(this, &player));
-	chargers.back()->SetPosition(background->getSize().x / 2, 0 + chargers.back()->GetHeight());
+	chargers.back()->SetPosition(background->getSize().x / 2, 0 - chargers.back()->GetHeight());
 	//pirateBarricades.push_back(new PirateBarricade(this));
 	//pirateBarricades.back()->SetPosition(background->getSize().x / 2 - pirateBarricades.back()->GetWidth() / 2, 0 - pirateBarricades.back()->GetHeight());
 

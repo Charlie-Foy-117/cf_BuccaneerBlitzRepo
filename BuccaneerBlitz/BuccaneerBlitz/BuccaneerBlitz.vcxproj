@@ -155,8 +155,11 @@
     <ClCompile Include="Goon.cpp" />
     <ClCompile Include="Hazards.cpp" />
     <ClCompile Include="LevelScreen.cpp" />
+    <ClCompile Include="LifePickup.cpp" />
+    <ClCompile Include="LifeUI.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
+    <ClCompile Include="Pickups.cpp" />
     <ClCompile Include="PirateBarricade.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Score.cpp" />
@@ -178,7 +181,10 @@
     <ClInclude Include="Goon.h" />
     <ClInclude Include="Hazards.h" />
     <ClInclude Include="LevelScreen.h" />
+    <ClInclude Include="LifePickup.h" />
+    <ClInclude Include="LifeUI.h" />
     <ClInclude Include="PhysicsObject.h" />
+    <ClInclude Include="Pickups.h" />
     <ClInclude Include="PirateBarricade.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Score.h" />
