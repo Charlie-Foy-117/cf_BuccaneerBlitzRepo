@@ -9,5 +9,8 @@ LifePickup::LifePickup()
 void LifePickup::HandleCollision(SpriteObject& other)
 {
 	SetAlive(false);
-	other.GainLife();
+	if (other.GetAlive())
+	{
+		other.GainLife();
+	}
 }

@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "LevelScreen.h"
+#include <random>
 
 Enemy::Enemy(LevelScreen* newLevelScreen)
 	: SpriteObject()
@@ -8,12 +9,18 @@ Enemy::Enemy(LevelScreen* newLevelScreen)
 	, clock()
 	, levelScreen(newLevelScreen)
 {
-	//srand(clock.getElapsedTime().asSeconds());
+
 }
 
 void Enemy::DropItem()
 {
-	int dropChance = rand() % 4;
+	//seed the random number generator
+	std::random_device rd;
+
+	//use uniform_int_distribution object to generate numbers in the range 0-3
+	std::uniform_int_distribution<int> dist(0, 3);
+
+	int dropChance = dist(rd);
 
 	switch (dropChance)
 	{

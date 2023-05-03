@@ -1,4 +1,5 @@
 #include "LevelScreen.h"
+#include "TitleScreen.h"
 #include "Game.h"
 
 Game::Game()
@@ -10,7 +11,7 @@ Game::Game()
 	window.setMouseCursorVisible(false);
 
 	//Setup screens
-	currentScreen = new LevelScreen(this);
+	currentScreen = new TitleScreen(this);
 }
 
 void Game::RunGameLoop()

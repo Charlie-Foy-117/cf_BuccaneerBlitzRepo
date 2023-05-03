@@ -45,8 +45,11 @@ void Charger::Update(sf::Time frameTime)
 
 void Charger::HandleCollision(SpriteObject& other)
 {
+	if (typeid(other).name() == typeid(CannonBall).name())
+	{
+		DropItem();
+	}
 	LoseLife();
-	DropItem();
 	other.LoseLife();
 }
 

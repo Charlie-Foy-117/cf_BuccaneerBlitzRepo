@@ -223,6 +223,7 @@ void LevelScreen::Update(sf::Time frameTime)
 							cannonBalls[i]->SetColliding(true);
 							goons[j]->SetColliding(true);
 							cannonBalls[i]->HandleCollision(*goons[j]);
+							goons[i]->HandleCollision(*cannonBalls[i]);
 						}
 					}
 
@@ -238,6 +239,7 @@ void LevelScreen::Update(sf::Time frameTime)
 							cannonBalls[i]->SetColliding(true);
 							chargers[k]->SetColliding(true);
 							cannonBalls[i]->HandleCollision(*chargers[k]);
+							chargers[i]->HandleCollision(*cannonBalls[i]);
 						}
 					}
 				}

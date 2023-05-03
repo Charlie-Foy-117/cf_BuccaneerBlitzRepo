@@ -158,7 +158,6 @@
     <ClCompile Include="LifePickup.cpp" />
     <ClCompile Include="LifeUI.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="Pickups.cpp" />
     <ClCompile Include="PirateBarricade.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -168,6 +167,7 @@
     <ClCompile Include="SpriteObject.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="TitleScreen.cpp" />
     <ClCompile Include="VectorHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -183,7 +183,6 @@
     <ClInclude Include="LevelScreen.h" />
     <ClInclude Include="LifePickup.h" />
     <ClInclude Include="LifeUI.h" />
-    <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="Pickups.h" />
     <ClInclude Include="PirateBarricade.h" />
     <ClInclude Include="Player.h" />
@@ -193,6 +192,7 @@
     <ClInclude Include="SpriteObject.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="TitleScreen.h" />
     <ClInclude Include="VectorHelper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
