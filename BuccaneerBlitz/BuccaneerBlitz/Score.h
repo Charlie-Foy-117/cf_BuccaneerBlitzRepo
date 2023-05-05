@@ -12,6 +12,7 @@ public:
 
 	void AddScore(int newScore);
 	int GetScore();
+	void ResetScore();
 
 private:
 

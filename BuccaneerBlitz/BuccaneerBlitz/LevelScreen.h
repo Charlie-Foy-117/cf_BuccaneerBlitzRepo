@@ -65,7 +65,6 @@ public:
     void SpawnEnemy(EnemyType enemyType);
     void SpawnHazard(HazardType hazardType);
     void SpawnPickUp(PickupType pickupType, SpriteObject& spriteCaller);
-    void CheckExistence(std::vector<SpriteObject*>  spriteCaller, std::string direction, sf::RenderTarget& target);
     int RandomNumGen(int min, int max);
 
     Player player;
@@ -80,6 +79,7 @@ private:
     void Restart();
 
     sf::RenderWindow* background;
+    Game* game;
     SideBarrier sideBarrierLeft;
     SideBarrier sideBarrierRight;
 

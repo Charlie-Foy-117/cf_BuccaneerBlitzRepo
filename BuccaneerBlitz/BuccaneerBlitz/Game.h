@@ -1,5 +1,11 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+enum class GameState
+{
+	TITLESCREEN,
+	LEVELSCREEN
+};
+
 class Screen;
 
 class Game
@@ -15,7 +21,7 @@ public:
 	void Draw();
 
 	sf::RenderWindow* GetWindow();
-	void PlayLevel();
+	void ChangeGameState(GameState newGameState);
 
 private:
 

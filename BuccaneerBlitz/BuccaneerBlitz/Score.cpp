@@ -31,3 +31,8 @@ int Score::GetScore()
 {
 	return score;
 }
+
+void Score::ResetScore()
+{
+	score = 0;
+}

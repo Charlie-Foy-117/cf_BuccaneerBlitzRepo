@@ -7,6 +7,7 @@ Timer::Timer(LevelScreen* newLevelScreen)
 	, gameTime()
 	, levelDuration(60.0f)
 	, levelScreen(newLevelScreen)
+	, remainingTime()
 {
 	text.setFont(AssetManager::RequestFont("Assets/Graphics/UI/cf_font.ttf"));
 }
@@ -19,7 +20,7 @@ void Timer::Draw(sf::RenderTarget& target)
 
 void Timer::LevelTimer()
 {
-	float remainingTime = levelDuration - gameTime.getElapsedTime().asSeconds();
+	remainingTime = levelDuration - gameTime.getElapsedTime().asSeconds();
 	std::string timerString = "Time: ";
 
 	if (remainingTime <= 0)
@@ -32,4 +33,9 @@ void Timer::LevelTimer()
 
 	timerString += std::to_string((int)ceil(remainingTime));
 	text.setString(timerString);
+}
+
+void Timer::ResetTime()
+{
+	remainingTime = levelDuration;
 }

@@ -17,7 +17,11 @@ public:
 private:
 
     Game* game;
+    sf::RenderWindow* window;
 
     Text text;
+
+    sf::Clock cooldownTimer;
+    float cooldown;
 };
 

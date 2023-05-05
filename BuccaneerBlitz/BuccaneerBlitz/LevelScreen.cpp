@@ -6,6 +6,7 @@
 
 LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
+	, game(newGamePointer)
 	, levelStageNumber(1)
 	, gameRunning(true)
 	, player(newGamePointer->GetWindow(), this)
@@ -260,6 +261,10 @@ void LevelScreen::Update(sf::Time frameTime)
 	else
 	{
 		endPanel.Update(frameTime);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+		{
+			game->ChangeGameState(GameState::TITLESCREEN);
+		}
 	}
 }
 
@@ -268,7 +273,6 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 	sideBarrierLeft.Draw(target);
 	sideBarrierRight.Draw(target);
 
-	//CheckExistence(cannonBalls, "up", target);
 	for (size_t i = 0; i < cannonBalls.size(); i++)
 	{
 		if (cannonBalls[i] != nullptr)
@@ -495,6 +499,7 @@ void LevelScreen::BackgroundColour(int currentLevel)
 
 void LevelScreen::TriggerEndState()
 {
+	//plays loss/win state depending on the players alive status
 	endPanel.WinLossPanel(player.GetAlive());
 	endPanel.AddScoreToString(score.GetScore());
 	endPanel.StartAnimation();
@@ -599,77 +604,6 @@ void LevelScreen::SpawnPickUp(PickupType pickupType, SpriteObject& spriteCaller)
 	}
 }
 
-void LevelScreen::CheckExistence(std::vector<SpriteObject*> spriteCaller, std::string direction, sf::RenderTarget& target)
-{
-	//check what direction the sprite is moving
-	//if moving up screen go in here
-	if (direction == "up")
-	{
-		for (size_t i = 0; i < spriteCaller.size(); i++)
-		{
-			if (spriteCaller[i] != nullptr)
-			{
-				if (spriteCaller[i]->GetPosition().y > 0)
-				{
-					spriteCaller[i]->Draw(target);
-				}
-				else if (spriteCaller[i]->GetAlive() == false)
-				{
-					delete spriteCaller[i];
-					spriteCaller[i] = nullptr;
-					spriteCaller.erase(spriteCaller.begin() + i);
-					i--;
-				}
-				else if (spriteCaller[i]->GetPosition().y <= 0)
-				{
-					if (spriteCaller[i] != nullptr)
-					{
-						spriteCaller[i] = nullptr;
-						delete spriteCaller[i];
-						spriteCaller.erase(spriteCaller.begin() + i);
-						i--;
-					}
-				}
-			}
-		}
-	}
-	//if moving down screen go in here
-	if (direction == "down")
-	{
-		for (size_t i = 0; i < spriteCaller.size(); i++)
-		{
-			if (spriteCaller[i] != nullptr)
-			{
-				if (spriteCaller[i]->GetPosition().y < background->getSize().y)
-				{
-					spriteCaller[i]->Draw(target);
-				}
-				else if (spriteCaller[i]->GetAlive() == false)
-				{
-					delete spriteCaller[i];
-					spriteCaller[i] = nullptr;
-					spriteCaller.erase(spriteCaller.begin() + i);
-					i--;
-				}
-				else if (spriteCaller[i]->GetPosition().y >= background->getSize().y)
-				{
-					if (spriteCaller[i] != nullptr)
-					{
-						spriteCaller[i] = nullptr;
-						delete spriteCaller[i];
-						spriteCaller.erase(spriteCaller.begin() + i);
-						i--;
-					}
-				}
-			}
-		}
-	}
-	else
-	{
-		//do nothing
-	}
-}
-
 int LevelScreen::RandomNumGen(int min, int max)
 {
 	int randNum;
@@ -689,9 +623,28 @@ void LevelScreen::Restart()
 	sideBarrierRight.ResetPosition("right");
 	player.SetPosition(background->getSize().x / 2 - player.GetWidth() / 2, 600);
 	timer.SetPosition((float)background->getSize().x - 250, 10);
+	timer.ResetTime();
 	score.SetPosition((float)background->getSize().x - 300, timer.GetPosition().y + 200);
+	score.ResetScore();
 
-
+	for (size_t i = 0; i < goons.size(); i++)
+	{
+		delete goons[i];
+		goons[i] = nullptr;
+		goons.erase(goons.begin() + i);
+	}
+	for (size_t i = 0; i < chargers.size(); i++)
+	{
+		delete chargers[i];
+		chargers[i] = nullptr;
+		chargers.erase(chargers.begin() + i);
+	}
+	for (size_t i = 0; i < lifePickups.size(); i++)
+	{
+		delete lifePickups[i];
+		lifePickups[i] = nullptr;
+		lifePickups.erase(lifePickups.begin() + i);
+	}
 
 	//test vectors
 	goons.push_back(new Goon(this));

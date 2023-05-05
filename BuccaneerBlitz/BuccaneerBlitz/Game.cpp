@@ -74,7 +74,19 @@ sf::RenderWindow* Game::GetWindow()
 	return &window;
 }
 
-void Game::PlayLevel()
+void Game::ChangeGameState(GameState newGameState)
 {
-	currentScreen = new LevelScreen(this);
+	switch (newGameState)
+	{
+	case GameState::TITLESCREEN:
+		currentScreen = new TitleScreen(this);
+		break;
+	case GameState::LEVELSCREEN:
+		currentScreen = new LevelScreen(this);
+		break;
+	default:
+		break;
+	}
 }
+
+
