@@ -37,12 +37,14 @@ void Goon::HandleCollision(SpriteObject& other)
 {
 	if (typeid(other).name() == typeid(Player).name())
 	{
-		LoseLife();
-		other.LoseLife();
+		ModifyLives(-1);
+		other.ModifyLives(-1);
 	}
 	else if (typeid(other).name() == typeid(CannonBall).name())
 	{
 		DropItem();
+		ModifyLives(-1);
+		other.ModifyLives(-1);
 	}
 	else
 	{

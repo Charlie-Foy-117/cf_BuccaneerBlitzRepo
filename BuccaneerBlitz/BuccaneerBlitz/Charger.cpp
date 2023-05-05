@@ -49,8 +49,8 @@ void Charger::HandleCollision(SpriteObject& other)
 	{
 		DropItem();
 	}
-	LoseLife();
-	other.LoseLife();
+	ModifyLives(-1);
+	other.ModifyLives(-1);
 }
 
 float Charger::GetSpawnTime()

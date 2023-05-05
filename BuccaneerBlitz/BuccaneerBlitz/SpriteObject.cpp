@@ -224,27 +224,17 @@ int SpriteObject::GetLives()
 	return lives;
 }
 
-void SpriteObject::LoseLife()
+void SpriteObject::ModifyLives(int lifeValue)
 {
-	if (lives > 1)
+	lives += lifeValue;
+	if (lives < 1)
 	{
-		--lives;
-	}
-	else
-	{
+		lives = 0;
 		SetAlive(false);
 	}
-}
-
-void SpriteObject::GainLife()
-{
-	if (lives < 3)
+	else if (lives > 3)
 	{
-		++lives;
-	}
-	else
-	{
-		//do nothing
+		lives = 3;
 	}
 }
 

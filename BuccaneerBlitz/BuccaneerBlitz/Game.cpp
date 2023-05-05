@@ -73,3 +73,8 @@ sf::RenderWindow* Game::GetWindow()
 {
 	return &window;
 }
+
+void Game::PlayLevel()
+{
+	currentScreen = new LevelScreen(this);
+}

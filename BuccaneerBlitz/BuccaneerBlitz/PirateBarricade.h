@@ -22,8 +22,5 @@ private:
 
     LevelScreen* levelScreen;
 
-    sf::Clock cooldownTimer;
-    float cooldown;
-
 };
 

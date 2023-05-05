@@ -15,6 +15,7 @@ public:
 	void Draw();
 
 	sf::RenderWindow* GetWindow();
+	void PlayLevel();
 
 private:
 

@@ -1,9 +1,16 @@
 #include "Text.h"
+#include "AssetManager.h"
 
 Text::Text()
 	: text()
 	, position()
 {
+	text.setFont(AssetManager::RequestFont("Assets/Graphics/UI/cf_font.ttf"));
+}
+
+void Text::Draw(sf::RenderTarget& target)
+{
+	target.draw(text);
 }
 
 sf::Vector2f Text::GetPosition()
@@ -30,4 +37,9 @@ float Text::GetHeight()
 float Text::GetWidth()
 {
 	return text.getLocalBounds().height;
+}
+
+void Text::SetText(std::string newText)
+{
+	text.setString(newText);
 }

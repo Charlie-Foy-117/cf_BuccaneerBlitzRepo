@@ -49,17 +49,17 @@ void LevelScreen::Update(sf::Time frameTime)
 			cooldownClocks.push_back(new sf::Clock());
 
 			//spawn objects on cooldown
-			//goons - Clock 0
-			if (cooldownClocks[0]->getElapsedTime().asSeconds() > goons.back()->GetSpawnTime())
-			{
-				SpawnEnemy(EnemyType::GOON);
-			}
-			//chargers - Clock 1
-			if (cooldownClocks[1]->getElapsedTime().asSeconds() > chargers.back()->GetSpawnTime())
-			{
-				SpawnEnemy(EnemyType::CHARGER);
-			}
-			//Sprayers - Clock 2
+				//goons - Clock 0
+				if (cooldownClocks[0]->getElapsedTime().asSeconds() > goons.back()->GetSpawnTime())
+				{
+					SpawnEnemy(EnemyType::GOON);
+				}
+				//chargers - Clock 1
+				if (cooldownClocks[1]->getElapsedTime().asSeconds() > chargers.back()->GetSpawnTime())
+				{
+					SpawnEnemy(EnemyType::CHARGER);
+				}
+				//Sprayers - Clock 2
 
 
 			//set all objects to not colliding and update every frame
@@ -379,25 +379,39 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 			}
 			else if (chargers[i]->GetAlive() == false)
 			{
-				//delete chargers[i];
-				//chargers[i] = nullptr;
-				//chargers.erase(chargers.begin() + i);
-				//i--;
+				if (chargers.size() - 1 > 0)
+				{
+					delete chargers[i];
+					chargers[i] = nullptr;
+					chargers.erase(chargers.begin() + i);
+					i--;
+				}
+				else
+				{
+					break;
+				}
 			}
 			else if (chargers[i]->GetPosition().y >= background->getSize().y)
 			{
 				if (chargers[i] != nullptr)
 				{
-					//chargers[i] = nullptr;
-					//delete chargers[i];
-					//chargers.erase(chargers.begin() + i);
-					//i--;
+					if (chargers.size() - 1 > 0)
+					{
+						delete chargers[i];
+						chargers[i] = nullptr;
+						chargers.erase(chargers.begin() + i);
+						i--;
+					}
+					else
+					{
+						break;
+					}
 				}
 			}
 		}
 	}
-	/*
-	for (size_t i = 0; i < pirateBarricades.size(); i++)
+	
+	/*for (size_t i = 0; i < pirateBarricades.size(); i++)
 	{
 		if (pirateBarricades[i] != nullptr)
 		{
@@ -407,20 +421,19 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 			}
 			else if (pirateBarricades[i]->GetAlive() == false)
 			{
-				delete pirateBarricades[i];
-				pirateBarricades[i] = nullptr;
-				pirateBarricades.erase(pirateBarricades.begin() + i);
-				i--;
+				//delete pirateBarricades[i];
+				//pirateBarricades[i] = nullptr;
+				//pirateBarricades.erase(pirateBarricades.begin() + i);
+				//i--;
 			}
 			else if (pirateBarricades[i]->GetPosition().y >= background->getSize().y)
 			{
 				if (pirateBarricades[i] != nullptr)
 				{
-					//TODO: Clean up goons once they pass the top of window
-					pirateBarricades[i] = nullptr;
-					delete pirateBarricades[i];
-					pirateBarricades.erase(pirateBarricades.begin() + i);
-					i--;
+					//pirateBarricades[i] = nullptr;
+					//delete pirateBarricades[i];
+					//pirateBarricades.erase(pirateBarricades.begin() + i);
+					//i--;
 				}
 			}
 		}
@@ -440,10 +453,10 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 		{
 			if (lifePickups[i]->GetAlive() == false)
 			{
-				//delete chargers[i];
-				//chargers[i] = nullptr;
-				//chargers.erase(chargers.begin() + i);
-				//i--;
+				delete lifePickups[i];
+				lifePickups[i] = nullptr;
+				lifePickups.erase(lifePickups.begin() + i);
+				i--;
 			}
 			else
 			{
@@ -686,7 +699,7 @@ void LevelScreen::Restart()
 	chargers.push_back(new Charger(this, &player));
 	chargers.back()->SetPosition(background->getSize().x / 2, 0 - chargers.back()->GetHeight());
 	//pirateBarricades.push_back(new PirateBarricade(this));
-	//pirateBarricades.back()->SetPosition(background->getSize().x / 2 - pirateBarricades.back()->GetWidth() / 2, 0 - pirateBarricades.back()->GetHeight());
+	//pirateBarricades.back()->SetPosition(background->getSize().x / 2 - pirateBarricades.back()->GetWidth() + pirateBarricades.back()->GetWidth(), 0 - pirateBarricades.back()->GetHeight());
 
 
 

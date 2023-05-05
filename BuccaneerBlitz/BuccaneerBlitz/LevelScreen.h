@@ -75,6 +75,7 @@ public:
 
 private:
 
+    //TODO: fill function to load boss level/next level
     void LoadLevel(int currentStage);
     void Restart();
 

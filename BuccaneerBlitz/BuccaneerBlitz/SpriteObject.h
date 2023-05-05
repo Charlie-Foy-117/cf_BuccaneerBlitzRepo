@@ -34,8 +34,7 @@ public:
 	void SetAlive(bool newAlive);
 	bool GetAlive();
 	int GetLives();
-	void LoseLife();
-	void GainLife();
+	void ModifyLives(int lifeValue);
 
 protected:
 
