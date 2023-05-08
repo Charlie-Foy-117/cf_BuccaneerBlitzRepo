@@ -167,6 +167,7 @@
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="SideBarrier.cpp" />
+    <ClCompile Include="SmallIsland.cpp" />
     <ClCompile Include="Sprayer.cpp" />
     <ClCompile Include="SpriteObject.cpp" />
     <ClCompile Include="Text.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="Score.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="SideBarrier.h" />
+    <ClInclude Include="SmallIsland.h" />
     <ClInclude Include="Sprayer.h" />
     <ClInclude Include="SpriteObject.h" />
     <ClInclude Include="Text.h" />

@@ -40,22 +40,22 @@ void SideBarrier::HandleCollision(SpriteObject& other)
 
 void SideBarrier::UpdateSpriteAsset(int newLevelNumber)
 {
-	switch (newLevelNumber)
+	//checks what input equals to change background colour to desired colour for level
+	if (newLevelNumber == 1 || newLevelNumber == 2)
 	{
-	case 1:
 		sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level1SideBarrier_PNG.png"));
-		break;
-
-	case 2:
+	}
+	else if (newLevelNumber == 3 || newLevelNumber == 4)
+	{
 		sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level2SideBarrier_PNG.png"));
-		break;
-
-	case 3:
+	}
+	else if (newLevelNumber == 5 || newLevelNumber == 6)
+	{
 		//sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level3SideBarrier_PNG.png"));
-		break;
-
-	default:
-		break;
+	}
+	else
+	{
+		//error...
 	}
 }
 

@@ -3,12 +3,13 @@
 
 PirateBarricade::PirateBarricade(LevelScreen* newLevelScreen)
 	: Hazards()
-	, acceleration(0, 40)
-	, velocity()
+	, acceleration()
+	, velocity(0, 60)
 	, levelScreen(newLevelScreen)
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_PirateBarricade_PNG.png"));
 	sprite.setScale(1.5f, 1.5f);
+	collisionScale = sf::Vector2f(1.0f, 0.6f);
 	spawnTime = 30.0f;
 }
 
@@ -22,6 +23,11 @@ void PirateBarricade::Update(sf::Time frameTime)
 
 void PirateBarricade::HandleCollision(SpriteObject& other)
 {
+	if (typeid(other).name() == typeid(Anchor).name() || typeid(other).name() == typeid(Player).name())
+	{
+		ModifyLives(-1);
+	}
+	other.ModifyLives(-1);
 }
 
 float PirateBarricade::GetSpawnTime()

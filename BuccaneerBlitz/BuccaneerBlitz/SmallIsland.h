@@ -1,16 +1,14 @@
 #pragma once
 #include "Hazards.h"
-#include "Anchor.h"
-#include "Player.h"
 
 class LevelScreen;
 
-class PirateBarricade :
+class SmallIsland :
     public Hazards
 {
 public:
 
-    PirateBarricade(LevelScreen* newLevelScreen);
+    SmallIsland(LevelScreen* newLevelScreen);
 
     void Update(sf::Time frameTime) override;
     void HandleCollision(SpriteObject& other) override;
@@ -23,6 +21,5 @@ private:
     sf::Vector2f velocity;
 
     LevelScreen* levelScreen;
-
 };
 

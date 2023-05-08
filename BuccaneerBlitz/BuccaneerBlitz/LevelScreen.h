@@ -17,6 +17,7 @@
 #include "Charger.h"
 #include "Sprayer.h"
 #include "PirateBarricade.h"
+#include "SmallIsland.h"
 
 #include "EndPanel.h"
 #include "LifeUI.h"
@@ -87,15 +88,19 @@ private:
     Game* game;
     SideBarrier sideBarrierLeft;
     SideBarrier sideBarrierRight;
+    CannonBall cannonBall;
     Charger charger;
     Goon goon;
     Sprayer sprayer;
+    PirateBarricade pirateBarricade;
+    SmallIsland smallIsland;
 
     std::vector<CannonBall*> cannonBalls;
     std::vector<Anchor*> anchors;
     std::vector<CannonBall*> goonCannonBalls;
     std::vector<CannonBall*> sprayerCannonBalls;
     std::vector<PirateBarricade*> pirateBarricades;
+    std::vector<SmallIsland*> smallIslands;
 
     Timer timer;
     Score score;
