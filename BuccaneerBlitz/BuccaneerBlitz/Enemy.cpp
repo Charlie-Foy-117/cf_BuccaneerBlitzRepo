@@ -25,9 +25,10 @@ void Enemy::DropItem()
 	switch (dropChance)
 	{
 	case 0:
-		levelScreen->SpawnPickUp(PickupType::LIFE, *this);
+		levelScreen->SpawnPickUp(PickupType::ANCHOR, *this);
+		break;
 	case 1:
-		//levelScreen->SpawnPickUp(PickupType::ANCHOR, *this);
+		levelScreen->SpawnPickUp(PickupType::LIFE, *this);
 		break;
 	case 2:
 		//levelScreen->SpawnPickUp(PickupType::MULTIFIRE, *this);

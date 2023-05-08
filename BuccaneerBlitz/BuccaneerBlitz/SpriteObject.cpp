@@ -28,7 +28,7 @@ void SpriteObject::Draw(sf::RenderTarget& target)
 
 	target.draw(sprite);
 
-	bool drawCollider = false;
+	bool drawCollider = true;
 	if (drawCollider)
 	{
 		switch (collisionType)
@@ -132,7 +132,7 @@ bool SpriteObject::CheckColliding(SpriteObject other)
 			sf::Vector2f displacement = GetCollisionCentre() - other.GetCollisionCentre();
 
 			//get the magnitude of that vector, which is how far apart the circle centres
-			float sqaureDistance = VectorHelper::SquareMagnitude(displacement); //todo
+			float sqaureDistance = VectorHelper::SquareMagnitude(displacement);
 
 			//compare that to the comvined radii of the two circles
 			float combinedRadii = GetCircleColliderRadius() + other.GetCircleColliderRadius();

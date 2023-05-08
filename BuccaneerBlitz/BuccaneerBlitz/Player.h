@@ -16,6 +16,9 @@ public:
     void HandleCollision(SpriteObject& other) override;
 
     void FireCannonBall(float newCooldown);
+    void FireAnchor(float newCooldown);
+
+    bool GetHasAnchor();
 
 private:
     void UpdateAcceleration();
@@ -29,5 +32,7 @@ private:
 
     sf::Clock cooldownTimer;
     float cooldown;
+
+    bool hasAnchor;
 };
 

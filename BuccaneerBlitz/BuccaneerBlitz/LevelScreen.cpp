@@ -6,31 +6,35 @@
 
 LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
-	, game(newGamePointer)
+	, player(newGamePointer->GetWindow(), this)
 	, levelStageNumber(1)
 	, gameRunning(true)
-	, player(newGamePointer->GetWindow(), this)
+	, background(newGamePointer->GetWindow())
+	, game(newGamePointer)
 	, sideBarrierLeft(newGamePointer->GetWindow(), &levelStageNumber)
 	, sideBarrierRight(newGamePointer->GetWindow(), &levelStageNumber)
+	, charger(this, &player)
+	, goon(this)
 	, cannonBalls()
+	, anchors()
 	, enemyCannonBalls()
+	, pirateBarricades()
 	, timer(this)
 	, score()
 	, lifeUI()
+	, anchorUI()
+	, endPanel(newGamePointer->GetWindow())
+	, cooldownClocks()
 	, goons()
 	, chargers()
-	, pirateBarricades()
-	, endPanel(newGamePointer->GetWindow())
-	, background(newGamePointer->GetWindow())
-	, cooldownClocks()
 	, lifePickups()
+	, anchorPickups()
 {
 	Restart();
 }
 
 void LevelScreen::Update(sf::Time frameTime)
 {
-	std::cout << chargers.size() << std::endl;
 	//changing colour of background
 	BackgroundColour(levelStageNumber);
 
@@ -50,17 +54,17 @@ void LevelScreen::Update(sf::Time frameTime)
 			cooldownClocks.push_back(new sf::Clock());
 
 			//spawn objects on cooldown
-				//goons - Clock 0
-				if (cooldownClocks[0]->getElapsedTime().asSeconds() > goons.back()->GetSpawnTime())
-				{
-					SpawnEnemy(EnemyType::GOON);
-				}
-				//chargers - Clock 1
-				if (cooldownClocks[1]->getElapsedTime().asSeconds() > chargers.back()->GetSpawnTime())
-				{
-					SpawnEnemy(EnemyType::CHARGER);
-				}
-				//Sprayers - Clock 2
+			//goons - Clock 0
+			if (cooldownClocks[0]->getElapsedTime().asSeconds() > goon.GetSpawnTime())
+			{
+				SpawnEnemy(EnemyType::GOON);
+			}
+			//chargers - Clock 1
+			if (cooldownClocks[1]->getElapsedTime().asSeconds() > charger.GetSpawnTime())
+			{
+				SpawnEnemy(EnemyType::CHARGER);
+			}
+			//Sprayers - Clock 2
 
 
 			//set all objects to not colliding and update every frame
@@ -77,6 +81,15 @@ void LevelScreen::Update(sf::Time frameTime)
 				{
 					cannonBalls[i]->Update(frameTime);
 					cannonBalls[i]->SetColliding(false);
+				}
+			}
+
+			for (size_t i = 0; i < anchors.size(); i++)
+			{
+				if (anchors[i] != nullptr)
+				{
+					anchors[i]->Update(frameTime);
+					anchors[i]->SetColliding(false);
 				}
 			}
 
@@ -122,6 +135,15 @@ void LevelScreen::Update(sf::Time frameTime)
 				{
 					lifePickups[i]->Update(frameTime);
 					lifePickups[i]->SetColliding(false);
+				}
+			}
+
+			for (size_t i = 0; i < anchorPickups.size(); i++)
+			{
+				if (anchorPickups[i] != nullptr)
+				{
+					anchorPickups[i]->Update(frameTime);
+					anchorPickups[i]->SetColliding(false);
 				}
 			}
 
@@ -204,9 +226,21 @@ void LevelScreen::Update(sf::Time frameTime)
 					if (player.CheckColliding(*lifePickups[i]))
 					{
 						player.SetColliding(true);
-						chargers[i]->SetColliding(true);
-						player.HandleCollision(*lifePickups[i]);
+						lifePickups[i]->SetColliding(true);
 						lifePickups[i]->HandleCollision(player);
+					}
+				}
+			}
+			for (size_t i = 0; i < anchorPickups.size(); i++)
+			{
+				if (anchorPickups[i] != nullptr)
+				{
+					if (player.CheckColliding(*anchorPickups[i]))
+					{
+						player.SetColliding(true);
+						anchorPickups[i]->SetColliding(true);
+						player.HandleCollision(*anchorPickups[i]);
+						anchorPickups[i]->HandleCollision(player);
 					}
 				}
 			}
@@ -229,22 +263,25 @@ void LevelScreen::Update(sf::Time frameTime)
 					}
 
 				}
-
-				for (size_t k = 0; k < chargers.size(); k++)
+			}
+			for (size_t i = 0; i < cannonBalls.size(); i++)
+			{
+				for (size_t j = 0; j < chargers.size(); j++)
 				{
-					if (cannonBalls[i] != nullptr && chargers[k] != nullptr)
+					if (cannonBalls[i] != nullptr && chargers[j] != nullptr)
 					{
-						if (cannonBalls[i]->CheckColliding(*chargers[k]))
+						if (cannonBalls[i]->CheckColliding(*chargers[j]))
 						{
 							score.AddScore(20);
 							cannonBalls[i]->SetColliding(true);
-							chargers[k]->SetColliding(true);
-							cannonBalls[i]->HandleCollision(*chargers[k]);
+							chargers[j]->SetColliding(true);
+							cannonBalls[i]->HandleCollision(*chargers[j]);
 							chargers[i]->HandleCollision(*cannonBalls[i]);
 						}
 					}
 				}
 			}
+			
 
 			for (size_t i = 0; i < enemyCannonBalls.size(); i++)
 			{
@@ -290,7 +327,12 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				delete cannonBalls[i];
 				cannonBalls[i] = nullptr;
 				cannonBalls.erase(cannonBalls.begin() + i);
-				i--;
+
+				if (cannonBalls.size() - 1 > 0)
+				{
+					i--;
+					break;
+				}
 			}
 			//checks to see if position of cannonball is off screen
 			else if (cannonBalls[i]->GetPosition().y <= 0)
@@ -301,11 +343,60 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 					delete cannonBalls[i];
 					cannonBalls[i] = nullptr;
 					cannonBalls.erase(cannonBalls.begin() + i);
-					i--;
+
+					if (cannonBalls.size() - 1 > 0)
+					{
+						i--;
+						break;
+					}
 				}
 			}
 		}
 		
+	}
+	for (size_t i = 0; i < anchors.size(); i++)
+	{
+		if (anchors[i] != nullptr)
+		{
+			//checks to see if cannonball is on screen 
+			if (anchors[i]->GetPosition().y > 0)
+			{
+				//draws cannonball
+				anchors[i]->Draw(target);
+			}
+			//checks if cannonball is still alive
+			if (anchors[i]->GetAlive() == false)
+			{
+				//clears cannonball memory and deletes it from vector 
+				delete anchors[i];
+				anchors[i] = nullptr;
+				anchors.erase(anchors.begin() + i);
+
+				if (anchors.size() - 1 > 0)
+				{
+					i--;
+					break;
+				}
+			}
+			//checks to see if position of cannonball is off screen
+			else if (anchors[i]->GetPosition().y <= 0)
+			{
+				if (anchors[i] != nullptr)
+				{
+					//clears cannonball memory and deletes it from vector
+					delete anchors[i];
+					anchors[i] = nullptr;
+					anchors.erase(anchors.begin() + i);
+
+					if (anchors.size() - 1 > 0)
+					{
+						i--;
+						break;
+					}
+				}
+			}
+		}
+
 	}
 	for (size_t i = 0; i < enemyCannonBalls.size(); i++)
 	{
@@ -324,7 +415,12 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				delete enemyCannonBalls[i];
 				enemyCannonBalls[i] = nullptr;
 				enemyCannonBalls.erase(enemyCannonBalls.begin() + i);
-				i--;
+
+				if (enemyCannonBalls.size() - 1 > 0)
+				{
+					i--;
+					break;
+				}
 			}
 			//checks to see if position of cannonball is off screen
 			else if (enemyCannonBalls[i]->GetPosition().y >= background->getSize().y)
@@ -335,7 +431,12 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 					delete enemyCannonBalls[i];
 					enemyCannonBalls[i] = nullptr;
 					enemyCannonBalls.erase(enemyCannonBalls.begin() + i);
-					i--;
+
+					if (enemyCannonBalls.size() - 1 > 0)
+					{
+						i--;
+						break;
+					}
 				}
 			}
 		}
@@ -357,7 +458,12 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				delete goons[i];
 				goons[i] = nullptr;
 				goons.erase(goons.begin() + i);
-				i--;
+
+				if (goons.size() - 1 > 0)
+				{
+					i--;
+					break;
+				}
 			}
 			//checks to see if position of goon is off screen
 			else if (goons[i]->GetPosition().y >= background->getSize().y)
@@ -365,10 +471,15 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				if (goons[i] != nullptr)
 				{
 					//clears goon memory and deletes it from vector
-					goons[i] = nullptr;
 					delete goons[i];
+					goons[i] = nullptr;
 					goons.erase(goons.begin() + i);
-					i--;
+
+					if (goons.size() - 1 > 0)
+					{
+						i--;
+						break;
+					}
 				}
 			}
 		}
@@ -383,15 +494,13 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 			}
 			else if (chargers[i]->GetAlive() == false)
 			{
+				delete chargers[i];
+				chargers[i] = nullptr;
+				chargers.erase(chargers.begin() + i);
+
 				if (chargers.size() - 1 > 0)
 				{
-					delete chargers[i];
-					chargers[i] = nullptr;
-					chargers.erase(chargers.begin() + i);
 					i--;
-				}
-				else
-				{
 					break;
 				}
 			}
@@ -399,15 +508,13 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 			{
 				if (chargers[i] != nullptr)
 				{
+					delete chargers[i];
+					chargers[i] = nullptr;
+					chargers.erase(chargers.begin() + i);
+
 					if (chargers.size() - 1 > 0)
 					{
-						delete chargers[i];
-						chargers[i] = nullptr;
-						chargers.erase(chargers.begin() + i);
 						i--;
-					}
-					else
-					{
 						break;
 					}
 				}
@@ -450,6 +557,17 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 		lifeUI.Draw(target);
 		lifeUI.SetPosition(0 + (i * lifeUI.GetWidth() / 2), 10);
 	}
+	if (player.GetHasAnchor())
+	{
+		anchorUI.SetOpacity(player.GetHasAnchor());
+		anchorUI.Draw(target);
+	}
+	else
+	{
+		anchorUI.SetOpacity(player.GetHasAnchor());
+		anchorUI.Draw(target);
+	}
+	
 
 	for (size_t i = 0; i < lifePickups.size(); i++)
 	{
@@ -460,11 +578,39 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				delete lifePickups[i];
 				lifePickups[i] = nullptr;
 				lifePickups.erase(lifePickups.begin() + i);
-				i--;
+
+				if (lifePickups.size() - 1 > 0)
+				{
+					i--;
+					break;
+				}
+				
 			}
 			else
 			{
 				lifePickups[i]->Draw(target);
+			}
+		}
+	}
+	for (size_t i = 0; i < anchorPickups.size(); i++)
+	{
+		if (anchorPickups[i] != nullptr)
+		{
+			if (anchorPickups[i]->GetAlive() == false)
+			{
+				delete anchorPickups[i];
+				anchorPickups[i] = nullptr;
+				anchorPickups.erase(anchorPickups.begin() + i);
+
+				if (anchorPickups.size() - 1 > 0)
+				{
+					i--;
+					break;
+				}
+			}
+			else
+			{
+				anchorPickups[i]->Draw(target);
 			}
 		}
 	}
@@ -513,11 +659,12 @@ void LevelScreen::SpawnProjectile(Projectile projectileType, SpriteObject& sprit
 		{
 		case Projectile::CANNONBALL:
 			cannonBalls.push_back(new CannonBall());
-			cannonBalls.back()->SetPosition(spriteCaller.GetPosition().x + spriteCaller.GetWidth() / 2, player.GetPosition().y);
+			cannonBalls.back()->SetPosition(spriteCaller.GetPosition().x + spriteCaller.GetWidth() / 2, spriteCaller.GetPosition().y);
 			break;
 
 		case Projectile::ANCHOR:
-			//anchor.push_back(new Anchor);
+			anchors.push_back(new Anchor);
+			anchors.back()->SetPosition(spriteCaller.GetPosition().x + spriteCaller.GetWidth() / 2, spriteCaller.GetPosition().y);
 			break;
 
 		case Projectile::MULTIFIRE:
@@ -594,7 +741,8 @@ void LevelScreen::SpawnPickUp(PickupType pickupType, SpriteObject& spriteCaller)
 		lifePickups.back()->SetPosition(spriteCaller.GetPosition());
 		break;
 	case PickupType::ANCHOR:
-
+		anchorPickups.push_back(new AnchorPickup());
+		anchorPickups.back()->SetPosition(spriteCaller.GetPosition());
 		break;
 	case PickupType::MULTIFIRE:
 
@@ -626,6 +774,7 @@ void LevelScreen::Restart()
 	timer.ResetTime();
 	score.SetPosition((float)background->getSize().x - 300, timer.GetPosition().y + 200);
 	score.ResetScore();
+	anchorUI.SetPosition(0, 20 + anchorUI.GetHeight() / 2);
 
 	for (size_t i = 0; i < goons.size(); i++)
 	{
@@ -644,6 +793,12 @@ void LevelScreen::Restart()
 		delete lifePickups[i];
 		lifePickups[i] = nullptr;
 		lifePickups.erase(lifePickups.begin() + i);
+	}
+	for (size_t i = 0; i < anchorPickups.size(); i++)
+	{
+		delete anchorPickups[i];
+		anchorPickups[i] = nullptr;
+		anchorPickups.erase(anchorPickups.begin() + i);
 	}
 
 	//test vectors

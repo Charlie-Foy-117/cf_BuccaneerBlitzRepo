@@ -16,6 +16,7 @@ Player::Player(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen)
 	, levelScreen(newLevelScreen)
 	, cooldownTimer()
 	, cooldown(1.0f)
+	, hasAnchor(false)
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Player/cf_Player1_PNG.png"));
 
@@ -54,6 +55,10 @@ void Player::Update(sf::Time frameTime)
 		break;
 	}
 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && hasAnchor == true)
+	{
+		FireAnchor(cooldown);
+	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
 	{
 		FireCannonBall(cooldown);
@@ -62,35 +67,56 @@ void Player::Update(sf::Time frameTime)
 
 void Player::HandleCollision(SpriteObject& other)
 {
-	sf::Vector2f depth = GetCollisionDepth(other);
-	sf::Vector2f newPosition = GetPosition();
-
-	if (abs(depth.x) < abs(depth.y))
+	if (typeid(other).name() == typeid(AnchorPickup).name())
 	{
-		//move in x direction
-		newPosition.x += depth.x;
-		velocity.x = 0;
-		acceleration.x = 0;
+		hasAnchor = true;
 	}
 	else
 	{
-		//move in y direction
-		newPosition.y += depth.y;
-		velocity.x = 0;
-		acceleration.x = 0;
-	}
+		sf::Vector2f depth = GetCollisionDepth(other);
+		sf::Vector2f newPosition = GetPosition();
 
-	SetPosition(newPosition);
+		if (abs(depth.x) < abs(depth.y))
+		{
+			//move in x direction
+			newPosition.x += depth.x;
+			velocity.x = 0;
+			acceleration.x = 0;
+		}
+		else
+		{
+			//move in y direction
+			newPosition.y += depth.y;
+			velocity.x = 0;
+			acceleration.x = 0;
+		}
+
+		SetPosition(newPosition);
+	}
 }
 
 void Player::FireCannonBall(float newCooldown)
 {
 	if (cooldownTimer.getElapsedTime().asSeconds() > newCooldown)
 	{
-		//TODO: push back a copy of a cannon ball and make it
 		levelScreen->SpawnProjectile(Projectile::CANNONBALL, *this);
 		cooldownTimer.restart();
 	}
+}
+
+void Player::FireAnchor(float newCooldown)
+{
+	if (cooldownTimer.getElapsedTime().asSeconds() > newCooldown)
+	{
+		levelScreen->SpawnProjectile(Projectile::ANCHOR, *this);
+		hasAnchor = false;
+		cooldownTimer.restart();
+	}
+}
+
+bool Player::GetHasAnchor()
+{
+	return hasAnchor;
 }
 
 void Player::UpdateAcceleration()

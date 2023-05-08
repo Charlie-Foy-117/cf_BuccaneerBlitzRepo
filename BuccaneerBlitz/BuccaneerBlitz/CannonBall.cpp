@@ -30,5 +30,4 @@ void CannonBall::HandleCollision(SpriteObject& other)
 {
 	alive = false;
 	other.ModifyLives(-1);
-	
 }

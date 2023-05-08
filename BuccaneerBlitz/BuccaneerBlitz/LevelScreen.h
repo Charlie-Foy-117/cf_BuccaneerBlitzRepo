@@ -6,7 +6,9 @@
 
 #include "Player.h"
 #include "CannonBall.h"
+#include "Anchor.h"
 #include "LifePickup.h"
+#include "AnchorPickup.h"
 
 #include "Timer.h"
 #include "Score.h"
@@ -17,6 +19,7 @@
 
 #include "EndPanel.h"
 #include "LifeUI.h"
+#include "AnchorUI.h"
 
 enum class Projectile
 {
@@ -82,8 +85,11 @@ private:
     Game* game;
     SideBarrier sideBarrierLeft;
     SideBarrier sideBarrierRight;
+    Charger charger;
+    Goon goon;
 
     std::vector<CannonBall*> cannonBalls;
+    std::vector<Anchor*> anchors;
     std::vector<CannonBall*> enemyCannonBalls;
     std::vector<PirateBarricade*> pirateBarricades;
 
@@ -91,6 +97,7 @@ private:
     Score score;
 
     LifeUI lifeUI;
+    AnchorUI anchorUI;
     EndPanel endPanel;
 
     std::vector<sf::Clock*> cooldownClocks;
@@ -98,6 +105,7 @@ private:
     std::vector<Charger*> chargers;
 
     std::vector<LifePickup*> lifePickups;
+    std::vector<AnchorPickup*> anchorPickups;
 };
 
 
