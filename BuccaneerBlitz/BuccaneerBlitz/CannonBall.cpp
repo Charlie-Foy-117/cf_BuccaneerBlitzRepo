@@ -29,5 +29,8 @@ void CannonBall::SetVelocity(float newX, float newY)
 void CannonBall::HandleCollision(SpriteObject& other)
 {
 	alive = false;
-	other.ModifyLives(-1);
+	if (typeid(other).name() != typeid(SideBarrier).name())
+	{
+		other.ModifyLives(-1);
+	}
 }

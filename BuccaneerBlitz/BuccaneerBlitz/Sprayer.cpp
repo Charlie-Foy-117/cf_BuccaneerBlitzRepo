@@ -1,39 +1,36 @@
-#include "Goon.h"
+#include "Sprayer.h"
 #include "AssetManager.h"
 #include "LevelScreen.h"
 
-Goon::Goon(LevelScreen* newLevelScreen)
+Sprayer::Sprayer(LevelScreen* newLevelScreen)
 	: Enemy(newLevelScreen)
-	, velocity(0, 200)
 	, acceleration()
-	, levelScreen(newLevelScreen)
+	, velocity(0, 100)
 	, cooldownTimer()
-	, cooldown(2.5f)
+	, cooldown(0.5f)
+	, levelScreen(newLevelScreen)
 {
-	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Enemies/cf_Goon_PNG.png"));
-	sprite.setOrigin(sprite.getLocalBounds().width / 2.f, sprite.getLocalBounds().height / 2.f);
-	sprite.setRotation(180);
-	collisionScale = sf::Vector2f(0.45f, 0.95f);
-	collisionOffset = sf::Vector2f(-128, -128);
-
-	spawnTime = 2.0f;
+	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Enemies/cf_Sprayer_PNG.png"));
+	sprite.setScale(1.1f, 1.1f);
+	collisionScale = sf::Vector2f(0.5f, 1.0f);
+	spawnTime = 15.0f;
 }
 
-void Goon::Update(sf::Time frameTime)
+void Sprayer::Update(sf::Time frameTime)
 {
-	//moves goon down screen
+	//moves sprayer down screen
 	sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
 	SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
 	velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
 
 	if (cooldownTimer.getElapsedTime().asSeconds() > cooldown)
 	{
-		levelScreen->SpawnProjectile(Projectile::GOONCANNONBALL, *this);
+		levelScreen->SpawnProjectile(Projectile::SPRAYERCANNONBALL, *this);
 		cooldownTimer.restart();
 	}
 }
 
-void Goon::HandleCollision(SpriteObject& other)
+void Sprayer::HandleCollision(SpriteObject& other)
 {
 	if (typeid(other).name() == typeid(Player).name())
 	{
@@ -48,12 +45,16 @@ void Goon::HandleCollision(SpriteObject& other)
 	}
 	else
 	{
-		levelScreen->SpawnEnemy(EnemyType::GOON);
+		levelScreen->SpawnEnemy(EnemyType::SPRAYER);
 	}
 }
 
-float Goon::GetSpawnTime()
+float Sprayer::GetSpawnTime()
 {
 	return spawnTime;
 }
 
+sf::Vector2f Sprayer::GetVelocity()
+{
+	return velocity;
+}

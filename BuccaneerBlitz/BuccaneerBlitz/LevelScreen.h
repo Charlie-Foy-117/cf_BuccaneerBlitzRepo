@@ -15,6 +15,7 @@
 
 #include "Goon.h"
 #include "Charger.h"
+#include "Sprayer.h"
 #include "PirateBarricade.h"
 
 #include "EndPanel.h"
@@ -26,7 +27,8 @@ enum class Projectile
     CANNONBALL,
     ANCHOR,
     MULTIFIRE,
-    ENEMYCANNONBALL
+    GOONCANNONBALL,
+    SPRAYERCANNONBALL
 };
 
 enum class EnemyType
@@ -87,10 +89,12 @@ private:
     SideBarrier sideBarrierRight;
     Charger charger;
     Goon goon;
+    Sprayer sprayer;
 
     std::vector<CannonBall*> cannonBalls;
     std::vector<Anchor*> anchors;
-    std::vector<CannonBall*> enemyCannonBalls;
+    std::vector<CannonBall*> goonCannonBalls;
+    std::vector<CannonBall*> sprayerCannonBalls;
     std::vector<PirateBarricade*> pirateBarricades;
 
     Timer timer;
@@ -103,9 +107,13 @@ private:
     std::vector<sf::Clock*> cooldownClocks;
     std::vector<Goon*> goons;
     std::vector<Charger*> chargers;
+    std::vector<Sprayer*> sprayers;
 
     std::vector<LifePickup*> lifePickups;
     std::vector<AnchorPickup*> anchorPickups;
+
+    //controls direction for sprayer cannonballs
+    float xVelocity;
 };
 
 

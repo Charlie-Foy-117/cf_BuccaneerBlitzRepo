@@ -15,9 +15,10 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, sideBarrierRight(newGamePointer->GetWindow(), &levelStageNumber)
 	, charger(this, &player)
 	, goon(this)
+	, sprayer(this)
 	, cannonBalls()
 	, anchors()
-	, enemyCannonBalls()
+	, goonCannonBalls()
 	, pirateBarricades()
 	, timer(this)
 	, score()
@@ -27,8 +28,10 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, cooldownClocks()
 	, goons()
 	, chargers()
+	, sprayers()
 	, lifePickups()
 	, anchorPickups()
+	, xVelocity(100)
 {
 	Restart();
 }
@@ -65,7 +68,10 @@ void LevelScreen::Update(sf::Time frameTime)
 				SpawnEnemy(EnemyType::CHARGER);
 			}
 			//Sprayers - Clock 2
-
+			if (cooldownClocks[2]->getElapsedTime().asSeconds() > sprayer.GetSpawnTime())
+			{
+				SpawnEnemy(EnemyType::SPRAYER);
+			}
 
 			//set all objects to not colliding and update every frame
 			player.SetAlive(true);
@@ -93,12 +99,21 @@ void LevelScreen::Update(sf::Time frameTime)
 				}
 			}
 
-			for (size_t i = 0; i < enemyCannonBalls.size(); i++)
+			for (size_t i = 0; i < goonCannonBalls.size(); i++)
 			{
-				if (enemyCannonBalls[i] != nullptr)
+				if (goonCannonBalls[i] != nullptr)
 				{
-					enemyCannonBalls[i]->Update(frameTime);
-					enemyCannonBalls[i]->SetColliding(false);
+					goonCannonBalls[i]->Update(frameTime);
+					goonCannonBalls[i]->SetColliding(false);
+				}
+			}
+
+			for (size_t i = 0; i < sprayerCannonBalls.size(); i++)
+			{
+				if (sprayerCannonBalls[i] != nullptr)
+				{
+					sprayerCannonBalls[i]->Update(frameTime);
+					sprayerCannonBalls[i]->SetColliding(false);
 				}
 			}
 
@@ -117,6 +132,15 @@ void LevelScreen::Update(sf::Time frameTime)
 				{
 					chargers[i]->Update(frameTime);
 					chargers[i]->SetColliding(false);
+				}
+			}
+
+			for (size_t i = 0; i < sprayers.size(); i++)
+			{
+				if (sprayers[i] != nullptr)
+				{
+					sprayers[i]->Update(frameTime);
+					sprayers[i]->SetColliding(false);
 				}
 			}
 
@@ -177,6 +201,36 @@ void LevelScreen::Update(sf::Time frameTime)
 					goons[i]->SetAlive(false);
 					goons[i]->HandleCollision(sideBarrierLeft);
 					sideBarrierLeft.HandleCollision(*goons[i]);
+				}
+			}
+			for (size_t i = 0; i < sprayers.size(); i++)
+			{
+				if (sideBarrierRight.CheckColliding(*sprayers[i]))
+				{
+					sprayers[i]->SetAlive(false);
+					sprayers[i]->HandleCollision(sideBarrierRight);
+					sideBarrierRight.HandleCollision(*sprayers[i]);
+				}
+				if (sideBarrierLeft.CheckColliding(*sprayers[i]))
+				{
+					sprayers[i]->SetAlive(false);
+					sprayers[i]->HandleCollision(sideBarrierLeft);
+					sideBarrierLeft.HandleCollision(*sprayers[i]);
+				}
+			}
+			for (size_t i = 0; i < sprayerCannonBalls.size(); i++)
+			{
+				if (sprayerCannonBalls[i]->CheckColliding(sideBarrierLeft))
+				{
+					sprayerCannonBalls[i]->SetColliding(true);
+					sideBarrierLeft.SetColliding(true);
+					sprayerCannonBalls[i]->HandleCollision(sideBarrierLeft);
+				}
+				if (sprayerCannonBalls[i]->CheckColliding(sideBarrierRight))
+				{
+					sprayerCannonBalls[i]->SetColliding(true);
+					sideBarrierRight.SetColliding(true);
+					sprayerCannonBalls[i]->HandleCollision(sideBarrierRight);
 				}
 			}
 
@@ -281,15 +335,41 @@ void LevelScreen::Update(sf::Time frameTime)
 					}
 				}
 			}
+			for (size_t i = 0; i < cannonBalls.size(); i++)
+			{
+				for (size_t j = 0; j < sprayers.size(); j++)
+				{
+					if (cannonBalls[i] != nullptr && sprayers[j] != nullptr)
+					{
+						if (cannonBalls[i]->CheckColliding(*sprayers[j]))
+						{
+							score.AddScore(15);
+							cannonBalls[i]->SetColliding(true);
+							sprayers[j]->SetColliding(true);
+							cannonBalls[i]->HandleCollision(*sprayers[j]);
+							sprayers[i]->HandleCollision(*cannonBalls[i]);
+						}
+					}
+				}
+			}
 			
 
-			for (size_t i = 0; i < enemyCannonBalls.size(); i++)
+			for (size_t i = 0; i < goonCannonBalls.size(); i++)
 			{
-				if (enemyCannonBalls[i]->CheckColliding(player))
+				if (goonCannonBalls[i]->CheckColliding(player))
 				{
-					enemyCannonBalls[i]->SetColliding(true);
+					goonCannonBalls[i]->SetColliding(true);
 					player.SetColliding(true);
-					enemyCannonBalls[i]->HandleCollision(player);
+					goonCannonBalls[i]->HandleCollision(player);
+				}
+			}
+			for (size_t i = 0; i < sprayerCannonBalls.size(); i++)
+			{
+				if (sprayerCannonBalls[i]->CheckColliding(player))
+				{
+					sprayerCannonBalls[i]->SetColliding(true);
+					player.SetColliding(true);
+					sprayerCannonBalls[i]->HandleCollision(player);
 				}
 			}
 		}
@@ -398,45 +478,71 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 		}
 
 	}
-	for (size_t i = 0; i < enemyCannonBalls.size(); i++)
+	for (size_t i = 0; i < goonCannonBalls.size(); i++)
 	{
-		if (enemyCannonBalls[i] != nullptr)
+		if (goonCannonBalls[i] != nullptr)
 		{
 			//checks to see if cannonball is on screen 
-			if (enemyCannonBalls[i]->GetPosition().y < background->getSize().y)
+			if (goonCannonBalls[i]->GetPosition().y < background->getSize().y)
 			{
 				//draws cannonball
-				enemyCannonBalls[i]->Draw(target);
+				goonCannonBalls[i]->Draw(target);
 			}
 			//checks if cannonball is still alive
-			if (enemyCannonBalls[i]->GetAlive() == false)
+			if (goonCannonBalls[i]->GetAlive() == false)
 			{
 				//clears cannonball memory and deletes it from vector
-				delete enemyCannonBalls[i];
-				enemyCannonBalls[i] = nullptr;
-				enemyCannonBalls.erase(enemyCannonBalls.begin() + i);
+				delete goonCannonBalls[i];
+				goonCannonBalls[i] = nullptr;
+				goonCannonBalls.erase(goonCannonBalls.begin() + i);
 
-				if (enemyCannonBalls.size() - 1 > 0)
+				if (goonCannonBalls.size() - 1 > 0)
 				{
 					i--;
 					break;
 				}
 			}
 			//checks to see if position of cannonball is off screen
-			else if (enemyCannonBalls[i]->GetPosition().y >= background->getSize().y)
+			else if (goonCannonBalls[i]->GetPosition().y >= background->getSize().y)
 			{
-				if (enemyCannonBalls[i] != nullptr)
+				if (goonCannonBalls[i] != nullptr)
 				{
 					//clears cannonball memory and deletes it from vector
-					delete enemyCannonBalls[i];
-					enemyCannonBalls[i] = nullptr;
-					enemyCannonBalls.erase(enemyCannonBalls.begin() + i);
+					delete goonCannonBalls[i];
+					goonCannonBalls[i] = nullptr;
+					goonCannonBalls.erase(goonCannonBalls.begin() + i);
 
-					if (enemyCannonBalls.size() - 1 > 0)
+					if (goonCannonBalls.size() - 1 > 0)
 					{
 						i--;
 						break;
 					}
+				}
+			}
+		}
+	}
+	for (size_t i = 0; i < sprayerCannonBalls.size(); i++)
+	{
+		if (sprayerCannonBalls[i] != nullptr)
+		{
+			//checks to see if cannonball is on screen 
+			if (sprayerCannonBalls[i]->GetPosition().y < background->getSize().y)
+			{
+				//draws cannonball
+				sprayerCannonBalls[i]->Draw(target);
+			}
+			//checks if cannonball is still alive
+			if (sprayerCannonBalls[i]->GetAlive() == false)
+			{
+				//clears cannonball memory and deletes it from vector
+				delete sprayerCannonBalls[i];
+				sprayerCannonBalls[i] = nullptr;
+				sprayerCannonBalls.erase(sprayerCannonBalls.begin() + i);
+
+				if (sprayerCannonBalls.size() - 1 > 0)
+				{
+					i--;
+					break;
 				}
 			}
 		}
@@ -511,6 +617,43 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 					delete chargers[i];
 					chargers[i] = nullptr;
 					chargers.erase(chargers.begin() + i);
+
+					if (chargers.size() - 1 > 0)
+					{
+						i--;
+						break;
+					}
+				}
+			}
+		}
+	}
+	for (size_t i = 0; i < sprayers.size(); i++)
+	{
+		if (sprayers[i] != nullptr)
+		{
+			if (sprayers[i]->GetPosition().y < background->getSize().y)
+			{
+				sprayers[i]->Draw(target);
+			}
+			else if (sprayers[i]->GetAlive() == false)
+			{
+				delete sprayers[i];
+				sprayers[i] = nullptr;
+				sprayers.erase(sprayers.begin() + i);
+
+				if (sprayers.size() - 1 > 0)
+				{
+					i--;
+					break;
+				}
+			}
+			else if (sprayers[i]->GetPosition().y >= background->getSize().y)
+			{
+				if (sprayers[i] != nullptr)
+				{
+					delete sprayers[i];
+					sprayers[i] = nullptr;
+					sprayers.erase(sprayers.begin() + i);
 
 					if (chargers.size() - 1 > 0)
 					{
@@ -674,13 +817,19 @@ void LevelScreen::SpawnProjectile(Projectile projectileType, SpriteObject& sprit
 			}
 			break;
 
-		case Projectile::ENEMYCANNONBALL:
-
-			enemyCannonBalls.push_back(new CannonBall());
-			enemyCannonBalls.back()->SetVelocity(0, 400);
-			enemyCannonBalls.back()->SetPosition(spriteCaller.GetPosition().x, spriteCaller.GetPosition().y + enemyCannonBalls.back()->GetHeight() / 2);
-
+		case Projectile::GOONCANNONBALL:
+			goonCannonBalls.push_back(new CannonBall());
+			goonCannonBalls.back()->SetVelocity(0, 400);
+			goonCannonBalls.back()->SetPosition(spriteCaller.GetPosition().x, spriteCaller.GetPosition().y + goonCannonBalls.back()->GetHeight() / 2);
 			break;
+
+		case Projectile::SPRAYERCANNONBALL:
+			sprayerCannonBalls.push_back(new CannonBall());
+			sprayerCannonBalls.back()->SetVelocity(xVelocity, sprayer.GetVelocity().y);
+			sprayerCannonBalls.back()->SetPosition(spriteCaller.GetPosition().x + spriteCaller.GetWidth() / 2, spriteCaller.GetPosition().y + sprayerCannonBalls.back()->GetHeight() / 2);
+			xVelocity = -xVelocity;
+			break;
+
 		default:
 			break;
 		}
@@ -709,7 +858,9 @@ void LevelScreen::SpawnEnemy(EnemyType enemyType)
 		break;
 
 	case EnemyType::SPRAYER:
-		
+			sprayers.push_back(new Sprayer(this));
+			sprayers.back()->SetPosition((float)RandomNumGen((int)xPosMin, (int)xPosMax), 0 - sprayers.back()->GetHeight());
+			cooldownClocks[2]->restart();
 		break;
 
 	default:
@@ -806,6 +957,8 @@ void LevelScreen::Restart()
 	goons.back()->SetPosition(background->getSize().x / 2, 0);
 	chargers.push_back(new Charger(this, &player));
 	chargers.back()->SetPosition(background->getSize().x / 2, 0 - chargers.back()->GetHeight());
+	sprayers.push_back(new Sprayer(this));
+	sprayers.back()->SetPosition(background->getSize().x / 2, 0);
 	//pirateBarricades.push_back(new PirateBarricade(this));
 	//pirateBarricades.back()->SetPosition(background->getSize().x / 2 - pirateBarricades.back()->GetWidth() + pirateBarricades.back()->GetWidth(), 0 - pirateBarricades.back()->GetHeight());
 

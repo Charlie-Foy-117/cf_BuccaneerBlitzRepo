@@ -1,5 +1,6 @@
 #pragma once
 #include "SpriteObject.h"
+#include "SideBarrier.h"
 
 
 class CannonBall :
