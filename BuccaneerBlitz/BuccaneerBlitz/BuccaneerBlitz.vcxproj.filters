@@ -102,6 +102,12 @@
     <ClCompile Include="SmallIsland.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BossScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BossRoom1Barrier.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -186,6 +192,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SmallIsland.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BossScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BossRoom1Barrier.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

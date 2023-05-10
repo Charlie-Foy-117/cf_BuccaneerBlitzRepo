@@ -3,7 +3,8 @@
 enum class GameState
 {
 	TITLESCREEN,
-	LEVELSCREEN
+	LEVELSCREEN,
+	BOSSSCREEN
 };
 
 class Screen;

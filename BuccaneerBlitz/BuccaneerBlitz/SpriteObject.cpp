@@ -28,7 +28,7 @@ void SpriteObject::Draw(sf::RenderTarget& target)
 
 	target.draw(sprite);
 
-	bool drawCollider = false;
+	bool drawCollider = true;
 	if (drawCollider)
 	{
 		switch (collisionType)
@@ -74,6 +74,9 @@ void SpriteObject::Draw(sf::RenderTarget& target)
 			target.draw(circle);
 		}
 		break;
+		case CollisionType::BOSSROOM1:
+		{
+		}
 		}
 	}
 }

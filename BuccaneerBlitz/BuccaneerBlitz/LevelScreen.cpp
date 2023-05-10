@@ -7,7 +7,7 @@
 LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
 	, player(newGamePointer->GetWindow(), this)
-	, levelStageNumber(3)
+	, levelStageNumber(2)
 	, gameRunning(true)
 	, background(newGamePointer->GetWindow())
 	, game(newGamePointer)
@@ -468,7 +468,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				lifePickups[i] = nullptr;
 				lifePickups.erase(lifePickups.begin() + i);
 
-				if (lifePickups.size() - 1 > 0)
+				if (lifePickups.size() - 1 >= 0)
 				{
 					i--;
 					break;
@@ -491,7 +491,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				anchorPickups[i] = nullptr;
 				anchorPickups.erase(anchorPickups.begin() + i);
 
-				if (anchorPickups.size() - 1 > 0)
+				if (anchorPickups.size() - 1 >= 0)
 				{
 					i--;
 					break;
@@ -519,7 +519,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				pirateBarricades[i] = nullptr;
 				pirateBarricades.erase(pirateBarricades.begin() + i);
 
-				if (pirateBarricades.size() - 1 > 0)
+				if (pirateBarricades.size() - 1 >= 0)
 				{
 					i--;
 					break;
@@ -533,7 +533,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 					delete pirateBarricades[i];
 					pirateBarricades.erase(pirateBarricades.begin() + i);
 
-					if (pirateBarricades.size() - 1 > 0)
+					if (pirateBarricades.size() - 1 >= 0)
 					{
 						i--;
 						break;
@@ -558,7 +558,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				smallIslands[i] = nullptr;
 				smallIslands.erase(smallIslands.begin() + i);
 
-				if (smallIslands.size() - 1 > 0)
+				if (smallIslands.size() - 1 >= 0)
 				{
 					i--;
 					break;
@@ -572,7 +572,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 					delete smallIslands[i];
 					smallIslands.erase(smallIslands.begin() + i);
 
-					if (smallIslands.size() - 1 > 0)
+					if (smallIslands.size() - 1 >= 0)
 					{
 						i--;
 						break;
@@ -601,7 +601,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				goonCannonBalls[i] = nullptr;
 				goonCannonBalls.erase(goonCannonBalls.begin() + i);
 
-				if (goonCannonBalls.size() - 1 > 0)
+				if (goonCannonBalls.size() - 1 >= 0)
 				{
 					i--;
 					break;
@@ -617,7 +617,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 					goonCannonBalls[i] = nullptr;
 					goonCannonBalls.erase(goonCannonBalls.begin() + i);
 
-					if (goonCannonBalls.size() - 1 > 0)
+					if (goonCannonBalls.size() - 1 >= 0)
 					{
 						i--;
 						break;
@@ -646,7 +646,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				sprayerCannonBalls[i] = nullptr;
 				sprayerCannonBalls.erase(sprayerCannonBalls.begin() + i);
 
-				if (sprayerCannonBalls.size() - 1 > 0)
+				if (sprayerCannonBalls.size() - 1 >= 0)
 				{
 					i--;
 					break;
@@ -670,7 +670,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				sprayers[i] = nullptr;
 				sprayers.erase(sprayers.begin() + i);
 
-				if (sprayers.size() - 1 > 0)
+				if (sprayers.size() - 1 >= 0)
 				{
 					i--;
 					break;
@@ -684,7 +684,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 					sprayers[i] = nullptr;
 					sprayers.erase(sprayers.begin() + i);
 
-					if (chargers.size() - 1 > 0)
+					if (sprayers.size() - 1 >= 0)
 					{
 						i--;
 						break;
@@ -713,7 +713,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				goons[i] = nullptr;
 				goons.erase(goons.begin() + i);
 
-				if (goons.size() - 1 > 0)
+				if (goons.size() - 1 >= 0)
 				{
 					i--;
 					break;
@@ -729,7 +729,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 					goons[i] = nullptr;
 					goons.erase(goons.begin() + i);
 
-					if (goons.size() - 1 > 0)
+					if (goons.size() - 1 >= 0)
 					{
 						i--;
 						break;
@@ -758,7 +758,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				chargers[i] = nullptr;
 				chargers.erase(chargers.begin() + i);
 
-				if (chargers.size() - 1 > 0)
+				if (chargers.size() - 1 >= 0)
 				{
 					i--;
 					break;
@@ -774,7 +774,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 					chargers[i] = nullptr;
 					chargers.erase(chargers.begin() + i);
 
-					if (chargers.size() - 1 > 0)
+					if (chargers.size() - 1 >= 0)
 					{
 						i--;
 						break;
@@ -803,7 +803,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				cannonBalls[i] = nullptr;
 				cannonBalls.erase(cannonBalls.begin() + i);
 
-				if (cannonBalls.size() - 1 > 0)
+				if (cannonBalls.size() - 1 >= 0)
 				{
 					i--;
 					break;
@@ -819,7 +819,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 					cannonBalls[i] = nullptr;
 					cannonBalls.erase(cannonBalls.begin() + i);
 
-					if (cannonBalls.size() - 1 > 0)
+					if (cannonBalls.size() - 1 >= 0)
 					{
 						i--;
 						break;
@@ -849,7 +849,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				anchors[i] = nullptr;
 				anchors.erase(anchors.begin() + i);
 
-				if (anchors.size() - 1 > 0)
+				if (anchors.size() - 1 >= 0)
 				{
 					i--;
 					break;
@@ -865,7 +865,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 					anchors[i] = nullptr;
 					anchors.erase(anchors.begin() + i);
 
-					if (anchors.size() - 1 > 0)
+					if (anchors.size() - 1 >= 0)
 					{
 						i--;
 						break;
@@ -1068,9 +1068,9 @@ void LevelScreen::Restart()
 	sideBarrierLeft.ResetPosition("left");
 	sideBarrierRight.ResetPosition("right");
 	player.SetPosition(background->getSize().x / 2 - player.GetWidth() / 2, 600);
-	timer.SetPosition((float)background->getSize().x - 250, 10);
+	timer.SetPosition((float)background->getSize().x - 300, 10);
 	timer.ResetTime();
-	score.SetPosition((float)background->getSize().x - 300, timer.GetPosition().y + 200);
+	score.SetPosition((float)background->getSize().x - 300, timer.GetPosition().y + 50);
 	score.ResetScore();
 	anchorUI.SetPosition(0, 20 + anchorUI.GetHeight() / 2);
 

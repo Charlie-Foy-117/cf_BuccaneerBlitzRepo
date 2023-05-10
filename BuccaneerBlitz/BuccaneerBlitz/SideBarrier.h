@@ -5,7 +5,7 @@ class SideBarrier :
 {
 public:
 
-    SideBarrier(sf::RenderWindow* newWinow, int* newLevelNumber);
+    SideBarrier(sf::RenderWindow* newWindow, int* newLevelNumber);
 
     void ResetPosition(std::string side);
 

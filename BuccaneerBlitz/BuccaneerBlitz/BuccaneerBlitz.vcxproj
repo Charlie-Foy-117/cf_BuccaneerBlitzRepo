@@ -149,6 +149,8 @@
     <ClCompile Include="AnchorPickup.cpp" />
     <ClCompile Include="AnchorUI.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="BossRoom1Barrier.cpp" />
+    <ClCompile Include="BossScreen.cpp" />
     <ClCompile Include="CannonBall.cpp" />
     <ClCompile Include="Charger.cpp" />
     <ClCompile Include="Easing.cpp" />
@@ -180,6 +182,8 @@
     <ClInclude Include="AnchorPickup.h" />
     <ClInclude Include="AnchorUI.h" />
     <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="BossRoom1Barrier.h" />
+    <ClInclude Include="BossScreen.h" />
     <ClInclude Include="CannonBall.h" />
     <ClInclude Include="Charger.h" />
     <ClInclude Include="Easing.h" />

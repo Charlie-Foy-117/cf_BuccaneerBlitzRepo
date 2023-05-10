@@ -1,5 +1,6 @@
 #include "LevelScreen.h"
 #include "TitleScreen.h"
+#include "BossScreen.h"
 #include "Game.h"
 
 Game::Game()
@@ -11,7 +12,7 @@ Game::Game()
 	window.setMouseCursorVisible(false);
 
 	//Setup screens
-	currentScreen = new TitleScreen(this);
+	currentScreen = new BossScreen(this);
 }
 
 void Game::RunGameLoop()
@@ -83,6 +84,9 @@ void Game::ChangeGameState(GameState newGameState)
 		break;
 	case GameState::LEVELSCREEN:
 		currentScreen = new LevelScreen(this);
+		break;
+	case GameState::BOSSSCREEN:
+		currentScreen = new BossScreen(this);
 		break;
 	default:
 		break;
