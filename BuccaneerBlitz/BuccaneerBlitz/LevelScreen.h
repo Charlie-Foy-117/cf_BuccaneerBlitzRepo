@@ -102,6 +102,7 @@ private:
     std::vector<PirateBarricade*> pirateBarricades;
     std::vector<SmallIsland*> smallIslands;
 
+
     Timer timer;
     Score score;
 
@@ -119,6 +120,10 @@ private:
 
     //controls direction for sprayer cannonballs
     float xVelocity;
+
+    //controls colour of background
+    sf::Color targetColor;
+    sf::Color currentColor;
 };
 
 

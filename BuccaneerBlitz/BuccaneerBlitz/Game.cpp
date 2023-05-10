@@ -12,7 +12,7 @@ Game::Game()
 	window.setMouseCursorVisible(false);
 
 	//Setup screens
-	currentScreen = new BossScreen(this);
+	currentScreen = new TitleScreen(this);
 }
 
 void Game::RunGameLoop()
@@ -86,7 +86,7 @@ void Game::ChangeGameState(GameState newGameState)
 		currentScreen = new LevelScreen(this);
 		break;
 	case GameState::BOSSSCREEN:
-		currentScreen = new BossScreen(this);
+		currentScreen = new BossScreen(this, new LevelScreen(this));
 		break;
 	default:
 		break;

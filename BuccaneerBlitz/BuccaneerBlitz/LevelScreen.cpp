@@ -7,7 +7,7 @@
 LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
 	, player(newGamePointer->GetWindow(), this)
-	, levelStageNumber(2)
+	, levelStageNumber(1)
 	, gameRunning(true)
 	, background(newGamePointer->GetWindow())
 	, game(newGamePointer)
@@ -36,6 +36,8 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, lifePickups()
 	, anchorPickups()
 	, xVelocity(100)
+	, targetColor()
+	, currentColor()
 {
 	Restart();
 }
@@ -55,6 +57,10 @@ void LevelScreen::Update(sf::Time frameTime)
 		}
 		else
 		{
+			if (levelStageNumber == 2)
+			{
+				game->ChangeGameState(GameState::BOSSSCREEN);
+			}
 			//cooldown clocks
 			cooldownClocks.push_back(new sf::Clock());
 			cooldownClocks.push_back(new sf::Clock());
@@ -62,31 +68,48 @@ void LevelScreen::Update(sf::Time frameTime)
 			cooldownClocks.push_back(new sf::Clock());
 			cooldownClocks.push_back(new sf::Clock());
 
-			//spawn objects on cooldown
-			//goons - Clock 0
-			if (cooldownClocks[0]->getElapsedTime().asSeconds() > goon.GetSpawnTime())
+			switch (levelStageNumber)
 			{
-				SpawnEnemy(EnemyType::GOON);
+			case 5:
+			{
+				//spawn objects on cooldown
+				//Sprayers - Clock 2
+				if (cooldownClocks[2]->getElapsedTime().asSeconds() > sprayer.GetSpawnTime())
+				{
+					SpawnEnemy(EnemyType::SPRAYER);
+				}
 			}
-			//chargers - Clock 1
-			if (cooldownClocks[1]->getElapsedTime().asSeconds() > charger.GetSpawnTime())
+			case 3:
 			{
-				SpawnEnemy(EnemyType::CHARGER);
+				//chargers - Clock 1
+				if (cooldownClocks[1]->getElapsedTime().asSeconds() > charger.GetSpawnTime())
+				{
+					SpawnEnemy(EnemyType::CHARGER);
+				}
 			}
-			//Sprayers - Clock 2
-			if (cooldownClocks[2]->getElapsedTime().asSeconds() > sprayer.GetSpawnTime())
+			case 1:
 			{
-				SpawnEnemy(EnemyType::SPRAYER);
+				//goons - Clock 0
+				if (cooldownClocks[0]->getElapsedTime().asSeconds() > goon.GetSpawnTime())
+				{
+					SpawnEnemy(EnemyType::GOON);
+				}
+				//Pirate barricade - Clock 3
+				if (cooldownClocks[3]->getElapsedTime().asSeconds() > pirateBarricade.GetSpawnTime())
+				{
+					SpawnHazard(HazardType::PIRATEBARRICADE);
+				}
+				//Small Island - Clock 4
+				if (cooldownClocks[4]->getElapsedTime().asSeconds() > smallIsland.GetSpawnTime())
+				{
+					SpawnHazard(HazardType::SMALLISLAND);
+				}
 			}
-			//Pirate barricade - Clock 3
-			if (cooldownClocks[3]->getElapsedTime().asSeconds() > pirateBarricade.GetSpawnTime())
-			{
-				SpawnHazard(HazardType::PIRATEBARRICADE);
-			}
-			//Small Island - Clock 4
-			if (cooldownClocks[4]->getElapsedTime().asSeconds() > smallIsland.GetSpawnTime())
-			{
-				SpawnHazard(HazardType::SMALLISLAND);
+				break;
+			default:
+				std::cout << levelStageNumber << std::endl;
+				std::cout << "You're a bitch" << std::endl;
+				break;
 			}
 			
 
@@ -908,20 +931,34 @@ void LevelScreen::BackgroundColour(int currentLevel)
 	//checks what input equals to change background colour to desired colour for level
 	if (currentLevel == 1 || currentLevel == 2) 
 	{
-		background->clear(sf::Color(38, 73, 202, 255));
+		targetColor = sf::Color(38, 73, 202, 255);
 	}
 	else if (currentLevel == 3 || currentLevel == 4) 
 	{
-		background->clear(sf::Color(80, 104, 63, 255));
+		targetColor = sf::Color(80, 104, 63, 255);
 	}
 	else if (currentLevel == 5 || currentLevel == 6)
 	{
-		background->clear(sf::Color(0, 0, 0, 255));
+		targetColor = sf::Color(0, 0, 0, 255);
 	}
 	else
 	{
 		//error...
 	}
+
+	//calculate the color delta
+	sf::Color delta = targetColor - currentColor;
+	delta.r /= 5;
+	delta.g /= 5;
+	delta.b /= 5;
+
+	//update the current color towards the target color
+	if (currentColor != targetColor) {
+		currentColor += delta;
+	}
+
+	//set the background color
+	background->clear(currentColor);
 }
 
 void LevelScreen::TriggerEndState()
@@ -1067,7 +1104,7 @@ void LevelScreen::Restart()
 {
 	sideBarrierLeft.ResetPosition("left");
 	sideBarrierRight.ResetPosition("right");
-	player.SetPosition(background->getSize().x / 2 - player.GetWidth() / 2, 600);
+	player.SetPosition(background->getSize().x / 2 - player.GetWidth() / 2, 800);
 	timer.SetPosition((float)background->getSize().x - 300, 10);
 	timer.ResetTime();
 	score.SetPosition((float)background->getSize().x - 300, timer.GetPosition().y + 50);
@@ -1086,6 +1123,24 @@ void LevelScreen::Restart()
 		chargers[i] = nullptr;
 		chargers.erase(chargers.begin() + i);
 	}
+	for (size_t i = 0; i < sprayers.size(); i++)
+	{
+		delete sprayers[i];
+		sprayers[i] = nullptr;
+		sprayers.erase(sprayers.begin() + i);
+	}
+	for (size_t i = 0; i < pirateBarricades.size(); i++)
+	{
+		delete pirateBarricades[i];
+		pirateBarricades[i] = nullptr;
+		pirateBarricades.erase(pirateBarricades.begin() + i);
+	}
+	for (size_t i = 0; i < smallIslands.size(); i++)
+	{
+		delete smallIslands[i];
+		smallIslands[i] = nullptr;
+		smallIslands.erase(smallIslands.begin() + i);
+	}
 	for (size_t i = 0; i < lifePickups.size(); i++)
 	{
 		delete lifePickups[i];
@@ -1100,7 +1155,7 @@ void LevelScreen::Restart()
 	}
 
 	//test vectors
-	goons.push_back(new Goon(this));
+	/*goons.push_back(new Goon(this));
 	goons.back()->SetPosition(background->getSize().x / 2, 0);
 	chargers.push_back(new Charger(this, &player));
 	chargers.back()->SetPosition(background->getSize().x / 2, 0 - charger.GetHeight());
@@ -1109,7 +1164,7 @@ void LevelScreen::Restart()
 	pirateBarricades.push_back(new PirateBarricade(this));
 	pirateBarricades.back()->SetPosition(background->getSize().x / 2 - pirateBarricade.GetWidth() / 2 - 250, 0 - pirateBarricade.GetHeight());
 	smallIslands.push_back(new SmallIsland(this));
-	smallIslands.back()->SetPosition(background->getSize().x / 2, 0);
+	smallIslands.back()->SetPosition(background->getSize().x / 2, 0);*/
 
 
 
