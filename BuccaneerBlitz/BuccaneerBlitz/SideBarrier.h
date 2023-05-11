@@ -11,8 +11,9 @@ public:
 
     void HandleCollision(SpriteObject& other) override;
 
-private:
     void UpdateSpriteAsset(int newLevelNumber);
+private:
+    
 
     sf::RenderWindow* window;
     int* levelNumber;

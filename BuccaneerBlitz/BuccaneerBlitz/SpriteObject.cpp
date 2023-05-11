@@ -28,7 +28,7 @@ void SpriteObject::Draw(sf::RenderTarget& target)
 
 	target.draw(sprite);
 
-	bool drawCollider = true;
+	bool drawCollider = false;
 	if (drawCollider)
 	{
 		switch (collisionType)
@@ -76,6 +76,7 @@ void SpriteObject::Draw(sf::RenderTarget& target)
 		break;
 		case CollisionType::BOSSROOM1:
 		{
+			
 		}
 		}
 	}
@@ -200,6 +201,11 @@ sf::Vector2f SpriteObject::GetCollisionDepth(SpriteObject other)
 void SpriteObject::SetEnumUsed(CollisionType newEnum)
 {
 	collisionType = newEnum;
+}
+
+void SpriteObject::SetSpriteScale(float xScale, float yScale)
+{
+	sprite.setScale(xScale, yScale);
 }
 
 float SpriteObject::GetHeight()

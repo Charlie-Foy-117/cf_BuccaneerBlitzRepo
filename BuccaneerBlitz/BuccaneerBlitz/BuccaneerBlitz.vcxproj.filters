@@ -102,10 +102,10 @@
     <ClCompile Include="SmallIsland.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BossScreen.cpp">
+    <ClCompile Include="BossRoom1Barrier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BossRoom1Barrier.cpp">
+    <ClCompile Include="OldCrewMate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -194,10 +194,10 @@
     <ClInclude Include="SmallIsland.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BossScreen.h">
+    <ClInclude Include="BossRoom1Barrier.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BossRoom1Barrier.h">
+    <ClInclude Include="OldCrewMate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

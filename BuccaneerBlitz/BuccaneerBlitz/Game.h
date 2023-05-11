@@ -4,8 +4,7 @@
 enum class GameState
 {
 	TITLESCREEN,
-	LEVELSCREEN,
-	BOSSSCREEN
+	LEVELSCREEN
 };
 
 class Screen;

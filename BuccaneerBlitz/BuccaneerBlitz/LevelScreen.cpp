@@ -7,12 +7,13 @@
 LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
 	, player(newGamePointer->GetWindow(), this)
-	, levelStageNumber(1)
+	, levelStageNumber(2)
 	, gameRunning(true)
 	, background(newGamePointer->GetWindow())
 	, game(newGamePointer)
 	, sideBarrierLeft(newGamePointer->GetWindow(), &levelStageNumber)
 	, sideBarrierRight(newGamePointer->GetWindow(), &levelStageNumber)
+	, bossRoom1Barrier(newGamePointer->GetWindow())
 	, cannonBall()
 	, charger(this, &player)
 	, goon(this)
@@ -24,6 +25,7 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, goonCannonBalls()
 	, pirateBarricades()
 	, smallIslands()
+	, oldCrewMate(this)
 	, timer(this)
 	, score()
 	, lifeUI()
@@ -57,10 +59,6 @@ void LevelScreen::Update(sf::Time frameTime)
 		}
 		else
 		{
-			if (levelStageNumber == 2)
-			{
-				game->ChangeGameState(GameState::BOSSSCREEN);
-			}
 			//cooldown clocks
 			cooldownClocks.push_back(new sf::Clock());
 			cooldownClocks.push_back(new sf::Clock());
@@ -108,7 +106,6 @@ void LevelScreen::Update(sf::Time frameTime)
 				break;
 			default:
 				std::cout << levelStageNumber << std::endl;
-				std::cout << "You're a bitch" << std::endl;
 				break;
 			}
 			
@@ -478,82 +475,79 @@ void LevelScreen::Update(sf::Time frameTime)
 
 void LevelScreen::Draw(sf::RenderTarget& target)
 {
-	sideBarrierLeft.Draw(target);
-	sideBarrierRight.Draw(target);
-
-	for (size_t i = 0; i < lifePickups.size(); i++)
+	if (levelStageNumber == 1 || levelStageNumber == 3 || levelStageNumber == 5)
 	{
-		if (lifePickups[i] != nullptr)
+		//set scale of player to match size of current level
+		player.SetSpriteScale(1.0f, 1.0f);
+		for (size_t i = 0; i < cannonBalls.size(); i++)
 		{
-			if (lifePickups[i]->GetAlive() == false)
-			{
-				delete lifePickups[i];
-				lifePickups[i] = nullptr;
-				lifePickups.erase(lifePickups.begin() + i);
+			cannonBalls[i]->SetSpriteScale(0.25f, 0.25f);
+		}
 
-				if (lifePickups.size() - 1 >= 0)
+		sideBarrierLeft.Draw(target);
+		sideBarrierLeft.UpdateSpriteAsset(levelStageNumber);
+		sideBarrierRight.Draw(target);
+		sideBarrierRight.UpdateSpriteAsset(levelStageNumber);
+
+		for (size_t i = 0; i < lifePickups.size(); i++)
+		{
+			if (lifePickups[i] != nullptr)
+			{
+				if (lifePickups[i]->GetAlive() == false)
 				{
-					i--;
-					break;
-				}
+					delete lifePickups[i];
+					lifePickups[i] = nullptr;
+					lifePickups.erase(lifePickups.begin() + i);
 
-			}
-			else
-			{
-				lifePickups[i]->Draw(target);
+					if (lifePickups.size() - 1 >= 0)
+					{
+						i--;
+						break;
+					}
+
+				}
+				else
+				{
+					lifePickups[i]->Draw(target);
+				}
 			}
 		}
-	}
-	for (size_t i = 0; i < anchorPickups.size(); i++)
-	{
-		if (anchorPickups[i] != nullptr)
+		for (size_t i = 0; i < anchorPickups.size(); i++)
 		{
-			if (anchorPickups[i]->GetAlive() == false)
+			if (anchorPickups[i] != nullptr)
 			{
-				delete anchorPickups[i];
-				anchorPickups[i] = nullptr;
-				anchorPickups.erase(anchorPickups.begin() + i);
-
-				if (anchorPickups.size() - 1 >= 0)
+				if (anchorPickups[i]->GetAlive() == false)
 				{
-					i--;
-					break;
+					delete anchorPickups[i];
+					anchorPickups[i] = nullptr;
+					anchorPickups.erase(anchorPickups.begin() + i);
+
+					if (anchorPickups.size() - 1 >= 0)
+					{
+						i--;
+						break;
+					}
 				}
-			}
-			else
-			{
-				anchorPickups[i]->Draw(target);
+				else
+				{
+					anchorPickups[i]->Draw(target);
+				}
 			}
 		}
-	}
 
-	//pirate barricade
-	for (size_t i = 0; i < pirateBarricades.size(); i++)
-	{
-		if (pirateBarricades[i] != nullptr)
+		//pirate barricade
+		for (size_t i = 0; i < pirateBarricades.size(); i++)
 		{
-			if (pirateBarricades[i]->GetPosition().y < background->getSize().y)
+			if (pirateBarricades[i] != nullptr)
 			{
-				pirateBarricades[i]->Draw(target);
-			}
-			else if (pirateBarricades[i]->GetAlive() == false)
-			{
-				delete pirateBarricades[i];
-				pirateBarricades[i] = nullptr;
-				pirateBarricades.erase(pirateBarricades.begin() + i);
-
-				if (pirateBarricades.size() - 1 >= 0)
+				if (pirateBarricades[i]->GetPosition().y < background->getSize().y)
 				{
-					i--;
-					break;
+					pirateBarricades[i]->Draw(target);
 				}
-			}
-			else if (pirateBarricades[i]->GetPosition().y >= background->getSize().y)
-			{
-				if (pirateBarricades[i] != nullptr)
+				else if (pirateBarricades[i]->GetAlive() == false)
 				{
-					pirateBarricades[i] = nullptr;
 					delete pirateBarricades[i];
+					pirateBarricades[i] = nullptr;
 					pirateBarricades.erase(pirateBarricades.begin() + i);
 
 					if (pirateBarricades.size() - 1 >= 0)
@@ -562,37 +556,37 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 						break;
 					}
 				}
-			}
-		}
-	}
-
-	//small islands
-	for (size_t i = 0; i < smallIslands.size(); i++)
-	{
-		if (smallIslands[i] != nullptr)
-		{
-			if (smallIslands[i]->GetPosition().y < background->getSize().y)
-			{
-				smallIslands[i]->Draw(target);
-			}
-			else if (smallIslands[i]->GetAlive() == false)
-			{
-				delete smallIslands[i];
-				smallIslands[i] = nullptr;
-				smallIslands.erase(smallIslands.begin() + i);
-
-				if (smallIslands.size() - 1 >= 0)
+				else if (pirateBarricades[i]->GetPosition().y >= background->getSize().y)
 				{
-					i--;
-					break;
+					if (pirateBarricades[i] != nullptr)
+					{
+						pirateBarricades[i] = nullptr;
+						delete pirateBarricades[i];
+						pirateBarricades.erase(pirateBarricades.begin() + i);
+
+						if (pirateBarricades.size() - 1 >= 0)
+						{
+							i--;
+							break;
+						}
+					}
 				}
 			}
-			else if (smallIslands[i]->GetPosition().y >= background->getSize().y)
+		}
+
+		//small islands
+		for (size_t i = 0; i < smallIslands.size(); i++)
+		{
+			if (smallIslands[i] != nullptr)
 			{
-				if (smallIslands[i] != nullptr)
+				if (smallIslands[i]->GetPosition().y < background->getSize().y)
 				{
-					smallIslands[i] = nullptr;
+					smallIslands[i]->Draw(target);
+				}
+				else if (smallIslands[i]->GetAlive() == false)
+				{
 					delete smallIslands[i];
+					smallIslands[i] = nullptr;
 					smallIslands.erase(smallIslands.begin() + i);
 
 					if (smallIslands.size() - 1 >= 0)
@@ -601,39 +595,37 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 						break;
 					}
 				}
-			}
-		}
-	}
-
-	//goon cannonballs
-	for (size_t i = 0; i < goonCannonBalls.size(); i++)
-	{
-		if (goonCannonBalls[i] != nullptr)
-		{
-			//checks to see if cannonball is on screen 
-			if (goonCannonBalls[i]->GetPosition().y < background->getSize().y)
-			{
-				//draws cannonball
-				goonCannonBalls[i]->Draw(target);
-			}
-			//checks if cannonball is still alive
-			if (goonCannonBalls[i]->GetAlive() == false)
-			{
-				//clears cannonball memory and deletes it from vector
-				delete goonCannonBalls[i];
-				goonCannonBalls[i] = nullptr;
-				goonCannonBalls.erase(goonCannonBalls.begin() + i);
-
-				if (goonCannonBalls.size() - 1 >= 0)
+				else if (smallIslands[i]->GetPosition().y >= background->getSize().y)
 				{
-					i--;
-					break;
+					if (smallIslands[i] != nullptr)
+					{
+						smallIslands[i] = nullptr;
+						delete smallIslands[i];
+						smallIslands.erase(smallIslands.begin() + i);
+
+						if (smallIslands.size() - 1 >= 0)
+						{
+							i--;
+							break;
+						}
+					}
 				}
 			}
-			//checks to see if position of cannonball is off screen
-			else if (goonCannonBalls[i]->GetPosition().y >= background->getSize().y)
+		}
+
+		//goon cannonballs
+		for (size_t i = 0; i < goonCannonBalls.size(); i++)
+		{
+			if (goonCannonBalls[i] != nullptr)
 			{
-				if (goonCannonBalls[i] != nullptr)
+				//checks to see if cannonball is on screen 
+				if (goonCannonBalls[i]->GetPosition().y < background->getSize().y)
+				{
+					//draws cannonball
+					goonCannonBalls[i]->Draw(target);
+				}
+				//checks if cannonball is still alive
+				if (goonCannonBalls[i]->GetAlive() == false)
 				{
 					//clears cannonball memory and deletes it from vector
 					delete goonCannonBalls[i];
@@ -646,62 +638,64 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 						break;
 					}
 				}
-			}
-		}
-	}
-
-	//sprayer cannonballs
-	for (size_t i = 0; i < sprayerCannonBalls.size(); i++)
-	{
-		if (sprayerCannonBalls[i] != nullptr)
-		{
-			//checks to see if cannonball is on screen 
-			if (sprayerCannonBalls[i]->GetPosition().y < background->getSize().y)
-			{
-				//draws cannonball
-				sprayerCannonBalls[i]->Draw(target);
-			}
-			//checks if cannonball is still alive
-			if (sprayerCannonBalls[i]->GetAlive() == false)
-			{
-				//clears cannonball memory and deletes it from vector
-				delete sprayerCannonBalls[i];
-				sprayerCannonBalls[i] = nullptr;
-				sprayerCannonBalls.erase(sprayerCannonBalls.begin() + i);
-
-				if (sprayerCannonBalls.size() - 1 >= 0)
+				//checks to see if position of cannonball is off screen
+				else if (goonCannonBalls[i]->GetPosition().y >= background->getSize().y)
 				{
-					i--;
-					break;
+					if (goonCannonBalls[i] != nullptr)
+					{
+						//clears cannonball memory and deletes it from vector
+						delete goonCannonBalls[i];
+						goonCannonBalls[i] = nullptr;
+						goonCannonBalls.erase(goonCannonBalls.begin() + i);
+
+						if (goonCannonBalls.size() - 1 >= 0)
+						{
+							i--;
+							break;
+						}
+					}
 				}
 			}
 		}
-	}
 
-	//sprayers
-	for (size_t i = 0; i < sprayers.size(); i++)
-	{
-		if (sprayers[i] != nullptr)
+		//sprayer cannonballs
+		for (size_t i = 0; i < sprayerCannonBalls.size(); i++)
 		{
-			if (sprayers[i]->GetPosition().y < background->getSize().y)
+			if (sprayerCannonBalls[i] != nullptr)
 			{
-				sprayers[i]->Draw(target);
-			}
-			else if (sprayers[i]->GetAlive() == false)
-			{
-				delete sprayers[i];
-				sprayers[i] = nullptr;
-				sprayers.erase(sprayers.begin() + i);
-
-				if (sprayers.size() - 1 >= 0)
+				//checks to see if cannonball is on screen 
+				if (sprayerCannonBalls[i]->GetPosition().y < background->getSize().y)
 				{
-					i--;
-					break;
+					//draws cannonball
+					sprayerCannonBalls[i]->Draw(target);
+				}
+				//checks if cannonball is still alive
+				if (sprayerCannonBalls[i]->GetAlive() == false)
+				{
+					//clears cannonball memory and deletes it from vector
+					delete sprayerCannonBalls[i];
+					sprayerCannonBalls[i] = nullptr;
+					sprayerCannonBalls.erase(sprayerCannonBalls.begin() + i);
+
+					if (sprayerCannonBalls.size() - 1 >= 0)
+					{
+						i--;
+						break;
+					}
 				}
 			}
-			else if (sprayers[i]->GetPosition().y >= background->getSize().y)
+		}
+
+		//sprayers
+		for (size_t i = 0; i < sprayers.size(); i++)
+		{
+			if (sprayers[i] != nullptr)
 			{
-				if (sprayers[i] != nullptr)
+				if (sprayers[i]->GetPosition().y < background->getSize().y)
+				{
+					sprayers[i]->Draw(target);
+				}
+				else if (sprayers[i]->GetAlive() == false)
 				{
 					delete sprayers[i];
 					sprayers[i] = nullptr;
@@ -713,39 +707,37 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 						break;
 					}
 				}
-			}
-		}
-	}
-
-	//goons
-	for (size_t i = 0; i < goons.size(); i++)
-	{
-		if (goons[i] != nullptr)
-		{
-			//checks to see if goon is on screen 
-			if (goons[i]->GetPosition().y < background->getSize().y)
-			{
-				//draws goon
-				goons[i]->Draw(target);
-			}
-			//checks if goon is still alive
-			else if (goons[i]->GetAlive() == false)
-			{
-				//clears goon memory and deletes it from vector
-				delete goons[i];
-				goons[i] = nullptr;
-				goons.erase(goons.begin() + i);
-
-				if (goons.size() - 1 >= 0)
+				else if (sprayers[i]->GetPosition().y >= background->getSize().y)
 				{
-					i--;
-					break;
+					if (sprayers[i] != nullptr)
+					{
+						delete sprayers[i];
+						sprayers[i] = nullptr;
+						sprayers.erase(sprayers.begin() + i);
+
+						if (sprayers.size() - 1 >= 0)
+						{
+							i--;
+							break;
+						}
+					}
 				}
 			}
-			//checks to see if position of goon is off screen
-			else if (goons[i]->GetPosition().y >= background->getSize().y)
+		}
+
+		//goons
+		for (size_t i = 0; i < goons.size(); i++)
+		{
+			if (goons[i] != nullptr)
 			{
-				if (goons[i] != nullptr)
+				//checks to see if goon is on screen 
+				if (goons[i]->GetPosition().y < background->getSize().y)
+				{
+					//draws goon
+					goons[i]->Draw(target);
+				}
+				//checks if goon is still alive
+				else if (goons[i]->GetAlive() == false)
 				{
 					//clears goon memory and deletes it from vector
 					delete goons[i];
@@ -758,39 +750,39 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 						break;
 					}
 				}
-			}
-		}
-	}
-
-	//chargers
-	for (size_t i = 0; i < chargers.size(); i++)
-	{
-		if (chargers[i] != nullptr)
-		{
-			//checks to see if chargers is on screen 
-			if (chargers[i]->GetPosition().y < background->getSize().y)
-			{
-				//draws charger
-				chargers[i]->Draw(target);
-			}
-			//checks if charger is still alive
-			else if (chargers[i]->GetAlive() == false)
-			{
-				//clears charger memory and deletes it from vector
-				delete chargers[i];
-				chargers[i] = nullptr;
-				chargers.erase(chargers.begin() + i);
-
-				if (chargers.size() - 1 >= 0)
+				//checks to see if position of goon is off screen
+				else if (goons[i]->GetPosition().y >= background->getSize().y)
 				{
-					i--;
-					break;
+					if (goons[i] != nullptr)
+					{
+						//clears goon memory and deletes it from vector
+						delete goons[i];
+						goons[i] = nullptr;
+						goons.erase(goons.begin() + i);
+
+						if (goons.size() - 1 >= 0)
+						{
+							i--;
+							break;
+						}
+					}
 				}
 			}
-			//checks to see if position of charger is off screen
-			else if (chargers[i]->GetPosition().y >= background->getSize().y)
+		}
+
+		//chargers
+		for (size_t i = 0; i < chargers.size(); i++)
+		{
+			if (chargers[i] != nullptr)
 			{
-				if (chargers[i] != nullptr)
+				//checks to see if chargers is on screen 
+				if (chargers[i]->GetPosition().y < background->getSize().y)
+				{
+					//draws charger
+					chargers[i]->Draw(target);
+				}
+				//checks if charger is still alive
+				else if (chargers[i]->GetAlive() == false)
 				{
 					//clears charger memory and deletes it from vector
 					delete chargers[i];
@@ -803,8 +795,36 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 						break;
 					}
 				}
+				//checks to see if position of charger is off screen
+				else if (chargers[i]->GetPosition().y >= background->getSize().y)
+				{
+					if (chargers[i] != nullptr)
+					{
+						//clears charger memory and deletes it from vector
+						delete chargers[i];
+						chargers[i] = nullptr;
+						chargers.erase(chargers.begin() + i);
+
+						if (chargers.size() - 1 >= 0)
+						{
+							i--;
+							break;
+						}
+					}
+				}
 			}
 		}
+	}
+	else if (levelStageNumber == 2)
+	{
+		player.SetSpriteScale(0.5f, 0.5f);
+		for (size_t i = 0; i < cannonBalls.size(); i++)
+		{
+			cannonBalls[i]->SetSpriteScale(0.125f, 0.125f);
+		}
+		oldCrewMate.SetPosition(background->getSize().x / 2, 300);
+		bossRoom1Barrier.Draw(target);
+		oldCrewMate.Draw(target);
 	}
 
 	//cannonballs

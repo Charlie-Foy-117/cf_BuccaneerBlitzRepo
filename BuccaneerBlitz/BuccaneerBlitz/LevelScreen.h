@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "SideBarrier.h"
+#include "BossRoom1Barrier.h"
 
 #include "Player.h"
 #include "CannonBall.h"
@@ -13,6 +14,7 @@
 #include "Timer.h"
 #include "Score.h"
 
+#include "OldCrewMate.h"
 #include "Goon.h"
 #include "Charger.h"
 #include "Sprayer.h"
@@ -88,6 +90,7 @@ private:
     Game* game;
     SideBarrier sideBarrierLeft;
     SideBarrier sideBarrierRight;
+    BossRoom1Barrier bossRoom1Barrier;
     CannonBall cannonBall;
     Charger charger;
     Goon goon;
@@ -102,6 +105,7 @@ private:
     std::vector<PirateBarricade*> pirateBarricades;
     std::vector<SmallIsland*> smallIslands;
 
+    OldCrewMate oldCrewMate;
 
     Timer timer;
     Score score;

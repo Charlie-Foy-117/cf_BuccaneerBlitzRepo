@@ -7,7 +7,6 @@ CannonBall::CannonBall()
 	, velocity(sf::Vector2f(0, -400))
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Player/cf_CannonBall_PNG.png"));
-	sprite.setScale(0.25f, 0.25f);
 	collisionScale = sf::Vector2f(0.9f, 0.9f);
 
 	SetEnumUsed(CollisionType::CIRCLE);

@@ -1,6 +1,5 @@
 #include "LevelScreen.h"
 #include "TitleScreen.h"
-#include "BossScreen.h"
 #include "Game.h"
 
 Game::Game()
@@ -84,9 +83,6 @@ void Game::ChangeGameState(GameState newGameState)
 		break;
 	case GameState::LEVELSCREEN:
 		currentScreen = new LevelScreen(this);
-		break;
-	case GameState::BOSSSCREEN:
-		currentScreen = new BossScreen(this, new LevelScreen(this));
 		break;
 	default:
 		break;

@@ -29,6 +29,7 @@ public:
 
 	void SetEnumUsed(CollisionType newEnum);
 
+	void SetSpriteScale(float xScale, float yScale);
 	float GetHeight();
 	float GetWidth();
 
