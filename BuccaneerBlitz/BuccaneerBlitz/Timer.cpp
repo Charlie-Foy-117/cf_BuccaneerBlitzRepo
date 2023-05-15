@@ -27,9 +27,12 @@ void Timer::LevelTimer()
 	{
 		//todo: change level to boss room 
 		ResetTime();
-		if (levelScreen->levelStageNumber <= 5)
+		if (levelScreen->levelStageNumber == 1 || levelScreen->levelStageNumber == 3 || levelScreen->levelStageNumber == 5)
 		{
-			levelScreen->levelStageNumber++;
+			if (levelScreen->levelStageNumber <= 5)
+			{
+				levelScreen->levelStageNumber++;
+			}
 		}
 		//change timer to go up for infinite time
 		

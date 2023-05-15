@@ -19,7 +19,7 @@ Player::Player(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen)
 	, hasAnchor(false)
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Player/cf_Player1_PNG.png"));
-
+	sprite.setOrigin(sprite.getLocalBounds().width / 2.0f, sprite.getLocalBounds().height / 2.0f);
 	collisionScale = sf::Vector2f(0.45f, 0.95f);
 
 	lives = 3;

@@ -1,17 +1,20 @@
 #pragma once
 #include "SpriteObject.h"
 
-class BossRoom1Barrier :
+class BossRoomBarrier :
     public SpriteObject
 {
 public:
 
-    BossRoom1Barrier(sf::RenderWindow* newWindow);
+    BossRoomBarrier(sf::RenderWindow* newWindow, int* newLevelNumber);
 
     void HandleCollision(SpriteObject& other) override;
+    void UpdateSpriteAsset(int newLevelNumber);
 
 private:
 
     sf::RenderWindow* window;
+    int* levelNumber;
+    
 };
 

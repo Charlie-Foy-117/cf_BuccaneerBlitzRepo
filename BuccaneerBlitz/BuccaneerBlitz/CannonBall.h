@@ -1,6 +1,7 @@
 #pragma once
 #include "SpriteObject.h"
 #include "SideBarrier.h"
+#include "BossRoomBarrier.h"
 
 
 class CannonBall :
@@ -12,6 +13,7 @@ public:
 
     void Update(sf::Time frameTime) override;
     void SetVelocity(float newX, float newY);
+    sf::Vector2f GetVelocity();
 
     void HandleCollision(SpriteObject& other) override;
 

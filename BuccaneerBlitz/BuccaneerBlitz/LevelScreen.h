@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "SideBarrier.h"
-#include "BossRoom1Barrier.h"
+#include "BossRoomBarrier.h"
 
 #include "Player.h"
 #include "CannonBall.h"
@@ -15,6 +15,7 @@
 #include "Score.h"
 
 #include "OldCrewMate.h"
+#include "PirateLord.h"
 #include "Goon.h"
 #include "Charger.h"
 #include "Sprayer.h"
@@ -31,7 +32,8 @@ enum class Projectile
     ANCHOR,
     MULTIFIRE,
     GOONCANNONBALL,
-    SPRAYERCANNONBALL
+    SPRAYERCANNONBALL,
+    OLDCREWMATECANNONBALLS
 };
 
 enum class EnemyType
@@ -72,7 +74,7 @@ public:
     void SpawnProjectile(Projectile projectileType, SpriteObject& spriteCaller);
     void SpawnEnemy(EnemyType enemyType);
     void SpawnHazard(HazardType hazardType);
-    void SpawnPickUp(PickupType pickupType, SpriteObject& spriteCaller);
+    void SpawnPickUp(PickupType pickupType, sf::Vector2f position);
     int RandomNumGen(int min, int max);
 
     Player player;
@@ -82,15 +84,13 @@ public:
 
 private:
 
-    //TODO: fill function to load boss level/next level
-    void LoadLevel(int currentStage);
     void Restart();
 
     sf::RenderWindow* background;
     Game* game;
     SideBarrier sideBarrierLeft;
     SideBarrier sideBarrierRight;
-    BossRoom1Barrier bossRoom1Barrier;
+    BossRoomBarrier bossRoomBarrier;
     CannonBall cannonBall;
     Charger charger;
     Goon goon;
@@ -102,16 +102,20 @@ private:
     std::vector<Anchor*> anchors;
     std::vector<CannonBall*> goonCannonBalls;
     std::vector<CannonBall*> sprayerCannonBalls;
+    std::vector<CannonBall*> oldCrewMateCannonBalls;
     std::vector<PirateBarricade*> pirateBarricades;
     std::vector<SmallIsland*> smallIslands;
 
     OldCrewMate oldCrewMate;
+    PirateLord pirateLord;
 
     Timer timer;
     Score score;
 
     LifeUI lifeUI;
     AnchorUI anchorUI;
+    LifeUI oldCrewMateLifeUI;
+    LifeUI pirateLordLifeUI;
     EndPanel endPanel;
 
     std::vector<sf::Clock*> cooldownClocks;

@@ -40,7 +40,7 @@ void SideBarrier::HandleCollision(SpriteObject& other)
 
 void SideBarrier::UpdateSpriteAsset(int newLevelNumber)
 {
-	//checks what input equals to change background colour to desired colour for level
+	//checks what input equals to change side barrier to desired look for level
 	if (newLevelNumber == 1 || newLevelNumber == 2)
 	{
 		sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level1SideBarrier_PNG.png"));
@@ -51,7 +51,7 @@ void SideBarrier::UpdateSpriteAsset(int newLevelNumber)
 	}
 	else if (newLevelNumber == 5 || newLevelNumber == 6)
 	{
-		//sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level3SideBarrier_PNG.png"));
+		sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level3SideBarrier_PNG.png"));
 	}
 	else
 	{

@@ -4,28 +4,25 @@
 class LevelScreen;
 class Player;
 
-class Charger :
+class PirateLord :
     public Enemy
 {
 public:
 
-    Charger(LevelScreen* newLevelScreen, Player* newPlayer);
-
-    void Update(sf::Time frameTime) override;
+    PirateLord(LevelScreen* newLevelScreen, Player* newPlayer);
     void HandleCollision(SpriteObject& other) override;
-
-    float GetSpawnTime();
+    void Update(sf::Time frameTime) override;
 
 private:
 
-    sf::Vector2f acceleration;
     sf::Vector2f velocity;
+    sf::Vector2f acceleration;
     float speed;
-
-    Player* player;
-    LevelScreen* levelScreen;
 
     sf::Clock cooldownTimer;
     float cooldown;
+
+    LevelScreen* levelScreen;
+    Player* player;
 };
 

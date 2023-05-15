@@ -208,6 +208,12 @@ void SpriteObject::SetSpriteScale(float xScale, float yScale)
 	sprite.setScale(xScale, yScale);
 }
 
+void SpriteObject::SetCollisionOffest(float xOffset, float yOffset)
+{
+	collisionOffset.x = xOffset;
+	collisionOffset.y = yOffset;
+}
+
 float SpriteObject::GetHeight()
 {
 	return sprite.getLocalBounds().height;
@@ -241,7 +247,7 @@ void SpriteObject::ModifyLives(int lifeValue)
 		lives = 0;
 		SetAlive(false);
 	}
-	else if (lives > 3)
+	else if (lifeValue >= 0 && lives > 3)
 	{
 		lives = 3;
 	}

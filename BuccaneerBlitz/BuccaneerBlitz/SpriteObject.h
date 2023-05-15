@@ -30,6 +30,7 @@ public:
 	void SetEnumUsed(CollisionType newEnum);
 
 	void SetSpriteScale(float xScale, float yScale);
+	void SetCollisionOffest(float xOffset, float yOffset);
 	float GetHeight();
 	float GetWidth();
 

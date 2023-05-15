@@ -11,10 +11,10 @@ public:
     Enemy(LevelScreen* newLevelScreen);
 
     void DropItem();
+    void KillBoss();
 
 protected:
 
-    int lives;
     float spawnTime;
     sf::Clock clock;
 

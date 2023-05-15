@@ -4,7 +4,6 @@
 
 Enemy::Enemy(LevelScreen* newLevelScreen)
 	: SpriteObject()
-	, lives()
 	, spawnTime()
 	, clock()
 	, levelScreen(newLevelScreen)
@@ -25,10 +24,10 @@ void Enemy::DropItem()
 	switch (dropChance)
 	{
 	case 0:
-		levelScreen->SpawnPickUp(PickupType::ANCHOR, *this);
+		levelScreen->SpawnPickUp(PickupType::ANCHOR, GetPosition());
 		break;
 	case 1:
-		levelScreen->SpawnPickUp(PickupType::LIFE, *this);
+		levelScreen->SpawnPickUp(PickupType::LIFE, GetPosition());
 		break;
 	case 2:
 		//levelScreen->SpawnPickUp(PickupType::MULTIFIRE, *this);
@@ -40,4 +39,9 @@ void Enemy::DropItem()
 	default:
 		break;
 	}
+}
+
+void Enemy::KillBoss()
+{
+	levelScreen->levelStageNumber++;
 }
