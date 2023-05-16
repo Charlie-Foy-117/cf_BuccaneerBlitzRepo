@@ -1168,19 +1168,8 @@ void LevelScreen::BackgroundColour(int currentLevel)
 		//error...
 	}
 
-	//calculate the color delta
-	sf::Color delta = targetColor - currentColor;
-	delta.r /= 5;
-	delta.g /= 5;
-	delta.b /= 5;
-
-	//update the current color towards the target color
-	if (currentColor != targetColor) {
-		currentColor += delta;
-	}
-
 	//set the background color
-	background->clear(currentColor);
+	background->clear(targetColor);
 }
 
 void LevelScreen::TriggerEndState()
