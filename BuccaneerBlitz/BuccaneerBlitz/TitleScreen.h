@@ -1,6 +1,7 @@
 #pragma once
 #include "Screen.h"
 #include "Text.h"
+#include "Score.h"
 
 class Game;
 
@@ -20,6 +21,9 @@ private:
     sf::RenderWindow* window;
 
     Text text;
+    Text scoreText;
+
+    Score score;
 
     sf::Clock cooldownTimer;
     float cooldown;

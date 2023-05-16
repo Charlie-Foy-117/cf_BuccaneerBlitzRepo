@@ -14,6 +14,9 @@ public:
 	int GetScore();
 	void ResetScore();
 
+	void SaveHighScore(int score);
+	int LoadHighScore();
+
 private:
 
 	int score;

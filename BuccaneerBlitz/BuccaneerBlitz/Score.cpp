@@ -1,5 +1,6 @@
 #include "Score.h"
 #include "AssetManager.h"
+#include <fstream>
 
 Score::Score()
 	: Text()
@@ -35,4 +36,28 @@ int Score::GetScore()
 void Score::ResetScore()
 {
 	score = 0;
+}
+
+void Score::SaveHighScore(int score)
+{
+	std::ofstream file("highscore.txt");
+	if (file.is_open())
+	{
+		file << score;
+		file.close();
+	}
+}
+
+int Score::LoadHighScore()
+{
+	std::ifstream file("highscore.txt");
+	int score = 0;
+
+	if (file.is_open())
+	{
+		file >> score;
+		file.close();
+	}
+
+	return score;
 }

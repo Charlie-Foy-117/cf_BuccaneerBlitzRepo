@@ -577,6 +577,10 @@ void LevelScreen::Update(sf::Time frameTime)
 	else
 	{
 		endPanel.Update(frameTime);
+		if (score.GetScore() > score.LoadHighScore())
+		{
+			score.SaveHighScore(score.GetScore());
+		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
 		{
 			game->ChangeGameState(GameState::TITLESCREEN);
@@ -856,7 +860,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 					goons[i] = nullptr;
 					goons.erase(goons.begin() + i);
 
-					if (goons.size() - 1 >= 1)
+					if (goons.size() - 1 >= 0)
 					{
 						i--;
 						break;
@@ -872,7 +876,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 						goons[i] = nullptr;
 						goons.erase(goons.begin() + i);
 
-						if (goons.size() - 1 >= 1)
+						if (goons.size() - 1 >= 0)
 						{
 							i--;
 							break;
