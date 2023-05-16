@@ -92,6 +92,7 @@ private:
     SideBarrier sideBarrierRight;
     BossRoomBarrier bossRoomBarrier;
     CannonBall cannonBall;
+    Anchor anchor;
     Charger charger;
     Goon goon;
     Sprayer sprayer;

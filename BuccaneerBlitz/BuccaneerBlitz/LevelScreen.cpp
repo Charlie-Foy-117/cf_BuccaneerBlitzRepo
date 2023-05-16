@@ -15,6 +15,7 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, sideBarrierRight(newGamePointer->GetWindow(), &levelStageNumber)
 	, bossRoomBarrier(newGamePointer->GetWindow(), &levelStageNumber)
 	, cannonBall()
+	, anchor()
 	, charger(this, &player)
 	, goon(this)
 	, sprayer(this)
@@ -1188,12 +1189,12 @@ void LevelScreen::SpawnProjectile(Projectile projectileType, SpriteObject& sprit
 		{
 		case Projectile::CANNONBALL:
 			cannonBalls.push_back(new CannonBall());
-			cannonBalls.back()->SetPosition(spriteCaller.GetPosition().x, spriteCaller.GetPosition().y);
+			cannonBalls.back()->SetPosition(spriteCaller.GetPosition().x - cannonBall.GetWidth() / 8, spriteCaller.GetPosition().y - spriteCaller.GetHeight() / 2);
 			break;
 
 		case Projectile::ANCHOR:
 			anchors.push_back(new Anchor);
-			anchors.back()->SetPosition(spriteCaller.GetPosition().x, spriteCaller.GetPosition().y);
+			anchors.back()->SetPosition(spriteCaller.GetPosition().x, spriteCaller.GetPosition().y - spriteCaller.GetHeight() / 2);
 			break;
 
 		case Projectile::MULTIFIRE:

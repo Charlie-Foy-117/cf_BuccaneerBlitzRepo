@@ -20,26 +20,33 @@ void Timer::Draw(sf::RenderTarget& target)
 
 void Timer::LevelTimer()
 {
-	remainingTime = levelDuration - gameTime.getElapsedTime().asSeconds();
-	std::string timerString = "Time: ";
-
-	if (remainingTime <= 0)
+	if (levelScreen->gameRunning)
 	{
-		//todo: change level to boss room 
-		ResetTime();
-		if (levelScreen->levelStageNumber == 1 || levelScreen->levelStageNumber == 3 || levelScreen->levelStageNumber == 5)
-		{
-			if (levelScreen->levelStageNumber <= 5)
-			{
-				levelScreen->levelStageNumber++;
-			}
-		}
-		//change timer to go up for infinite time
-		
-	}
+		remainingTime = levelDuration - gameTime.getElapsedTime().asSeconds();
+		std::string timerString = "Time: ";
 
-	timerString += std::to_string((int)ceil(remainingTime));
-	text.setString(timerString);
+		if (remainingTime <= 0)
+		{
+			//todo: change level to boss room 
+			ResetTime();
+			if (levelScreen->levelStageNumber == 1 || levelScreen->levelStageNumber == 3 || levelScreen->levelStageNumber == 5)
+			{
+				if (levelScreen->levelStageNumber <= 5)
+				{
+					levelScreen->levelStageNumber++;
+				}
+			}
+			//change timer to go up for infinite time
+
+		}
+
+		timerString += std::to_string((int)ceil(remainingTime));
+		text.setString(timerString);
+	}
+	else
+	{
+		text.setString("GAMEOVER");
+	}
 }
 
 void Timer::ResetTime()
