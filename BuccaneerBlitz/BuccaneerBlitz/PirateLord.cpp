@@ -8,7 +8,7 @@ PirateLord::PirateLord(LevelScreen* newLevelScreen, Player* newPlayer)
 	, acceleration()
 	, speed(500.0f)
 	, cooldownTimer()
-	, cooldown(10)
+	, cooldown(5)
 	, levelScreen(newLevelScreen)
 	, player(newPlayer)
 {
@@ -52,7 +52,7 @@ void PirateLord::Update(sf::Time frameTime)
 		{
 			unitDirection = directionToPlayer / distance;
 		}
-		else
+		else if (distance <= 0)
 		{
 			unitDirection = sf::Vector2f(0, 0);
 		}

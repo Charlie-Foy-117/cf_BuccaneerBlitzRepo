@@ -7,7 +7,7 @@
 LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
 	, player(newGamePointer->GetWindow(), this)
-	, levelStageNumber(2)
+	, levelStageNumber(1)
 	, gameRunning(true)
 	, background(newGamePointer->GetWindow())
 	, game(newGamePointer)
@@ -856,7 +856,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 					goons[i] = nullptr;
 					goons.erase(goons.begin() + i);
 
-					if (goons.size() - 1 >= 0)
+					if (goons.size() - 1 >= 1)
 					{
 						i--;
 						break;
@@ -872,7 +872,7 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 						goons[i] = nullptr;
 						goons.erase(goons.begin() + i);
 
-						if (goons.size() - 1 >= 0)
+						if (goons.size() - 1 >= 1)
 						{
 							i--;
 							break;
