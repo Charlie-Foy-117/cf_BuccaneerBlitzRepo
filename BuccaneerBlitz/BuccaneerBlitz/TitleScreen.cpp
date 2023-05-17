@@ -12,9 +12,12 @@ TitleScreen::TitleScreen(Game* newGamePointer)
 	, cooldown(0.1f)
 {
 	text.SetText("Press 'L' to start");
-	text.SetPosition(game->GetWindow()->getSize().x / 2 - text.GetWidth() / 2, 40);
+	text.SetPosition(10, 40);
 	scoreText.SetText("Highscore: " + std::to_string(score.LoadHighScore()));
-	scoreText.SetPosition(game->GetWindow()->getSize().x / 2 - text.GetWidth() / 2, 140);
+	scoreText.SetPosition(10, 140);
+
+	overlay.SetPosition(overlay.GetPosition().x, window->getSize().y - overlay.GetHeight() * 2.4f);
+	titleCard.SetPosition(window->getSize().x - titleCard.GetWidth() * 2.3f, -30);
 }
 
 void TitleScreen::Update(sf::Time frameTime)
@@ -33,6 +36,9 @@ void TitleScreen::Update(sf::Time frameTime)
 
 void TitleScreen::Draw(sf::RenderTarget& target)
 {
+	backplate.Draw(target);
+	overlay.Draw(target);
+	titleCard.Draw(target);
 	text.Draw(target);
 	scoreText.Draw(target);
 }

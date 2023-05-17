@@ -7,7 +7,7 @@
 LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
 	, player(newGamePointer->GetWindow(), this)
-	, levelStageNumber(3)
+	, levelStageNumber(1)
 	, gameRunning(true)
 	, background(newGamePointer->GetWindow())
 	, game(newGamePointer)
@@ -29,7 +29,7 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, pirateBarricades()
 	, smallIslands()
 	, oldCrewMate(this)
-	, pirateLord(this, &player)
+	, pirateLord(newGamePointer->GetWindow(), this, &player)
 	, timer(this)
 	, score()
 	, lifeUI()
@@ -408,6 +408,58 @@ void LevelScreen::Update(sf::Time frameTime)
 						}
 					}
 				}
+				for (size_t i = anchors.size(); i > 0; i--)
+				{
+					for (size_t j = goons.size(); j > 0; j--)
+					{
+						if (anchors[i - 1] != nullptr && goons[j - 1] != nullptr)
+						{
+							if (anchors[i - 1]->CheckColliding(*goons[j - 1]))
+							{
+								score.AddScore(10);
+								anchors[i - 1]->SetColliding(true);
+								goons[j - 1]->SetColliding(true);
+								anchors[i - 1]->HandleCollision(*goons[j - 1]);
+								goons[i - 1]->HandleCollision(*anchors[i - 1]);
+							}
+						}
+
+					}
+				}
+				for (size_t i = anchors.size(); i > 0; i--)
+				{
+					for (size_t j = chargers.size(); j > 0; j--)
+					{
+						if (anchors[i - 1] != nullptr && chargers[j - 1] != nullptr)
+						{
+							if (anchors[i - 1]->CheckColliding(*chargers[j - 1]))
+							{
+								score.AddScore(20);
+								anchors[i - 1]->SetColliding(true);
+								chargers[j - 1]->SetColliding(true);
+								anchors[i - 1]->HandleCollision(*chargers[j - 1]);
+								chargers[i - 1]->HandleCollision(*anchors[i - 1]);
+							}
+						}
+					}
+				}
+				for (size_t i = anchors.size(); i > 0; i--)
+				{
+					for (size_t j = sprayers.size(); j > 0; j--)
+					{
+						if (anchors[i - 1] != nullptr && sprayers[j - 1] != nullptr)
+						{
+							if (anchors[i - 1]->CheckColliding(*sprayers[j - 1]))
+							{
+								score.AddScore(15);
+								anchors[i - 1]->SetColliding(true);
+								sprayers[j - 1]->SetColliding(true);
+								anchors[i - 1]->HandleCollision(*sprayers[j - 1]);
+								sprayers[i - 1]->HandleCollision(*anchors[i - 1]);
+							}
+						}
+					}
+				}
 			}
 			else if (levelStageNumber == 2)
 			{
@@ -448,6 +500,23 @@ void LevelScreen::Update(sf::Time frameTime)
 						}
 					}
 				}
+				for (size_t i = anchors.size(); i > 0; i--)
+				{
+					if (anchors[i - 1] != nullptr)
+					{
+						if (anchors[i - 1]->CheckColliding(oldCrewMate))
+						{
+							anchors[i - 1]->SetColliding(true);
+							oldCrewMate.SetColliding(true);
+							anchors[i - 1]->HandleCollision(oldCrewMate);
+							if (oldCrewMate.GetLives() <= 0)
+							{
+								score.AddScore(100);
+								levelStageNumber++;
+							}
+						}
+					}
+				}
 
 				for (size_t i = oldCrewMateCannonBalls.size(); i > 0; i--)
 				{
@@ -474,6 +543,41 @@ void LevelScreen::Update(sf::Time frameTime)
 					player.SetColliding(true);
 					pirateLord.SetColliding(true);
 					pirateLord.HandleCollision(player);
+				}
+
+				for (size_t i = cannonBalls.size(); i > 0; i--)
+				{
+					if (cannonBalls[i - 1] != nullptr)
+					{
+						if (cannonBalls[i - 1]->CheckColliding(pirateLord))
+						{
+							cannonBalls[i - 1]->SetColliding(true);
+							pirateLord.SetColliding(true);
+							cannonBalls[i - 1]->HandleCollision(pirateLord);
+							if (pirateLord.GetLives() <= 0)
+							{
+								score.AddScore(500);
+								levelStageNumber++;
+							}
+						}
+					}
+				}
+				for (size_t i = anchors.size(); i > 0; i--)
+				{
+					if (anchors[i - 1] != nullptr)
+					{
+						if (anchors[i - 1]->CheckColliding(pirateLord))
+						{
+							anchors[i - 1]->SetColliding(true);
+							pirateLord.SetColliding(true);
+							anchors[i - 1]->HandleCollision(pirateLord);
+							if (pirateLord.GetLives() <= 0)
+							{
+								score.AddScore(500);
+								levelStageNumber++;
+							}
+						}
+					}
 				}
 			}
 
@@ -551,6 +655,21 @@ void LevelScreen::Update(sf::Time frameTime)
 					sprayerCannonBalls[i - 1]->SetColliding(true);
 					sideBarrierRight.SetColliding(true);
 					sprayerCannonBalls[i - 1]->HandleCollision(sideBarrierRight);
+				}
+			}
+			for (size_t i = smallIslands.size(); i > 0; i--)
+			{
+				if (sideBarrierRight.CheckColliding(*smallIslands[i - 1]))
+				{
+					smallIslands[i - 1]->SetAlive(false);
+					smallIslands[i - 1]->HandleCollision(sideBarrierRight);
+					sideBarrierRight.HandleCollision(*smallIslands[i - 1]);
+				}
+				if (sideBarrierLeft.CheckColliding(*smallIslands[i - 1]))
+				{
+					smallIslands[i - 1]->SetAlive(false);
+					smallIslands[i - 1]->HandleCollision(sideBarrierLeft);
+					sideBarrierLeft.HandleCollision(*smallIslands[i - 1]);
 				}
 			}
 

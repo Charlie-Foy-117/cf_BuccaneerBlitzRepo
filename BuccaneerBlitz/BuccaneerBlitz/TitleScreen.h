@@ -2,6 +2,9 @@
 #include "Screen.h"
 #include "Text.h"
 #include "Score.h"
+#include "TitleCard.h"
+#include "Overlay.h"
+#include "Backplate.h"
 
 class Game;
 
@@ -22,6 +25,9 @@ private:
 
     Text text;
     Text scoreText;
+    TitleCard titleCard;
+    Overlay overlay;
+    Backplate backplate;
 
     Score score;
 

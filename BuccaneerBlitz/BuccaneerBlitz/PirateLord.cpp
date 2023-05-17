@@ -1,14 +1,19 @@
 #include "PirateLord.h"
 #include "AssetManager.h"
 #include "Player.h"
+#include "LevelScreen.h"
 
-PirateLord::PirateLord(LevelScreen* newLevelScreen, Player* newPlayer)
+PirateLord::PirateLord(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen, Player* newPlayer)
 	: Enemy(newLevelScreen)
+	, window(newWindow)
 	, velocity()
 	, acceleration()
 	, speed(500.0f)
+	, tolerance(1.0f)
+	, originalY()
+	, xPositionMatched(false)
 	, cooldownTimer()
-	, cooldown(5)
+	, cooldown(3)
 	, levelScreen(newLevelScreen)
 	, player(newPlayer)
 {
@@ -20,22 +25,42 @@ PirateLord::PirateLord(LevelScreen* newLevelScreen, Player* newPlayer)
 	collisionScale = sf::Vector2f(0.4f, 0.9f);
 	collisionOffset = sf::Vector2f(-128, -128);
 
+	originalY = 300;
 	lives = 10;
 }
 
 void PirateLord::HandleCollision(SpriteObject& other)
 {
+	other.ModifyLives(-1);
+	SetPosition(GetPosition().x, originalY);
+	cooldownTimer.restart();
 }
 
 void PirateLord::Update(sf::Time frameTime)
 {
-	if (cooldownTimer.getElapsedTime().asSeconds() >= cooldown && GetPosition().x == player->GetPosition().x)
-	{
-		velocity = sf::Vector2f(0.0f, 1000.0f);
 
-		sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
-		SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
-		velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
+	if (cooldownTimer.getElapsedTime().asSeconds() >= cooldown)
+	{
+		if (!xPositionMatched && std::abs(GetPosition().x - player->GetPosition().x) < tolerance)
+		{
+			xPositionMatched = true;
+			do
+			{
+				velocity = sf::Vector2f(0.0f, 1000.0f);
+
+				sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
+				SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
+				velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
+
+				if (GetPosition().y >= window->getSize().y)
+				{
+					SetPosition(GetPosition().x, originalY);
+					cooldownTimer.restart();
+					xPositionMatched = false;
+				}
+
+			} while (xPositionMatched);
+		}
 	}
 	else
 	{
@@ -63,5 +88,6 @@ void PirateLord::Update(sf::Time frameTime)
 		sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
 		SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
 		velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
+
 	}
 }

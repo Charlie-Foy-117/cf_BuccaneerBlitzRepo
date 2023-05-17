@@ -1,5 +1,6 @@
 #include "SmallIsland.h"
 #include "AssetManager.h"
+#include "LevelScreen.h"
 
 SmallIsland::SmallIsland(LevelScreen* newLevelScreen)
 	: Hazards()
@@ -22,8 +23,15 @@ void SmallIsland::Update(sf::Time frameTime)
 
 void SmallIsland::HandleCollision(SpriteObject& other)
 {
-	ModifyLives(-1);
-	other.ModifyLives(-1);
+	if (typeid(other).name() == typeid(Player).name())
+	{
+		ModifyLives(-1);
+		other.ModifyLives(-1);
+	}
+	else
+	{
+		levelScreen->SpawnHazard(HazardType::SMALLISLAND);
+	}
 }
 
 float SmallIsland::GetSpawnTime()

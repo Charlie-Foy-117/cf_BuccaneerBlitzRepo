@@ -149,6 +149,7 @@
     <ClCompile Include="AnchorPickup.cpp" />
     <ClCompile Include="AnchorUI.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="Backplate.cpp" />
     <ClCompile Include="BossRoomBarrier.cpp" />
     <ClCompile Include="CannonBall.cpp" />
     <ClCompile Include="Charger.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="LifeUI.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="OldCrewMate.cpp" />
+    <ClCompile Include="Overlay.cpp" />
     <ClCompile Include="Pickups.cpp" />
     <ClCompile Include="PirateBarricade.cpp" />
     <ClCompile Include="PirateLord.cpp" />
@@ -175,6 +177,7 @@
     <ClCompile Include="SpriteObject.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="TitleCard.cpp" />
     <ClCompile Include="TitleScreen.cpp" />
     <ClCompile Include="VectorHelper.cpp" />
   </ItemGroup>
@@ -183,6 +186,7 @@
     <ClInclude Include="AnchorPickup.h" />
     <ClInclude Include="AnchorUI.h" />
     <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="Backplate.h" />
     <ClInclude Include="BossRoomBarrier.h" />
     <ClInclude Include="CannonBall.h" />
     <ClInclude Include="Charger.h" />
@@ -196,6 +200,7 @@
     <ClInclude Include="LifePickup.h" />
     <ClInclude Include="LifeUI.h" />
     <ClInclude Include="OldCrewMate.h" />
+    <ClInclude Include="Overlay.h" />
     <ClInclude Include="Pickups.h" />
     <ClInclude Include="PirateBarricade.h" />
     <ClInclude Include="PirateLord.h" />
@@ -208,6 +213,7 @@
     <ClInclude Include="SpriteObject.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="TitleCard.h" />
     <ClInclude Include="TitleScreen.h" />
     <ClInclude Include="VectorHelper.h" />
   </ItemGroup>

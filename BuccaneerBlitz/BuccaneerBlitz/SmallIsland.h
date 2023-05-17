@@ -1,5 +1,6 @@
 #pragma once
 #include "Hazards.h"
+#include "Player.h"
 
 class LevelScreen;
 
