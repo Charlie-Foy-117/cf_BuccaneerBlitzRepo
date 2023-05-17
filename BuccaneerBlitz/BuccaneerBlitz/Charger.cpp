@@ -26,7 +26,7 @@ Charger::Charger(LevelScreen* newLevelScreen, Player* newPlayer)
 void Charger::Update(sf::Time frameTime)
 {
 	//calculate direction to player
-	sf::Vector2f directionToPlayer = sf::Vector2f(player->GetPosition().x + 100, player->GetPosition().y) - GetPosition();
+	sf::Vector2f directionToPlayer = sf::Vector2f(player->GetPosition().x, player->GetPosition().y) - GetPosition();
 
 	//distance
 	float distance = std::sqrt(std::pow(directionToPlayer.x, 2) + std::pow(directionToPlayer.y, 2));
