@@ -17,6 +17,7 @@ public:
 
     void FireCannonBall(float newCooldown);
     void FireAnchor(float newCooldown);
+    void FireMultiFire(float newCooldown);
 
     bool GetHasAnchor();
 
@@ -34,5 +35,6 @@ private:
     float cooldown;
 
     bool hasAnchor;
+    bool hasMultiFire;
 };
 

@@ -13,11 +13,15 @@ public:
     void DropItem();
     void KillBoss();
 
+    float GetBonusTime();
+
 protected:
 
     float spawnTime;
     sf::Clock clock;
 
     LevelScreen* levelScreen;
+
+    float bonusTime;
 };
 

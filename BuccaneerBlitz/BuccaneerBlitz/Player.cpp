@@ -17,6 +17,7 @@ Player::Player(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen)
 	, cooldownTimer()
 	, cooldown(1.0f)
 	, hasAnchor(false)
+	, hasMultiFire(true)
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Player/cf_Player1_PNG.png"));
 	sprite.setOrigin(sprite.getLocalBounds().width / 2.0f, sprite.getLocalBounds().height / 2.0f);
@@ -59,10 +60,15 @@ void Player::Update(sf::Time frameTime)
 	{
 		FireAnchor(cooldown);
 	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::I) && hasMultiFire == true)
+	{
+		FireMultiFire(cooldown);
+	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
 	{
 		FireCannonBall(cooldown);
 	}
+
 }
 
 void Player::HandleCollision(SpriteObject& other)
@@ -110,6 +116,16 @@ void Player::FireAnchor(float newCooldown)
 	{
 		levelScreen->SpawnProjectile(Projectile::ANCHOR, *this);
 		hasAnchor = false;
+		cooldownTimer.restart();
+	}
+}
+
+void Player::FireMultiFire(float newCooldown)
+{
+	if (cooldownTimer.getElapsedTime().asSeconds() > newCooldown)
+	{
+		levelScreen->SpawnProjectile(Projectile::MULTIFIRE, *this);
+		hasMultiFire = false;
 		cooldownTimer.restart();
 	}
 }

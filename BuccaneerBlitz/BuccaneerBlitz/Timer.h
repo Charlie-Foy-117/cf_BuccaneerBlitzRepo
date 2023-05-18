@@ -12,6 +12,7 @@ public:
 	void Draw(sf::RenderTarget& target);
 	void LevelTimer();
 	void ResetTime();
+	sf::Clock GetGameTime();
 
 private:
 

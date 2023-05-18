@@ -7,7 +7,7 @@
 LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
 	, player(newGamePointer->GetWindow(), this)
-	, levelStageNumber(1)
+	, levelStageNumber(2)
 	, gameRunning(true)
 	, background(newGamePointer->GetWindow())
 	, game(newGamePointer)
@@ -19,7 +19,7 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, charger(this, &player)
 	, goon(this)
 	, sprayer(this)
-	, pirateBarricade(this)
+	, pirateBarricade(this, &levelStageNumber)
 	, smallIsland(this)
 	, cannonBalls()
 	, anchors()
@@ -52,6 +52,8 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 
 void LevelScreen::Update(sf::Time frameTime)
 {
+	std::cout << levelStageNumber << std::endl;
+
 	//changing colour of background
 	BackgroundColour(levelStageNumber);
 
@@ -72,47 +74,58 @@ void LevelScreen::Update(sf::Time frameTime)
 			cooldownClocks.push_back(new sf::Clock());
 			cooldownClocks.push_back(new sf::Clock());
 
-			switch (levelStageNumber)
+			if (levelStageNumber != 2 && levelStageNumber != 4 && levelStageNumber != 6)
 			{
-			case 5:
-			{
-				//spawn objects on cooldown
-				//Sprayers - Clock 2
-				if (cooldownClocks[2]->getElapsedTime().asSeconds() > sprayer.GetSpawnTime())
+				switch (levelStageNumber)
 				{
-					SpawnEnemy(EnemyType::SPRAYER);
-				}
-			}
-			case 3:
-			{
-				//chargers - Clock 1
-				if (cooldownClocks[1]->getElapsedTime().asSeconds() > charger.GetSpawnTime())
+				case 5:
 				{
-					SpawnEnemy(EnemyType::CHARGER);
+					if (levelStageNumber == 5)
+					{
+						//spawn objects on cooldown
+						//Sprayers - Clock 2
+						if (cooldownClocks[2]->getElapsedTime().asSeconds() > sprayer.GetSpawnTime())
+						{
+							SpawnEnemy(EnemyType::SPRAYER);
+						}
+					}
 				}
-			}
-			case 1:
-			{
-				//goons - Clock 0
-				if (cooldownClocks[0]->getElapsedTime().asSeconds() > goon.GetSpawnTime())
+				case 3:
 				{
-					SpawnEnemy(EnemyType::GOON);
+					if (levelStageNumber == 3 || levelStageNumber == 5)
+					{
+						//chargers - Clock 1
+						if (cooldownClocks[1]->getElapsedTime().asSeconds() > charger.GetSpawnTime())
+						{
+							SpawnEnemy(EnemyType::CHARGER);
+						}
+					}
 				}
-				//Pirate barricade - Clock 3
-				if (cooldownClocks[3]->getElapsedTime().asSeconds() > pirateBarricade.GetSpawnTime())
+				case 1:
 				{
-					SpawnHazard(HazardType::PIRATEBARRICADE);
+					if (levelStageNumber == 1 || levelStageNumber == 3 || levelStageNumber == 5)
+					{
+						//goons - Clock 0
+						if (cooldownClocks[0]->getElapsedTime().asSeconds() > goon.GetSpawnTime())
+						{
+							SpawnEnemy(EnemyType::GOON);
+						}
+						//Pirate barricade - Clock 3
+						if (cooldownClocks[3]->getElapsedTime().asSeconds() > pirateBarricade.GetSpawnTime())
+						{
+							SpawnHazard(HazardType::PIRATEBARRICADE);
+						}
+						//Small Island - Clock 4
+						if (cooldownClocks[4]->getElapsedTime().asSeconds() > smallIsland.GetSpawnTime())
+						{
+							SpawnHazard(HazardType::SMALLISLAND);
+						}
+					}
 				}
-				//Small Island - Clock 4
-				if (cooldownClocks[4]->getElapsedTime().asSeconds() > smallIsland.GetSpawnTime())
-				{
-					SpawnHazard(HazardType::SMALLISLAND);
-				}
-			}
 				break;
-			default:
-				std::cout << levelStageNumber << std::endl;
-				break;
+				default:
+					break;
+				}
 			}
 
 			//set all objects to not colliding and update every frame
@@ -494,7 +507,13 @@ void LevelScreen::Update(sf::Time frameTime)
 							cannonBalls[i - 1]->HandleCollision(oldCrewMate);
 							if (oldCrewMate.GetLives() <= 0)
 							{
+								//checks to see if boss was beaten before the bonus time
+								if (timer.GetGameTime().getElapsedTime().asSeconds() < oldCrewMate.GetBonusTime())
+								{
+									score.AddScore(100);
+								}
 								score.AddScore(100);
+								timer.ResetTime();
 								levelStageNumber++;
 							}
 						}
@@ -512,6 +531,7 @@ void LevelScreen::Update(sf::Time frameTime)
 							if (oldCrewMate.GetLives() <= 0)
 							{
 								score.AddScore(100);
+								timer.ResetTime();
 								levelStageNumber++;
 							}
 						}
@@ -556,7 +576,13 @@ void LevelScreen::Update(sf::Time frameTime)
 							cannonBalls[i - 1]->HandleCollision(pirateLord);
 							if (pirateLord.GetLives() <= 0)
 							{
+								//checks to see if boss was beaten before the bonus time
+								if (timer.GetGameTime().getElapsedTime().asSeconds() < pirateLord.GetBonusTime())
+								{
+									score.AddScore(200);
+								}
 								score.AddScore(500);
+								timer.ResetTime();
 								levelStageNumber++;
 							}
 						}
@@ -573,7 +599,13 @@ void LevelScreen::Update(sf::Time frameTime)
 							anchors[i - 1]->HandleCollision(pirateLord);
 							if (pirateLord.GetLives() <= 0)
 							{
+								//checks to see if boss was beaten before the bonus time
+								if (timer.GetGameTime().getElapsedTime().asSeconds() < pirateLord.GetBonusTime())
+								{
+									score.AddScore(200);
+								}
 								score.AddScore(500);
+								timer.ResetTime();
 								levelStageNumber++;
 							}
 						}
@@ -674,21 +706,24 @@ void LevelScreen::Update(sf::Time frameTime)
 			}
 
 			//bossroom barrier
-			if (bossRoomBarrier.CheckColliding(player))
+			if (levelStageNumber == 2 || levelStageNumber == 4 || levelStageNumber == 6)
 			{
-				player.SetColliding(true);
-				bossRoomBarrier.SetColliding(true);
-				player.HandleCollision(bossRoomBarrier);
-				bossRoomBarrier.HandleCollision(player);
-
-			}
-			for (size_t i = cannonBalls.size(); i > 0; i--)
-			{
-				if (cannonBalls[i - 1]->CheckColliding(bossRoomBarrier))
+				if (bossRoomBarrier.CheckColliding(player))
 				{
-					cannonBalls[i - 1]->SetColliding(true);
+					player.SetColliding(true);
 					bossRoomBarrier.SetColliding(true);
-					cannonBalls[i - 1]->HandleCollision(bossRoomBarrier);
+					player.HandleCollision(bossRoomBarrier);
+					bossRoomBarrier.HandleCollision(player);
+
+				}
+				for (size_t i = cannonBalls.size(); i > 0; i--)
+				{
+					if (cannonBalls[i - 1]->CheckColliding(bossRoomBarrier))
+					{
+						cannonBalls[i - 1]->SetColliding(true);
+						bossRoomBarrier.SetColliding(true);
+						cannonBalls[i - 1]->HandleCollision(bossRoomBarrier);
+					}
 				}
 			}
 		}
@@ -1153,7 +1188,7 @@ void LevelScreen::BackgroundColour(int currentLevel)
 	}
 	else if (currentLevel == 5 || currentLevel == 6)
 	{
-		targetColor = sf::Color(0, 0, 0, 255);
+		targetColor = sf::Color(7, 9, 22, 255);
 	}
 	else
 	{
@@ -1189,10 +1224,11 @@ void LevelScreen::SpawnProjectile(Projectile projectileType, SpriteObject& sprit
 			break;
 
 		case Projectile::MULTIFIRE:
-			//todo: implement functionality and caller
-			for (size_t i = 0; i < 3; i++)
+			for (size_t i = 0; i < 3; ++i)
 			{
 				cannonBalls.push_back(new CannonBall());
+				cannonBalls.back()->SetVelocity(60 - i * 20, cannonBall.GetVelocity().y);
+				cannonBalls.back()->SetPosition(spriteCaller.GetPosition().x, spriteCaller.GetPosition().y + cannonBall.GetHeight() / 2);
 			}
 			break;
 
@@ -1265,7 +1301,7 @@ void LevelScreen::SpawnHazard(HazardType hazardType)
 	switch (hazardType)
 	{
 	case HazardType::PIRATEBARRICADE:
-		pirateBarricades.push_back(new PirateBarricade(this));
+		pirateBarricades.push_back(new PirateBarricade(this, &levelStageNumber));
 		pirateBarricades.back()->SetPosition(background->getSize().x / 2 - pirateBarricade.GetWidth() / 2 - 250, 0 - pirateBarricade.GetHeight());
 		cooldownClocks[3]->restart();
 		break;

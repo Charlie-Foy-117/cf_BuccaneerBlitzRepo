@@ -159,6 +159,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Goon.cpp" />
     <ClCompile Include="Hazards.cpp" />
+    <ClCompile Include="Kraken.cpp" />
     <ClCompile Include="LevelScreen.cpp" />
     <ClCompile Include="LifePickup.cpp" />
     <ClCompile Include="LifeUI.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Goon.h" />
     <ClInclude Include="Hazards.h" />
+    <ClInclude Include="Kraken.h" />
     <ClInclude Include="LevelScreen.h" />
     <ClInclude Include="LifePickup.h" />
     <ClInclude Include="LifeUI.h" />

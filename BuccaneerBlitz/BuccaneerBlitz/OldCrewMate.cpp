@@ -20,7 +20,7 @@ OldCrewMate::OldCrewMate(LevelScreen* newLevelScreen)
 	collisionOffset = sf::Vector2f(-128, -128);
     
 	lives = 5;
-    
+	bonusTime = 30.0f;
 }
 
 void OldCrewMate::HandleCollision(SpriteObject& other)

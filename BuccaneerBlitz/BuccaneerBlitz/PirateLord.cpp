@@ -27,6 +27,7 @@ PirateLord::PirateLord(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen,
 
 	originalY = 300;
 	lives = 10;
+	bonusTime = 45.0f;
 }
 
 void PirateLord::HandleCollision(SpriteObject& other)

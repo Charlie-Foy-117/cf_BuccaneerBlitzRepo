@@ -7,6 +7,7 @@ Enemy::Enemy(LevelScreen* newLevelScreen)
 	, spawnTime()
 	, clock()
 	, levelScreen(newLevelScreen)
+	, bonusTime(0)
 {
 
 }
@@ -44,4 +45,9 @@ void Enemy::DropItem()
 void Enemy::KillBoss()
 {
 	levelScreen->levelStageNumber++;
+}
+
+float Enemy::GetBonusTime()
+{
+	return bonusTime;
 }
