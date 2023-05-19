@@ -7,7 +7,7 @@
 LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
 	, player(newGamePointer->GetWindow(), this)
-	, levelStageNumber(2)
+	, levelStageNumber(1)
 	, gameRunning(true)
 	, background(newGamePointer->GetWindow())
 	, game(newGamePointer)
@@ -34,6 +34,7 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, score()
 	, lifeUI()
 	, anchorUI()
+	, multiFireUI()
 	, oldCrewMateLifeUI()
 	, pirateLordLifeUI()
 	, endPanel(newGamePointer->GetWindow())
@@ -43,6 +44,7 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, sprayers()
 	, lifePickups()
 	, anchorPickups()
+	, multiFirePickups()
 	, xVelocity(100)
 	, targetColor()
 	, currentColor()
@@ -242,6 +244,15 @@ void LevelScreen::Update(sf::Time frameTime)
 					}
 				}
 
+				for (size_t i = multiFirePickups.size(); i > 0; i--)
+				{
+					if (multiFirePickups[i - 1] != nullptr)
+					{
+						multiFirePickups[i - 1]->Update(frameTime);
+						multiFirePickups[i - 1]->SetColliding(false);
+					}
+				}
+
 				//Check collisions
 				//
 				//
@@ -305,6 +316,23 @@ void LevelScreen::Update(sf::Time frameTime)
 						}
 					}
 				}
+				for (size_t i = multiFirePickups.size(); i > 0; i--)
+				{
+					if (multiFirePickups[i - 1] != nullptr)
+					{
+						if (player.CheckColliding(*multiFirePickups[i - 1]))
+						{
+							player.SetColliding(true);
+							multiFirePickups[i - 1]->SetColliding(true);
+							player.HandleCollision(*multiFirePickups[i - 1]);
+							multiFirePickups[i - 1]->HandleCollision(player);
+							if (player.GetHasMultiFire() == true)
+							{
+								score.AddScore(50);
+							}
+						}
+					}
+				}
 				for (size_t i = pirateBarricades.size(); i > 0; i--)
 				{
 					if (pirateBarricades[i - 1] != nullptr)
@@ -345,7 +373,7 @@ void LevelScreen::Update(sf::Time frameTime)
 								cannonBalls[i - 1]->SetColliding(true);
 								goons[j - 1]->SetColliding(true);
 								cannonBalls[i - 1]->HandleCollision(*goons[j - 1]);
-								goons[i - 1]->HandleCollision(*cannonBalls[i - 1]);
+								goons[j - 1]->HandleCollision(*cannonBalls[i - 1]);
 							}
 						}
 
@@ -363,7 +391,7 @@ void LevelScreen::Update(sf::Time frameTime)
 								cannonBalls[i - 1]->SetColliding(true);
 								chargers[j - 1]->SetColliding(true);
 								cannonBalls[i - 1]->HandleCollision(*chargers[j - 1]);
-								chargers[i - 1]->HandleCollision(*cannonBalls[i - 1]);
+								chargers[j - 1]->HandleCollision(*cannonBalls[i - 1]);
 							}
 						}
 					}
@@ -380,7 +408,7 @@ void LevelScreen::Update(sf::Time frameTime)
 								cannonBalls[i - 1]->SetColliding(true);
 								sprayers[j - 1]->SetColliding(true);
 								cannonBalls[i - 1]->HandleCollision(*sprayers[j - 1]);
-								sprayers[i - 1]->HandleCollision(*cannonBalls[i - 1]);
+								sprayers[j - 1]->HandleCollision(*cannonBalls[i - 1]);
 							}
 						}
 					}
@@ -792,6 +820,22 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				}
 			}
 		}
+		for (size_t i = multiFirePickups.size(); i > 0; i--)
+		{
+			if (multiFirePickups[i - 1] != nullptr)
+			{
+				if (multiFirePickups[i - 1]->GetAlive() == false)
+				{
+					delete multiFirePickups[i - 1];
+					multiFirePickups[i - 1] = nullptr;
+					multiFirePickups.erase(multiFirePickups.begin() + (i - 1));
+				}
+				else
+				{
+					multiFirePickups[i - 1]->Draw(target);
+				}
+			}
+		}
 
 		//pirate barricade
 		for (size_t i = pirateBarricades.size(); i > 0; i--)
@@ -1166,7 +1210,16 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 		anchorUI.SetOpacity(player.GetHasAnchor());
 		anchorUI.Draw(target);
 	}
-
+	if (player.GetHasMultiFire())
+	{
+		multiFireUI.SetOpacity(player.GetHasMultiFire());
+		multiFireUI.Draw(target);
+	}
+	else
+	{
+		multiFireUI.SetOpacity(player.GetHasMultiFire());
+		multiFireUI.Draw(target);
+	}
 
 	//if game is not running draw endpanel
 	if (!gameRunning)
@@ -1224,11 +1277,11 @@ void LevelScreen::SpawnProjectile(Projectile projectileType, SpriteObject& sprit
 			break;
 
 		case Projectile::MULTIFIRE:
-			for (size_t i = 0; i < 3; ++i)
+			for (size_t i = 3; i > 0; --i)
 			{
 				cannonBalls.push_back(new CannonBall());
-				cannonBalls.back()->SetVelocity(60 - i * 20, cannonBall.GetVelocity().y);
-				cannonBalls.back()->SetPosition(spriteCaller.GetPosition().x, spriteCaller.GetPosition().y + cannonBall.GetHeight() / 2);
+				cannonBalls.back()->SetVelocity(60 - (i * 20), cannonBall.GetVelocity().y);
+				cannonBalls.back()->SetPosition(spriteCaller.GetPosition().x - cannonBall.GetWidth() / 8, spriteCaller.GetPosition().y - spriteCaller.GetHeight() / 2);
 			}
 			break;
 
@@ -1246,10 +1299,10 @@ void LevelScreen::SpawnProjectile(Projectile projectileType, SpriteObject& sprit
 			break;
 
 		case Projectile::OLDCREWMATECANNONBALLS:
-			for (size_t i = 0; i < 5; ++i)
+			for (size_t i = 5; i > 0; --i)
 			{
 				oldCrewMateCannonBalls.push_back(new CannonBall());
-				oldCrewMateCannonBalls.back()->SetVelocity(100 - i * 20, 400);
+				oldCrewMateCannonBalls.back()->SetVelocity(100 - (i - 1) * 20, 400);
 				oldCrewMateCannonBalls.back()->SetPosition(spriteCaller.GetPosition().x, spriteCaller.GetPosition().y + cannonBall.GetHeight() / 2);
 			}
 			break;
@@ -1328,7 +1381,8 @@ void LevelScreen::SpawnPickUp(PickupType pickupType, sf::Vector2f position)
 		anchorPickups.back()->SetPosition(position);
 		break;
 	case PickupType::MULTIFIRE:
-
+		multiFirePickups.push_back(new MultiFirePickup());
+		multiFirePickups.back()->SetPosition(position);
 		break;
 	default:
 		break;
@@ -1353,6 +1407,7 @@ void LevelScreen::Restart()
 	score.SetPosition((float)background->getSize().x - 300, timer.GetPosition().y + 50);
 	score.ResetScore();
 	anchorUI.SetPosition(0, 20 + anchorUI.GetHeight() / 2);
+	multiFireUI.SetPosition(anchorUI.GetWidth() / 2 + 10, 30 + anchorUI.GetHeight() / 2);
 	oldCrewMate.SetPosition(350, 300);
 	pirateLord.SetPosition(350, 300);
 
@@ -1397,6 +1452,12 @@ void LevelScreen::Restart()
 		delete anchorPickups[i];
 		anchorPickups[i] = nullptr;
 		anchorPickups.erase(anchorPickups.begin() + i);
+	}
+	for (size_t i = 0; i < multiFirePickups.size(); i++)
+	{
+		delete multiFirePickups[i];
+		multiFirePickups[i] = nullptr;
+		multiFirePickups.erase(multiFirePickups.begin() + i);
 	}
 
 	gameRunning = true;

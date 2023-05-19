@@ -9,7 +9,7 @@ PirateLord::PirateLord(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen,
 	, velocity()
 	, acceleration()
 	, speed(500.0f)
-	, tolerance(1.0f)
+	, tolerance(20.0f)
 	, originalY()
 	, xPositionMatched(false)
 	, cooldownTimer()
@@ -45,34 +45,34 @@ void PirateLord::Update(sf::Time frameTime)
 		if (!xPositionMatched && std::abs(GetPosition().x - player->GetPosition().x) < tolerance)
 		{
 			xPositionMatched = true;
-			do
+		}
+
+		if (xPositionMatched)
+		{
+			velocity = sf::Vector2f(0.0f, 1000.0f);
+
+			sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
+			SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
+			velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
+
+			if (GetPosition().y >= window->getSize().y)
 			{
-				velocity = sf::Vector2f(0.0f, 1000.0f);
-
-				sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
-				SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
-				velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
-
-				if (GetPosition().y >= window->getSize().y)
-				{
-					SetPosition(GetPosition().x, originalY);
-					cooldownTimer.restart();
-					xPositionMatched = false;
-				}
-
-			} while (xPositionMatched);
+				SetPosition(GetPosition().x, originalY);
+				cooldownTimer.restart();
+				xPositionMatched = false;
+			}
 		}
 	}
 	else
 	{
 		velocity = sf::Vector2f(0.0f, 0.0f);
 
-		//calculate direction to player
+		// Calculate direction to player
 		sf::Vector2f directionToPlayer = sf::Vector2f(player->GetPosition().x, GetPosition().y) - GetPosition();
 
-		//distance
+		// Distance
 		float distance = std::sqrt(std::pow(directionToPlayer.x, 2) + std::pow(directionToPlayer.y, 2));
-		//normalize direction vector
+		// Normalize direction vector
 		sf::Vector2f unitDirection;
 		if (distance > 0)
 		{
@@ -83,12 +83,11 @@ void PirateLord::Update(sf::Time frameTime)
 			unitDirection = sf::Vector2f(0, 0);
 		}
 
-		//set velocity to unit direction multiplied by speed
-		sf::Vector2f velocity = unitDirection * speed;
+		// Set velocity to unit direction multiplied by speed
+		velocity = unitDirection * speed;
 
 		sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
 		SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
 		velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
-
 	}
 }

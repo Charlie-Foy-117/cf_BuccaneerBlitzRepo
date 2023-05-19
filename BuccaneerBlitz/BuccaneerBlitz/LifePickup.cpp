@@ -2,6 +2,7 @@
 #include "AssetManager.h"
 
 LifePickup::LifePickup()
+	: Pickups()
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Pickups/cf_LifePickup_PNG.png"));
 	sprite.setScale(0.5f, 0.5f);

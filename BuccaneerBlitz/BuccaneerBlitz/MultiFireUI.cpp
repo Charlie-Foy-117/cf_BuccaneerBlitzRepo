@@ -1,14 +1,14 @@
-#include "AnchorUI.h"
+#include "MultiFireUI.h"
 #include "AssetManager.h"
 
-AnchorUI::AnchorUI()
+MultiFireUI::MultiFireUI()
 	: SpriteObject()
 {
-	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/UI/cf_AnchorUI_PNG.png"));
+	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/UI/cf_MultiFireUI_PNG.png"));
 	sprite.setScale(0.5f, 0.5f);
 }
 
-void AnchorUI::SetOpacity(bool hasAnchor)
+void MultiFireUI::SetOpacity(bool hasAnchor)
 {
 	if (hasAnchor)
 	{

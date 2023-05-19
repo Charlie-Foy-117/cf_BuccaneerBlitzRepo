@@ -20,6 +20,7 @@ public:
     void FireMultiFire(float newCooldown);
 
     bool GetHasAnchor();
+    bool GetHasMultiFire();
 
 private:
     void UpdateAcceleration();

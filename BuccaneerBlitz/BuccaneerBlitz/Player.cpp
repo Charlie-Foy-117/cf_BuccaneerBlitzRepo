@@ -17,7 +17,7 @@ Player::Player(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen)
 	, cooldownTimer()
 	, cooldown(1.0f)
 	, hasAnchor(false)
-	, hasMultiFire(true)
+	, hasMultiFire(false)
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Player/cf_Player1_PNG.png"));
 	sprite.setOrigin(sprite.getLocalBounds().width / 2.0f, sprite.getLocalBounds().height / 2.0f);
@@ -77,6 +77,10 @@ void Player::HandleCollision(SpriteObject& other)
 	{
 		hasAnchor = true;
 	}
+	if (typeid(other).name() == typeid(MultiFirePickup).name())
+	{
+		hasMultiFire = true;
+	}
 	else
 	{
 		sf::Vector2f depth = GetCollisionDepth(other);
@@ -133,6 +137,11 @@ void Player::FireMultiFire(float newCooldown)
 bool Player::GetHasAnchor()
 {
 	return hasAnchor;
+}
+
+bool Player::GetHasMultiFire()
+{
+	return hasMultiFire;
 }
 
 void Player::UpdateAcceleration()

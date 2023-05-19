@@ -10,6 +10,7 @@
 #include "Anchor.h"
 #include "LifePickup.h"
 #include "AnchorPickup.h"
+#include "MultiFirePickup.h"
 
 #include "Timer.h"
 #include "Score.h"
@@ -25,6 +26,7 @@
 #include "EndPanel.h"
 #include "LifeUI.h"
 #include "AnchorUI.h"
+#include "MultiFireUI.h"
 
 enum class Projectile
 {
@@ -115,6 +117,7 @@ private:
 
     LifeUI lifeUI;
     AnchorUI anchorUI;
+    MultiFireUI multiFireUI;
     LifeUI oldCrewMateLifeUI;
     LifeUI pirateLordLifeUI;
     EndPanel endPanel;
@@ -126,6 +129,7 @@ private:
 
     std::vector<LifePickup*> lifePickups;
     std::vector<AnchorPickup*> anchorPickups;
+    std::vector<MultiFirePickup*> multiFirePickups;
 
     //controls direction for sprayer cannonballs
     float xVelocity;

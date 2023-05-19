@@ -164,6 +164,8 @@
     <ClCompile Include="LifePickup.cpp" />
     <ClCompile Include="LifeUI.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MultiFirePickup.cpp" />
+    <ClCompile Include="MultiFireUI.cpp" />
     <ClCompile Include="OldCrewMate.cpp" />
     <ClCompile Include="Overlay.cpp" />
     <ClCompile Include="Pickups.cpp" />
@@ -201,6 +203,8 @@
     <ClInclude Include="LevelScreen.h" />
     <ClInclude Include="LifePickup.h" />
     <ClInclude Include="LifeUI.h" />
+    <ClInclude Include="MultiFirePickup.h" />
+    <ClInclude Include="MultiFireUI.h" />
     <ClInclude Include="OldCrewMate.h" />
     <ClInclude Include="Overlay.h" />
     <ClInclude Include="Pickups.h" />

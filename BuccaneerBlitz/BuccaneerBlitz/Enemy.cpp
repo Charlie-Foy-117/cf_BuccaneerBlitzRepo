@@ -31,7 +31,7 @@ void Enemy::DropItem()
 		levelScreen->SpawnPickUp(PickupType::LIFE, GetPosition());
 		break;
 	case 2:
-		//levelScreen->SpawnPickUp(PickupType::MULTIFIRE, *this);
+		levelScreen->SpawnPickUp(PickupType::MULTIFIRE, GetPosition());
 		break;
 	case 3:
 		//do nothing
