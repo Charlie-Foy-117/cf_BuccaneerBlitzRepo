@@ -9,7 +9,7 @@ Timer::Timer(LevelScreen* newLevelScreen)
 	, levelScreen(newLevelScreen)
 	, remainingTime()
 {
-	text.setFont(AssetManager::RequestFont("Assets/Graphics/UI/cf_font.ttf"));
+	text.setFont(AssetManager::RequestFont("Assets/Graphics/UI/Font/PublicPixel-z84yD.ttf"));
 }
 
 void Timer::Draw(sf::RenderTarget& target)

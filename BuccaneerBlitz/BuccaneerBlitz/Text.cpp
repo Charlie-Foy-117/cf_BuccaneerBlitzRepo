@@ -5,7 +5,7 @@ Text::Text()
 	: text()
 	, position()
 {
-	text.setFont(AssetManager::RequestFont("Assets/Graphics/UI/cf_font.ttf"));
+	text.setFont(AssetManager::RequestFont("Assets/Graphics/UI/Font/PublicPixel-z84yD.ttf"));
 }
 
 void Text::Draw(sf::RenderTarget& target)

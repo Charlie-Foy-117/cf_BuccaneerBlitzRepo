@@ -6,7 +6,7 @@ Score::Score()
 	: Text()
 	, score(0)
 {
-	text.setFont(AssetManager::RequestFont("Assets/Graphics/UI/cf_font.ttf"));
+	text.setFont(AssetManager::RequestFont("Assets/Graphics/UI/Font/PublicPixel-z84yD.ttf"));
 }
 
 void Score::Draw(sf::RenderTarget& target)
