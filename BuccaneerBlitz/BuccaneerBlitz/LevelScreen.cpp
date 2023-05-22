@@ -19,6 +19,7 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, charger(this, &player)
 	, goon(this)
 	, sprayer(this)
+	, tentacle(this)
 	, pirateBarricade(this, &levelStageNumber)
 	, smallIsland(this)
 	, cannonBalls()
@@ -31,6 +32,7 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, oldCrewMate(this)
 	, pirateLord(newGamePointer->GetWindow(), this, &player)
 	, kraken(this)
+	, tentacles()
 	, timer(this)
 	, score()
 	, lifeUI()
@@ -77,11 +79,17 @@ void LevelScreen::Update(sf::Time frameTime)
 		else
 		{
 			//cooldown clocks
-			cooldownClocks.push_back(new sf::Clock());
-			cooldownClocks.push_back(new sf::Clock());
-			cooldownClocks.push_back(new sf::Clock());
-			cooldownClocks.push_back(new sf::Clock());
-			cooldownClocks.push_back(new sf::Clock());
+			for (size_t i = 0; i < 6; i++)
+			{
+				cooldownClocks.push_back(new sf::Clock());
+			}
+			//Cooldown clocks
+			//clock 0 = goons
+			//clock 1 = chargers
+			//clock 2 = sprayers
+			//clcok 3 = piratebarricades
+			//clock 4 = smallislands
+			//clock 5 = 
 
 			if (levelStageNumber != 2 && levelStageNumber != 4 && levelStageNumber != 6)
 			{
@@ -134,6 +142,14 @@ void LevelScreen::Update(sf::Time frameTime)
 				break;
 				default:
 					break;
+				}
+			}
+			else if (levelStageNumber == 6)
+			{
+				//Tentacle - Clock 5
+				if (cooldownClocks[5]->getElapsedTime().asSeconds() > tentacle.GetSpawnTime())
+				{
+					SpawnEnemy(EnemyType::TENTACLE);
 				}
 			}
 
@@ -656,11 +672,36 @@ void LevelScreen::Update(sf::Time frameTime)
 						kraken.Update(frameTime);
 						kraken.SetColliding(false);
 
+						for (size_t i = tentacles.size(); i > 0; i--)
+						{
+							if (tentacles[i - 1] != nullptr)
+							{
+								tentacles[i - 1]->Update(frameTime);
+								tentacles[i - 1]->SetColliding(false);
+							}
+						}
+
 						if (kraken.CheckColliding(player))
 						{
 							player.SetColliding(true);
 							kraken.SetColliding(true);
 							kraken.HandleCollision(player);
+						}
+
+						for (size_t i = cannonBalls.size(); i > 0; i--)
+						{
+							for (size_t j = tentacles.size(); j > 0; j--)
+							{
+								if (cannonBalls[i - 1] != nullptr)
+								{
+									if (cannonBalls[i - 1]->CheckColliding(*tentacles[j - 1]))
+									{
+										cannonBalls[i - 1]->SetColliding(true);
+										tentacles[j - 1]->SetColliding(true);
+										cannonBalls[i - 1]->HandleCollision(*tentacles[j - 1]);
+									}
+								}
+							}
 						}
 
 						for (size_t i = cannonBalls.size(); i > 0; i--)
@@ -799,6 +840,19 @@ void LevelScreen::Update(sf::Time frameTime)
 					smallIslands[i - 1]->SetAlive(false);
 					smallIslands[i - 1]->HandleCollision(sideBarrierLeft);
 					sideBarrierLeft.HandleCollision(*smallIslands[i - 1]);
+				}
+			}
+			for (size_t i = tentacles.size(); i > 0; i--)
+			{
+				if (sideBarrierRight.CheckColliding(*tentacles[i - 1]))
+				{
+					tentacles[i - 1]->HandleCollision(sideBarrierRight);
+					sideBarrierRight.HandleCollision(*tentacles[i - 1]);
+				}
+				if (sideBarrierLeft.CheckColliding(*tentacles[i - 1]))
+				{
+					tentacles[i - 1]->HandleCollision(sideBarrierLeft);
+					sideBarrierLeft.HandleCollision(*tentacles[i - 1]);
 				}
 			}
 
@@ -1192,6 +1246,26 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 		bossRoomBarrier.Draw(target);
 		kraken.Draw(target);
 
+		for (size_t i = tentacles.size(); i > 0; i--)
+		{
+			if (tentacles[i - 1] != nullptr)
+			{
+				if (tentacles[i - 1]->GetAlive())
+				{
+					tentacles[i - 1]->Draw(target);
+				}
+				else if (tentacles[i - 1]->GetAlive() == false)
+				{
+					if (tentacles[i - 1] != nullptr)
+					{
+						tentacles[i - 1] = nullptr;
+						delete tentacles[i - 1];
+						tentacles.erase(tentacles.begin() + (i - 1));
+					}
+				}
+			}
+		}
+
 		for (size_t i = kraken.GetLives(); i > 0; i--)
 		{
 			krakenLifeUI.SetSpriteScale(0.25f, 0.25f);
@@ -1417,6 +1491,11 @@ void LevelScreen::SpawnEnemy(EnemyType enemyType)
 			cooldownClocks[2]->restart();
 		break;
 
+	case EnemyType::TENTACLE:
+			tentacles.push_back(new Tentacle(this));
+			tentacles.back()->SetPosition(350, 400);
+			cooldownClocks[5]->restart();
+		break;
 	default:
 		break;
 	}
@@ -1536,6 +1615,12 @@ void LevelScreen::Restart()
 		delete multiFirePickups[i];
 		multiFirePickups[i] = nullptr;
 		multiFirePickups.erase(multiFirePickups.begin() + i);
+	}
+	for (size_t i = 0; i < tentacles.size(); i++)
+	{
+		delete tentacles[i];
+		tentacles[i] = nullptr;
+		tentacles.erase(tentacles.begin() + i);
 	}
 
 	gameRunning = true;

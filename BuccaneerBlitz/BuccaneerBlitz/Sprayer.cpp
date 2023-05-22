@@ -49,11 +49,6 @@ void Sprayer::HandleCollision(SpriteObject& other)
 	}
 }
 
-float Sprayer::GetSpawnTime()
-{
-	return spawnTime;
-}
-
 sf::Vector2f Sprayer::GetVelocity()
 {
 	return velocity;

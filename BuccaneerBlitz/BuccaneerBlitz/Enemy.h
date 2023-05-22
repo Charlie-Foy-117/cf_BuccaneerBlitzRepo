@@ -14,6 +14,7 @@ public:
     void KillBoss();
 
     float GetBonusTime();
+    float GetSpawnTime();
 
 protected:
 

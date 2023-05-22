@@ -51,3 +51,8 @@ float Enemy::GetBonusTime()
 {
 	return bonusTime;
 }
+
+float Enemy::GetSpawnTime()
+{
+	return spawnTime;
+}

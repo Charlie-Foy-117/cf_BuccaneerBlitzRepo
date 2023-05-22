@@ -2,6 +2,7 @@
 #include "SpriteObject.h"
 #include "SideBarrier.h"
 #include "BossRoomBarrier.h"
+#include "Tentacle.h"
 
 
 class CannonBall :

@@ -51,8 +51,3 @@ void Charger::HandleCollision(SpriteObject& other)
 	ModifyLives(-1);
 	other.ModifyLives(-1);
 }
-
-float Charger::GetSpawnTime()
-{
-	return spawnTime;
-}

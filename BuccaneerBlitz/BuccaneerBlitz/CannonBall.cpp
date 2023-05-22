@@ -34,7 +34,7 @@ sf::Vector2f CannonBall::GetVelocity()
 void CannonBall::HandleCollision(SpriteObject& other)
 {
 	alive = false;
-	if (typeid(other).name() != typeid(SideBarrier).name() && typeid(other).name() != typeid(BossRoomBarrier).name())
+	if (typeid(other).name() != typeid(SideBarrier).name() && typeid(other).name() != typeid(BossRoomBarrier).name() && typeid(other).name() != typeid(Tentacle).name())
 	{
 		other.ModifyLives(-1);
 	}

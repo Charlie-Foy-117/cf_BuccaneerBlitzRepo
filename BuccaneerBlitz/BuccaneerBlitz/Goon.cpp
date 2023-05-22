@@ -52,8 +52,3 @@ void Goon::HandleCollision(SpriteObject& other)
 	}
 }
 
-float Goon::GetSpawnTime()
-{
-	return spawnTime;
-}
-

@@ -178,6 +178,7 @@
     <ClCompile Include="SmallIsland.cpp" />
     <ClCompile Include="Sprayer.cpp" />
     <ClCompile Include="SpriteObject.cpp" />
+    <ClCompile Include="Tentacle.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TitleCard.cpp" />
@@ -217,6 +218,7 @@
     <ClInclude Include="SmallIsland.h" />
     <ClInclude Include="Sprayer.h" />
     <ClInclude Include="SpriteObject.h" />
+    <ClInclude Include="Tentacle.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TitleCard.h" />

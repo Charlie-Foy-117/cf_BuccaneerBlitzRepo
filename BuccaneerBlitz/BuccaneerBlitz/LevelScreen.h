@@ -18,6 +18,7 @@
 #include "OldCrewMate.h"
 #include "PirateLord.h"
 #include "Kraken.h"
+#include "Tentacle.h"
 #include "Goon.h"
 #include "Charger.h"
 #include "Sprayer.h"
@@ -43,7 +44,8 @@ enum class EnemyType
 {
     GOON,
     SPRAYER,
-    CHARGER
+    CHARGER,
+    TENTACLE
 };
 
 enum class HazardType
@@ -99,6 +101,7 @@ private:
     Charger charger;
     Goon goon;
     Sprayer sprayer;
+    Tentacle tentacle;
     PirateBarricade pirateBarricade;
     SmallIsland smallIsland;
 
@@ -113,6 +116,7 @@ private:
     OldCrewMate oldCrewMate;
     PirateLord pirateLord;
     Kraken kraken;
+    std::vector<Tentacle*> tentacles;
 
     Timer timer;
     Score score;
