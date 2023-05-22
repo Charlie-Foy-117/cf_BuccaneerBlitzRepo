@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+
 enum class CollisionType
 {
 	AABB,
@@ -42,6 +44,7 @@ public:
 protected:
 
 	sf::Sprite sprite;
+	sf::Sound sound;
 
 	sf::Vector2f collisionOffset;
 	sf::Vector2f collisionScale;

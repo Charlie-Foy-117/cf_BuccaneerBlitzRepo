@@ -18,7 +18,7 @@ EndPanel::EndPanel(sf::RenderWindow* newWindow)
 	title.setCharacterSize(80);
 	title.setFillColor(sf::Color::Black);
 
-	message.setFont(AssetManager::RequestFont("Assets/Graphics/UI/cf_font.ttf"));
+	message.setFont(AssetManager::RequestFont("Assets/Graphics/UI/Font/PublicPixel-z84yD.ttf"));
 	message.setCharacterSize(100);
 	message.setFillColor(sf::Color::Black);
 

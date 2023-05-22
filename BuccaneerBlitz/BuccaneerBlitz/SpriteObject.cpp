@@ -1,9 +1,10 @@
 #include "SpriteObject.h"
 #include "VectorHelper.h"
-
+#include "AssetManager.h"
 
 SpriteObject::SpriteObject()
 	: sprite()
+	, sound()
 	, position(0, 0)
 	, collisionOffset(0, 0)
 	, collisionScale(1, 1)
