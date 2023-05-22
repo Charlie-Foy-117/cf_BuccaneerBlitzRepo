@@ -6,7 +6,7 @@ enum class CollisionType
 {
 	AABB,
 	CIRCLE,
-	BOSSROOM1
+	BOSSROOM
 };
 
 class SpriteObject

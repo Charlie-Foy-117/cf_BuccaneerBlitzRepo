@@ -17,6 +17,7 @@
 
 #include "OldCrewMate.h"
 #include "PirateLord.h"
+#include "Kraken.h"
 #include "Goon.h"
 #include "Charger.h"
 #include "Sprayer.h"
@@ -111,6 +112,7 @@ private:
 
     OldCrewMate oldCrewMate;
     PirateLord pirateLord;
+    Kraken kraken;
 
     Timer timer;
     Score score;
@@ -120,6 +122,7 @@ private:
     MultiFireUI multiFireUI;
     LifeUI oldCrewMateLifeUI;
     LifeUI pirateLordLifeUI;
+    LifeUI krakenLifeUI;
     EndPanel endPanel;
 
     std::vector<sf::Clock*> cooldownClocks;

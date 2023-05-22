@@ -13,7 +13,9 @@ Kraken::Kraken(LevelScreen* newLevelScreen)
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Enemies/cf_Kraken_PNG.png"));
 	sprite.setScale(0.5f, 0.5f);
 	sprite.setOrigin(sprite.getLocalBounds().width / 2.0f, sprite.getLocalBounds().height / 2.0f);
-	sprite.setRotation(180);
+
+	collisionScale = sf::Vector2f(0.6f, 1.0f);
+	collisionOffset = sf::Vector2f(-128, -135);
 
 	lives = 15;
 	bonusTime = 60.0f;

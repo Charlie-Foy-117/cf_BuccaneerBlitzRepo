@@ -7,7 +7,7 @@
 LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
 	, player(newGamePointer->GetWindow(), this)
-	, levelStageNumber(1)
+	, levelStageNumber(6)
 	, gameRunning(true)
 	, background(newGamePointer->GetWindow())
 	, game(newGamePointer)
@@ -30,6 +30,7 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, smallIslands()
 	, oldCrewMate(this)
 	, pirateLord(newGamePointer->GetWindow(), this, &player)
+	, kraken(this)
 	, timer(this)
 	, score()
 	, lifeUI()
@@ -37,6 +38,7 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, multiFireUI()
 	, oldCrewMateLifeUI()
 	, pirateLordLifeUI()
+	, krakenLifeUI()
 	, endPanel(newGamePointer->GetWindow())
 	, cooldownClocks()
 	, goons()
@@ -62,6 +64,11 @@ void LevelScreen::Update(sf::Time frameTime)
 	//when game is running
 	if (gameRunning)
 	{
+		if (kraken.GetAlive() == false)
+		{
+			gameRunning = false;
+			TriggerEndState();
+		}
 		if (player.GetAlive() != true)
 		{
 			gameRunning = false;
@@ -640,6 +647,68 @@ void LevelScreen::Update(sf::Time frameTime)
 					}
 				}
 			}
+			else if (levelStageNumber == 6)
+			{
+			//updating
+						//
+						//
+
+						kraken.Update(frameTime);
+						kraken.SetColliding(false);
+
+						if (kraken.CheckColliding(player))
+						{
+							player.SetColliding(true);
+							kraken.SetColliding(true);
+							kraken.HandleCollision(player);
+						}
+
+						for (size_t i = cannonBalls.size(); i > 0; i--)
+						{
+							if (cannonBalls[i - 1] != nullptr)
+							{
+								if (cannonBalls[i - 1]->CheckColliding(kraken))
+								{
+									cannonBalls[i - 1]->SetColliding(true);
+									kraken.SetColliding(true);
+									cannonBalls[i - 1]->HandleCollision(kraken);
+									if (kraken.GetLives() <= 0)
+									{
+										//checks to see if boss was beaten before the bonus time
+										if (timer.GetGameTime().getElapsedTime().asSeconds() < kraken.GetBonusTime())
+										{
+											score.AddScore(300);
+										}
+										score.AddScore(1000);
+										timer.ResetTime();
+									}
+								}
+							}
+						}
+						for (size_t i = anchors.size(); i > 0; i--)
+						{
+							if (anchors[i - 1] != nullptr)
+							{
+								if (anchors[i - 1]->CheckColliding(kraken))
+								{
+									anchors[i - 1]->SetColliding(true);
+									kraken.SetColliding(true);
+									anchors[i - 1]->HandleCollision(kraken);
+									if (kraken.GetLives() <= 0)
+									{
+										//checks to see if boss was beaten before the bonus time
+										if (timer.GetGameTime().getElapsedTime().asSeconds() < kraken.GetBonusTime())
+										{
+											score.AddScore(200);
+										}
+										score.AddScore(500);
+										timer.ResetTime();
+										levelStageNumber++;
+									}
+								}
+							}
+						}
+			}
 
 			//collision updating
 
@@ -1121,6 +1190,14 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 
 		bossRoomBarrier.UpdateSpriteAsset(levelStageNumber);
 		bossRoomBarrier.Draw(target);
+		kraken.Draw(target);
+
+		for (size_t i = kraken.GetLives(); i > 0; i--)
+		{
+			krakenLifeUI.SetSpriteScale(0.25f, 0.25f);
+			krakenLifeUI.Draw(target);
+			krakenLifeUI.SetPosition(background->getSize().x / 2 + ((i - 1) * krakenLifeUI.GetWidth() / 4) - kraken.GetLives() / 2 * krakenLifeUI.GetWidth() / 4, 10);
+		}
 	}
 
 	//cannonballs
@@ -1410,6 +1487,7 @@ void LevelScreen::Restart()
 	multiFireUI.SetPosition(anchorUI.GetWidth() / 2 + 10, 30 + anchorUI.GetHeight() / 2);
 	oldCrewMate.SetPosition(350, 300);
 	pirateLord.SetPosition(350, 300);
+	kraken.SetPosition(350, 300);
 
 	for (size_t i = 0; i < goons.size(); i++)
 	{

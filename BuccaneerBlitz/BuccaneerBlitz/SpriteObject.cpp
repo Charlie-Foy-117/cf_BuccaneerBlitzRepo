@@ -75,10 +75,6 @@ void SpriteObject::Draw(sf::RenderTarget& target)
 			target.draw(circle);
 		}
 		break;
-		case CollisionType::BOSSROOM1:
-		{
-			
-		}
 		}
 	}
 }
