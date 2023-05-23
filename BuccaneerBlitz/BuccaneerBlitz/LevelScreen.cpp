@@ -7,7 +7,7 @@
 LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
 	, player(newGamePointer->GetWindow(), this)
-	, levelStageNumber(1)
+	, levelStageNumber(6)
 	, gameRunning(true)
 	, background(newGamePointer->GetWindow())
 	, game(newGamePointer)
@@ -89,7 +89,7 @@ void LevelScreen::Update(sf::Time frameTime)
 			//clock 2 = sprayers
 			//clcok 3 = piratebarricades
 			//clock 4 = smallislands
-			//clock 5 = 
+			//clock 5 = Tentacles
 
 			if (levelStageNumber != 2 && levelStageNumber != 4 && levelStageNumber != 6)
 			{
@@ -681,6 +681,15 @@ void LevelScreen::Update(sf::Time frameTime)
 							}
 						}
 
+						for (size_t i = tentacleProjectiles.size(); i > 0; i--)
+						{
+							if (tentacleProjectiles[i - 1] != nullptr)
+							{
+								tentacleProjectiles[i - 1]->Update(frameTime);
+								tentacleProjectiles[i - 1]->SetColliding(false);
+							}
+						}
+
 						if (kraken.CheckColliding(player))
 						{
 							player.SetColliding(true);
@@ -700,6 +709,19 @@ void LevelScreen::Update(sf::Time frameTime)
 										tentacles[j - 1]->SetColliding(true);
 										cannonBalls[i - 1]->HandleCollision(*tentacles[j - 1]);
 									}
+								}
+							}
+						}
+
+						for (size_t i = tentacleProjectiles.size(); i > 0; i--)
+						{
+							if (tentacleProjectiles[i - 1] != nullptr)
+							{
+								if (tentacleProjectiles[i - 1]->CheckColliding(player))
+								{
+									tentacleProjectiles[i - 1]->SetColliding(true);
+									player.SetColliding(true);
+									tentacleProjectiles[i - 1]->HandleCollision(player);
 								}
 							}
 						}
@@ -781,6 +803,20 @@ void LevelScreen::Update(sf::Time frameTime)
 				sideBarrierRight.SetColliding(true);
 				oldCrewMate.HandleCollision(sideBarrierRight);
 				sideBarrierRight.HandleCollision(oldCrewMate);
+			}
+			if (sideBarrierLeft.CheckColliding(kraken))
+			{
+				kraken.SetColliding(true);
+				sideBarrierLeft.SetColliding(true);
+				kraken.HandleCollision(sideBarrierLeft);
+				sideBarrierLeft.HandleCollision(kraken);
+			}
+			if (sideBarrierRight.CheckColliding(kraken))
+			{
+				kraken.SetColliding(true);
+				sideBarrierRight.SetColliding(true);
+				kraken.HandleCollision(sideBarrierRight);
+				sideBarrierRight.HandleCollision(kraken);
 			}
 			for (size_t i = goons.size(); i > 0; i--)
 			{
@@ -1266,6 +1302,36 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 			}
 		}
 
+		for (size_t i = tentacleProjectiles.size(); i > 0; i--)
+		{
+			if (tentacleProjectiles[i - 1] != nullptr)
+			{
+				if (tentacleProjectiles[i - 1]->GetAlive())
+				{
+					tentacleProjectiles[i - 1]->Draw(target);
+				}
+				else if (tentacleProjectiles[i - 1]->GetAlive() == false)
+				{
+					if (tentacleProjectiles[i - 1] != nullptr)
+					{
+						tentacleProjectiles[i - 1] = nullptr;
+						delete tentacleProjectiles[i - 1];
+						tentacleProjectiles.erase(tentacleProjectiles.begin() + (i - 1));
+					}
+				}
+				else if (tentacleProjectiles[i - 1]->GetPosition().y >= background->getSize().y)
+				{
+					if (tentacleProjectiles[i - 1] != nullptr)
+					{
+						//clears charger memory and deletes it from vector
+						delete tentacleProjectiles[i - 1];
+						tentacleProjectiles[i - 1] = nullptr;
+						tentacleProjectiles.erase(tentacleProjectiles.begin() + (i - 1));
+					}
+				}
+			}
+		}
+
 		for (size_t i = kraken.GetLives(); i > 0; i--)
 		{
 			krakenLifeUI.SetSpriteScale(0.25f, 0.25f);
@@ -1457,7 +1523,11 @@ void LevelScreen::SpawnProjectile(Projectile projectileType, SpriteObject& sprit
 				oldCrewMateCannonBalls.back()->SetPosition(spriteCaller.GetPosition().x, spriteCaller.GetPosition().y + cannonBall.GetHeight() / 2);
 			}
 			break;
-
+		case Projectile::KRAKENTENTACLES:
+			tentacleProjectiles.push_back(new Tentacle(this));
+			tentacleProjectiles.back()->SetVelocity(0, 400);
+			tentacleProjectiles.back()->SetPosition(spriteCaller.GetPosition().x, spriteCaller.GetPosition().y + tentacle.GetHeight() / 4);
+			break;
 		default:
 			break;
 		}
@@ -1566,7 +1636,7 @@ void LevelScreen::Restart()
 	multiFireUI.SetPosition(anchorUI.GetWidth() / 2 + 10, 30 + anchorUI.GetHeight() / 2);
 	oldCrewMate.SetPosition(350, 300);
 	pirateLord.SetPosition(350, 300);
-	kraken.SetPosition(350, 300);
+	kraken.SetPosition(350, 200);
 
 	for (size_t i = 0; i < goons.size(); i++)
 	{

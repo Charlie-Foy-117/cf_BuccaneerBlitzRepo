@@ -38,6 +38,11 @@ void Tentacle::HandleCollision(SpriteObject& other)
 			return;
 		}
 	}
+	else
+	{
+		alive = false;
+		other.ModifyLives(-1);
+	}
 }
 
 void Tentacle::Update(sf::Time frameTime)
@@ -54,4 +59,10 @@ void Tentacle::Update(sf::Time frameTime)
 	{
 		sprite.setScale(-0.5f, 0.5f);
 	}
+}
+
+void Tentacle::SetVelocity(float newX, float newY)
+{
+	velocity.x = newX;
+	velocity.y = newY;
 }

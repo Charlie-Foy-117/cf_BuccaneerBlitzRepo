@@ -11,6 +11,8 @@ public:
     void HandleCollision(SpriteObject& other) override;
     void Update(sf::Time frameTime) override;
 
+    void SetVelocity(float newX, float newY);
+
 private:
 
     sf::Vector2f velocity;

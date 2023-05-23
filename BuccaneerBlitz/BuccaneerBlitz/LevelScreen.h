@@ -37,7 +37,8 @@ enum class Projectile
     MULTIFIRE,
     GOONCANNONBALL,
     SPRAYERCANNONBALL,
-    OLDCREWMATECANNONBALLS
+    OLDCREWMATECANNONBALLS,
+    KRAKENTENTACLES
 };
 
 enum class EnemyType
@@ -112,10 +113,13 @@ private:
     std::vector<CannonBall*> oldCrewMateCannonBalls;
     std::vector<PirateBarricade*> pirateBarricades;
     std::vector<SmallIsland*> smallIslands;
+    //Kraken projectiles
+    std::vector<Tentacle*> tentacleProjectiles;
 
     OldCrewMate oldCrewMate;
     PirateLord pirateLord;
     Kraken kraken;
+    //Wall of tentacles
     std::vector<Tentacle*> tentacles;
 
     Timer timer;

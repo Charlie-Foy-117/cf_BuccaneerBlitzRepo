@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy.h"
+#include "SideBarrier.h"
 
 class LevelScreen;
 
