@@ -762,11 +762,10 @@ void LevelScreen::Update(sf::Time frameTime)
 										//checks to see if boss was beaten before the bonus time
 										if (timer.GetGameTime().getElapsedTime().asSeconds() < kraken.GetBonusTime())
 										{
-											score.AddScore(200);
+											score.AddScore(300);
 										}
-										score.AddScore(500);
+										score.AddScore(1000);
 										timer.ResetTime();
-										levelStageNumber++;
 									}
 								}
 							}
