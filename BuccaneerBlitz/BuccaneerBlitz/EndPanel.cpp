@@ -6,6 +6,7 @@ EndPanel::EndPanel(sf::RenderWindow* newWindow)
 	: background()
 	, title()
 	, message()
+	, continueMsg()
 	, position()
 	, window(newWindow)
 	, animatingIn(false)
@@ -21,6 +22,11 @@ EndPanel::EndPanel(sf::RenderWindow* newWindow)
 	message.setFont(AssetManager::RequestFont("Assets/Graphics/UI/Font/PublicPixel-z84yD.ttf"));
 	message.setCharacterSize(100);
 	message.setFillColor(sf::Color::Black);
+
+	continueMsg.setFont(AssetManager::RequestFont("Assets/Graphics/UI/Font/PublicPixel-z84yD.ttf"));
+	continueMsg.setCharacterSize(50);
+	continueMsg.setFillColor(sf::Color::Black);
+	continueMsg.setString("Press 'L' to continue");
 
 	ResetPosition();
 }
@@ -54,6 +60,7 @@ void EndPanel::Update(sf::Time frameTime)
 void EndPanel::Draw(sf::RenderTarget& target)
 {
 	target.draw(background);
+	target.draw(continueMsg);
 	target.draw(message);
 	target.draw(title);
 }
@@ -69,6 +76,10 @@ void EndPanel::SetPosition(sf::Vector2f newPosition)
 	float messageX = background.getGlobalBounds().width / 2.0f - message.getGlobalBounds().width / 2.0f;
 	float messageY = background.getGlobalBounds().height / 2.0f - message.getGlobalBounds().height / 2.0f;
 	message.setPosition(sf::Vector2f(newPosition.x + messageX, newPosition.y + messageY));
+
+	float continueMsgX = background.getGlobalBounds().width / 2.0f - continueMsg.getGlobalBounds().width / 2.0f;
+	float continueMsgY = background.getGlobalBounds().height / 2.0f - continueMsg.getGlobalBounds().height / 2.0f;
+	continueMsg.setPosition(sf::Vector2f(newPosition.x + continueMsgX, newPosition.y + continueMsgY + 250));
 }
 
 void EndPanel::StartAnimation()

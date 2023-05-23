@@ -21,6 +21,7 @@ private:
 	sf::Sprite background;
 	sf::Text title;
 	sf::Text message;
+	sf::Text continueMsg;
 	sf::Vector2f position;
 	sf::RenderWindow* window;
 
