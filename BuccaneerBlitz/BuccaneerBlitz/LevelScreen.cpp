@@ -7,7 +7,7 @@
 LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
 	, player(newGamePointer->GetWindow(), this)
-	, levelStageNumber(6)
+	, levelStageNumber(3)
 	, gameRunning(true)
 	, background(newGamePointer->GetWindow())
 	, game(newGamePointer)
@@ -284,10 +284,13 @@ void LevelScreen::Update(sf::Time frameTime)
 				{
 					if (goons[i - 1] != nullptr)
 					{
+						//checks to see if goon is collding with player
 						if (player.CheckColliding(*goons[i - 1]))
 						{
+							//set goon and player to colling = true
 							player.SetColliding(true);
 							goons[i - 1]->SetColliding(true);
+							//handle collisions between each object
 							player.HandleCollision(*goons[i - 1]);
 							goons[i - 1]->HandleCollision(player);
 						}
@@ -297,12 +300,31 @@ void LevelScreen::Update(sf::Time frameTime)
 				{
 					if (chargers[i - 1] != nullptr)
 					{
+						//checks to see if charger is collding with player
 						if (player.CheckColliding(*chargers[i - 1]))
 						{
+							//set charger and player to colling = true
 							player.SetColliding(true);
 							chargers[i - 1]->SetColliding(true);
+							//handle collisions between each object
 							player.HandleCollision(*chargers[i - 1]);
 							chargers[i - 1]->HandleCollision(player);
+						}
+					}
+				}
+				for (size_t i = sprayers.size(); i > 0; i--)
+				{
+					if (sprayers[i - 1] != nullptr)
+					{
+						// checks to see if sprayer is collding with player
+						if (player.CheckColliding(*sprayers[i - 1]))
+						{
+							//set sprayer and player to colling = true
+							player.SetColliding(true);
+							sprayers[i - 1]->SetColliding(true);
+							//handle collisions between each object
+							player.HandleCollision(*sprayers[i - 1]);
+							sprayers[i - 1]->HandleCollision(player);
 						}
 					}
 				}
@@ -310,13 +332,18 @@ void LevelScreen::Update(sf::Time frameTime)
 				{
 					if (lifePickups[i - 1] != nullptr)
 					{
+						// checks to see if lifepickup is collding with player
 						if (player.CheckColliding(*lifePickups[i - 1]))
 						{
+							//set lifepickup and player to colling = true
 							player.SetColliding(true);
 							lifePickups[i - 1]->SetColliding(true);
+							//handle collisions between each object
 							lifePickups[i - 1]->HandleCollision(player);
+							//check lives on the player
 							if (player.GetLives() >= 3)
 							{
+								//add to score
 								score.AddScore(50);
 							}
 						}
@@ -326,14 +353,19 @@ void LevelScreen::Update(sf::Time frameTime)
 				{
 					if (anchorPickups[i - 1] != nullptr)
 					{
+						// checks to see if anchorpickup is collding with player
 						if (player.CheckColliding(*anchorPickups[i - 1]))
 						{
+							//set anchorpickup and player to colling = true
 							player.SetColliding(true);
 							anchorPickups[i - 1]->SetColliding(true);
+							//handle collisions between each object
 							player.HandleCollision(*anchorPickups[i - 1]);
 							anchorPickups[i - 1]->HandleCollision(player);
+							//check anchor status on the player
 							if (player.GetHasAnchor() == true)
 							{
+								//add to score
 								score.AddScore(50);
 							}
 						}
@@ -343,14 +375,19 @@ void LevelScreen::Update(sf::Time frameTime)
 				{
 					if (multiFirePickups[i - 1] != nullptr)
 					{
+						// checks to see if multifirepickup is collding with player
 						if (player.CheckColliding(*multiFirePickups[i - 1]))
 						{
+							//set multifirepickup and player to colling = true
 							player.SetColliding(true);
 							multiFirePickups[i - 1]->SetColliding(true);
+							//handle collisions between each object
 							player.HandleCollision(*multiFirePickups[i - 1]);
 							multiFirePickups[i - 1]->HandleCollision(player);
+							//check multifire status on the player
 							if (player.GetHasMultiFire() == true)
 							{
+								//add to score
 								score.AddScore(50);
 							}
 						}
@@ -360,10 +397,13 @@ void LevelScreen::Update(sf::Time frameTime)
 				{
 					if (pirateBarricades[i - 1] != nullptr)
 					{
+						// checks to see if pirate barricade is collding with player
 						if (player.CheckColliding(*pirateBarricades[i - 1]))
 						{
+							//set piratebarricade and player to colling = true
 							player.SetColliding(true);
 							pirateBarricades[i - 1]->SetColliding(true);
+							//handle collisions between each object
 							player.HandleCollision(*pirateBarricades[i - 1]);
 							pirateBarricades[i - 1]->HandleCollision(player);
 						}
@@ -373,10 +413,13 @@ void LevelScreen::Update(sf::Time frameTime)
 				{
 					if (smallIslands[i - 1] != nullptr)
 					{
+						// checks to see if smallisland is collding with player
 						if (player.CheckColliding(*smallIslands[i - 1]))
 						{
+							//set smallisland and player to colling = true
 							player.SetColliding(true);
 							smallIslands[i - 1]->SetColliding(true);
+							//handle collisions between each object
 							player.HandleCollision(*smallIslands[i - 1]);
 							smallIslands[i - 1]->HandleCollision(player);
 						}
@@ -390,11 +433,15 @@ void LevelScreen::Update(sf::Time frameTime)
 					{
 						if (cannonBalls[i - 1] != nullptr && goons[j - 1] != nullptr)
 						{
+							// checks to see if goon is collding with cannonball
 							if (cannonBalls[i - 1]->CheckColliding(*goons[j - 1]))
 							{
+								//add to score
 								score.AddScore(10);
+								//set goon and cannonball to colling = true
 								cannonBalls[i - 1]->SetColliding(true);
 								goons[j - 1]->SetColliding(true);
+								//handle collisions between each object
 								cannonBalls[i - 1]->HandleCollision(*goons[j - 1]);
 								goons[j - 1]->HandleCollision(*cannonBalls[i - 1]);
 							}
@@ -408,11 +455,15 @@ void LevelScreen::Update(sf::Time frameTime)
 					{
 						if (cannonBalls[i - 1] != nullptr && chargers[j - 1] != nullptr)
 						{
+							// checks to see if charger is collding with cannonball
 							if (cannonBalls[i - 1]->CheckColliding(*chargers[j - 1]))
 							{
+								//add to score
 								score.AddScore(20);
+								//set charger and cannonball to colling = true
 								cannonBalls[i - 1]->SetColliding(true);
 								chargers[j - 1]->SetColliding(true);
+								//handle collisions between each object
 								cannonBalls[i - 1]->HandleCollision(*chargers[j - 1]);
 								chargers[j - 1]->HandleCollision(*cannonBalls[i - 1]);
 							}
@@ -425,11 +476,15 @@ void LevelScreen::Update(sf::Time frameTime)
 					{
 						if (cannonBalls[i - 1] != nullptr && sprayers[j - 1] != nullptr)
 						{
+							// checks to see if sprayer is collding with cannonball
 							if (cannonBalls[i - 1]->CheckColliding(*sprayers[j - 1]))
 							{
+								//add to score
 								score.AddScore(15);
+								//set sprayer and cannonball to colling = true
 								cannonBalls[i - 1]->SetColliding(true);
 								sprayers[j - 1]->SetColliding(true);
+								//handle collisions between each object
 								cannonBalls[i - 1]->HandleCollision(*sprayers[j - 1]);
 								sprayers[j - 1]->HandleCollision(*cannonBalls[i - 1]);
 							}
@@ -440,19 +495,25 @@ void LevelScreen::Update(sf::Time frameTime)
 				//enemy cannonballs
 				for (size_t i = goonCannonBalls.size(); i > 0; i--)
 				{
+					// checks to see if player is collding with gooncannonball
 					if (goonCannonBalls[i - 1]->CheckColliding(player))
 					{
+						//set player and gooncannonball to colling = true
 						goonCannonBalls[i - 1]->SetColliding(true);
 						player.SetColliding(true);
+						//handle collisions between each object
 						goonCannonBalls[i - 1]->HandleCollision(player);
 					}
 				}
 				for (size_t i = sprayerCannonBalls.size(); i > 0; i--)
 				{
+					// checks to see if player is collding with sprayercannonball
 					if (sprayerCannonBalls[i - 1]->CheckColliding(player))
 					{
+						//set player and sprayercannonball to colling = true
 						sprayerCannonBalls[i - 1]->SetColliding(true);
 						player.SetColliding(true);
+						//handle collisions between each object
 						sprayerCannonBalls[i - 1]->HandleCollision(player);
 					}
 				}
@@ -462,11 +523,15 @@ void LevelScreen::Update(sf::Time frameTime)
 				{
 					for (size_t j = pirateBarricades.size(); j > 0; j--)
 					{
+						// checks to see if piratebarricade is collding with anchor
 						if (anchors[i - 1]->CheckColliding(*pirateBarricades[j - 1]))
 						{
+							//add to score
 							score.AddScore(50);
+							//set anchor and piratebarricade to colling = true
 							anchors[i - 1]->SetColliding(true);
 							pirateBarricades[j - 1]->SetColliding(true);
+							//handle collisions between each object
 							anchors[i - 1]->HandleCollision(*pirateBarricades[j - 1]);
 							pirateBarricades[j - 1]->HandleCollision(*anchors[i - 1]);
 						}
@@ -478,11 +543,15 @@ void LevelScreen::Update(sf::Time frameTime)
 					{
 						if (anchors[i - 1] != nullptr && goons[j - 1] != nullptr)
 						{
+							// checks to see if goon is collding with anchor
 							if (anchors[i - 1]->CheckColliding(*goons[j - 1]))
 							{
+								//add to score
 								score.AddScore(10);
+								//set anchor and goon to colling = true
 								anchors[i - 1]->SetColliding(true);
 								goons[j - 1]->SetColliding(true);
+								//handle collisions between each object
 								anchors[i - 1]->HandleCollision(*goons[j - 1]);
 								goons[i - 1]->HandleCollision(*anchors[i - 1]);
 							}
@@ -496,11 +565,15 @@ void LevelScreen::Update(sf::Time frameTime)
 					{
 						if (anchors[i - 1] != nullptr && chargers[j - 1] != nullptr)
 						{
+							// checks to see if charger is collding with anchor
 							if (anchors[i - 1]->CheckColliding(*chargers[j - 1]))
 							{
+								//add to score
 								score.AddScore(20);
+								//set anchor and charger to colling = true
 								anchors[i - 1]->SetColliding(true);
 								chargers[j - 1]->SetColliding(true);
+								//handle collisions between each object
 								anchors[i - 1]->HandleCollision(*chargers[j - 1]);
 								chargers[i - 1]->HandleCollision(*anchors[i - 1]);
 							}
@@ -513,11 +586,15 @@ void LevelScreen::Update(sf::Time frameTime)
 					{
 						if (anchors[i - 1] != nullptr && sprayers[j - 1] != nullptr)
 						{
+							// checks to see if sprayer is collding with anchor
 							if (anchors[i - 1]->CheckColliding(*sprayers[j - 1]))
 							{
+								//add to score
 								score.AddScore(15);
+								//set anchor and sprayer to colling = true
 								anchors[i - 1]->SetColliding(true);
 								sprayers[j - 1]->SetColliding(true);
+								//handle collisions between each object
 								anchors[i - 1]->HandleCollision(*sprayers[j - 1]);
 								sprayers[i - 1]->HandleCollision(*anchors[i - 1]);
 							}
@@ -534,10 +611,6 @@ void LevelScreen::Update(sf::Time frameTime)
 				oldCrewMate.Update(frameTime);
 				oldCrewMate.SetColliding(false);
 
-				//Check collisions
-				//
-				//
-
 				for (size_t i = oldCrewMateCannonBalls.size(); i > 0; i--)
 				{
 					if (oldCrewMateCannonBalls[i - 1] != nullptr)
@@ -547,24 +620,45 @@ void LevelScreen::Update(sf::Time frameTime)
 					}
 				}
 
+				//Check collisions
+				//
+				//
+
+				//checks to see if player is collding with oldcrewmate
+				if (oldCrewMate.CheckColliding(player))
+				{
+					//set oldcrewmate and player to colling = true
+					player.SetColliding(true);
+					oldCrewMate.SetColliding(true);
+					//handle collision between each object
+					oldCrewMate.HandleCollision(player);
+				}
+
 				for (size_t i = cannonBalls.size(); i > 0; i--)
 				{
 					if (cannonBalls[i - 1] != nullptr)
 					{
+						//checks to see if player is collding with oldcrewmate
 						if (cannonBalls[i - 1]->CheckColliding(oldCrewMate))
 						{
+							//set oldcrewmate and player to colling = true
 							cannonBalls[i - 1]->SetColliding(true);
 							oldCrewMate.SetColliding(true);
+							//handle collision between each object
 							cannonBalls[i - 1]->HandleCollision(oldCrewMate);
+							//check oldcrewmates lives
 							if (oldCrewMate.GetLives() <= 0)
 							{
 								//checks to see if boss was beaten before the bonus time
 								if (timer.GetGameTime().getElapsedTime().asSeconds() < oldCrewMate.GetBonusTime())
 								{
+									//add to score
 									score.AddScore(100);
 								}
+								//add to score
 								score.AddScore(100);
 								timer.ResetTime();
+								//move up a level
 								levelStageNumber++;
 							}
 						}
@@ -574,15 +668,27 @@ void LevelScreen::Update(sf::Time frameTime)
 				{
 					if (anchors[i - 1] != nullptr)
 					{
+						//checks to see if oldcrewmate is collding with anchor
 						if (anchors[i - 1]->CheckColliding(oldCrewMate))
 						{
+							//set oldcrewmate and anchor to colling = true
 							anchors[i - 1]->SetColliding(true);
 							oldCrewMate.SetColliding(true);
+							//handle collision between each object
 							anchors[i - 1]->HandleCollision(oldCrewMate);
+							//check oldcrewmates lives
 							if (oldCrewMate.GetLives() <= 0)
 							{
+								//checks to see if boss was beaten before the bonus time
+								if (timer.GetGameTime().getElapsedTime().asSeconds() < oldCrewMate.GetBonusTime())
+								{
+									//add to score
+									score.AddScore(100);
+								}
+								//add to score
 								score.AddScore(100);
 								timer.ResetTime();
+								//move up a level
 								levelStageNumber++;
 							}
 						}
@@ -591,10 +697,13 @@ void LevelScreen::Update(sf::Time frameTime)
 
 				for (size_t i = oldCrewMateCannonBalls.size(); i > 0; i--)
 				{
+					//checks to see if player is collding with oldcrewmate
 					if (oldCrewMateCannonBalls[i - 1]->CheckColliding(player))
 					{
+						//set oldcrewmate and player to colling = true
 						oldCrewMateCannonBalls[i - 1]->SetColliding(true);
 						player.SetColliding(true);
+						//handle collision between each object
 						oldCrewMateCannonBalls[i - 1]->HandleCollision(player);
 					}
 				}
@@ -609,10 +718,17 @@ void LevelScreen::Update(sf::Time frameTime)
 				pirateLord.Update(frameTime);
 				pirateLord.SetColliding(false);
 
+				//Check collisions
+				//
+				//
+
+				//checks to see if player is collding with piratelord
 				if (pirateLord.CheckColliding(player))
 				{
+					//set piratelord and player to colling = true
 					player.SetColliding(true);
 					pirateLord.SetColliding(true);
+					//handle collision between each object
 					pirateLord.HandleCollision(player);
 				}
 
@@ -620,20 +736,26 @@ void LevelScreen::Update(sf::Time frameTime)
 				{
 					if (cannonBalls[i - 1] != nullptr)
 					{
+						//checks to see if piratelord is collding with cannonball
 						if (cannonBalls[i - 1]->CheckColliding(pirateLord))
 						{
+							//set piratelord and cannonball to colling = true
 							cannonBalls[i - 1]->SetColliding(true);
 							pirateLord.SetColliding(true);
+							//handle collision between each object
 							cannonBalls[i - 1]->HandleCollision(pirateLord);
 							if (pirateLord.GetLives() <= 0)
 							{
 								//checks to see if boss was beaten before the bonus time
 								if (timer.GetGameTime().getElapsedTime().asSeconds() < pirateLord.GetBonusTime())
 								{
+									//add to score
 									score.AddScore(200);
 								}
+								//add to score
 								score.AddScore(500);
 								timer.ResetTime();
+								//move up level
 								levelStageNumber++;
 							}
 						}
@@ -643,20 +765,26 @@ void LevelScreen::Update(sf::Time frameTime)
 				{
 					if (anchors[i - 1] != nullptr)
 					{
+						//checks to see if oldcrewmate is collding with anchor
 						if (anchors[i - 1]->CheckColliding(pirateLord))
 						{
+							//set piratelord and anchor to colling = true
 							anchors[i - 1]->SetColliding(true);
 							pirateLord.SetColliding(true);
+							//handle collision between each object
 							anchors[i - 1]->HandleCollision(pirateLord);
 							if (pirateLord.GetLives() <= 0)
 							{
 								//checks to see if boss was beaten before the bonus time
 								if (timer.GetGameTime().getElapsedTime().asSeconds() < pirateLord.GetBonusTime())
 								{
+									//add to score
 									score.AddScore(200);
 								}
+								//add to score
 								score.AddScore(500);
 								timer.ResetTime();
+								//move up level
 								levelStageNumber++;
 							}
 						}
@@ -665,111 +793,134 @@ void LevelScreen::Update(sf::Time frameTime)
 			}
 			else if (levelStageNumber == 6)
 			{
-			//updating
-						//
-						//
+				//updating
+				//
+				//
 
-						kraken.Update(frameTime);
-						kraken.SetColliding(false);
+				kraken.Update(frameTime);
+				kraken.SetColliding(false);
 
-						for (size_t i = tentacles.size(); i > 0; i--)
+				for (size_t i = tentacles.size(); i > 0; i--)
+				{
+					if (tentacles[i - 1] != nullptr)
+					{
+						tentacles[i - 1]->Update(frameTime);
+						tentacles[i - 1]->SetColliding(false);
+					}
+				}
+
+				for (size_t i = tentacleProjectiles.size(); i > 0; i--)
+				{
+					if (tentacleProjectiles[i - 1] != nullptr)
+					{
+						tentacleProjectiles[i - 1]->Update(frameTime);
+						tentacleProjectiles[i - 1]->SetColliding(false);
+					}
+				}
+
+				//Check collisions
+				//
+				//
+
+				//checks to see if kraken is collding with player
+				if (kraken.CheckColliding(player))
+				{
+					//set kraken and player to colling = true
+					player.SetColliding(true);
+					kraken.SetColliding(true);
+					//handle collision between each object
+					kraken.HandleCollision(player);
+				}
+
+				for (size_t i = cannonBalls.size(); i > 0; i--)
+				{
+					for (size_t j = tentacles.size(); j > 0; j--)
+					{
+						if (cannonBalls[i - 1] != nullptr)
 						{
-							if (tentacles[i - 1] != nullptr)
+							//checks to see if tentacles is collding with cannonball
+							if (cannonBalls[i - 1]->CheckColliding(*tentacles[j - 1]))
 							{
-								tentacles[i - 1]->Update(frameTime);
-								tentacles[i - 1]->SetColliding(false);
+								//set tentacles and cannonball to colling = true
+								cannonBalls[i - 1]->SetColliding(true);
+								tentacles[j - 1]->SetColliding(true);
+								//handle collision between each object
+								cannonBalls[i - 1]->HandleCollision(*tentacles[j - 1]);
 							}
 						}
+					}
+				}
 
-						for (size_t i = tentacleProjectiles.size(); i > 0; i--)
+				for (size_t i = tentacleProjectiles.size(); i > 0; i--)
+				{
+					if (tentacleProjectiles[i - 1] != nullptr)
+					{
+						//checks to see if tentacleprojectiles is collding with player
+						if (tentacleProjectiles[i - 1]->CheckColliding(player))
 						{
-							if (tentacleProjectiles[i - 1] != nullptr)
-							{
-								tentacleProjectiles[i - 1]->Update(frameTime);
-								tentacleProjectiles[i - 1]->SetColliding(false);
-							}
-						}
-
-						if (kraken.CheckColliding(player))
-						{
+							//set tentacleprojectiles and player to colling = true
+							tentacleProjectiles[i - 1]->SetColliding(true);
 							player.SetColliding(true);
+							//handle collision between each object
+							tentacleProjectiles[i - 1]->HandleCollision(player);
+						}
+					}
+				}
+
+				for (size_t i = cannonBalls.size(); i > 0; i--)
+				{
+					if (cannonBalls[i - 1] != nullptr)
+					{
+						//checks to see if kraken is collding with cannonball
+						if (cannonBalls[i - 1]->CheckColliding(kraken))
+						{
+							//set kraken and cannonball to colling = true
+							cannonBalls[i - 1]->SetColliding(true);
 							kraken.SetColliding(true);
-							kraken.HandleCollision(player);
-						}
-
-						for (size_t i = cannonBalls.size(); i > 0; i--)
-						{
-							for (size_t j = tentacles.size(); j > 0; j--)
+							//handle collision between each object
+							cannonBalls[i - 1]->HandleCollision(kraken);
+							if (kraken.GetLives() <= 0)
 							{
-								if (cannonBalls[i - 1] != nullptr)
+								//checks to see if boss was beaten before the bonus time
+								if (timer.GetGameTime().getElapsedTime().asSeconds() < kraken.GetBonusTime())
 								{
-									if (cannonBalls[i - 1]->CheckColliding(*tentacles[j - 1]))
-									{
-										cannonBalls[i - 1]->SetColliding(true);
-										tentacles[j - 1]->SetColliding(true);
-										cannonBalls[i - 1]->HandleCollision(*tentacles[j - 1]);
-									}
+									//add to score
+									score.AddScore(300);
 								}
+								//add to score
+								score.AddScore(1000);
+								timer.ResetTime();
 							}
 						}
-
-						for (size_t i = tentacleProjectiles.size(); i > 0; i--)
+					}
+				}
+				for (size_t i = anchors.size(); i > 0; i--)
+				{
+					if (anchors[i - 1] != nullptr)
+					{
+						//checks to see if kraken is collding with anchor
+						if (anchors[i - 1]->CheckColliding(kraken))
 						{
-							if (tentacleProjectiles[i - 1] != nullptr)
+							//set kraken and anchor to colling = true
+							anchors[i - 1]->SetColliding(true);
+							kraken.SetColliding(true);
+							//handle collision between each object
+							anchors[i - 1]->HandleCollision(kraken);
+							if (kraken.GetLives() <= 0)
 							{
-								if (tentacleProjectiles[i - 1]->CheckColliding(player))
+								//checks to see if boss was beaten before the bonus time
+								if (timer.GetGameTime().getElapsedTime().asSeconds() < kraken.GetBonusTime())
 								{
-									tentacleProjectiles[i - 1]->SetColliding(true);
-									player.SetColliding(true);
-									tentacleProjectiles[i - 1]->HandleCollision(player);
+									//add to score
+									score.AddScore(300);
 								}
+								//add to score
+								score.AddScore(1000);
+								timer.ResetTime();
 							}
 						}
-
-						for (size_t i = cannonBalls.size(); i > 0; i--)
-						{
-							if (cannonBalls[i - 1] != nullptr)
-							{
-								if (cannonBalls[i - 1]->CheckColliding(kraken))
-								{
-									cannonBalls[i - 1]->SetColliding(true);
-									kraken.SetColliding(true);
-									cannonBalls[i - 1]->HandleCollision(kraken);
-									if (kraken.GetLives() <= 0)
-									{
-										//checks to see if boss was beaten before the bonus time
-										if (timer.GetGameTime().getElapsedTime().asSeconds() < kraken.GetBonusTime())
-										{
-											score.AddScore(300);
-										}
-										score.AddScore(1000);
-										timer.ResetTime();
-									}
-								}
-							}
-						}
-						for (size_t i = anchors.size(); i > 0; i--)
-						{
-							if (anchors[i - 1] != nullptr)
-							{
-								if (anchors[i - 1]->CheckColliding(kraken))
-								{
-									anchors[i - 1]->SetColliding(true);
-									kraken.SetColliding(true);
-									anchors[i - 1]->HandleCollision(kraken);
-									if (kraken.GetLives() <= 0)
-									{
-										//checks to see if boss was beaten before the bonus time
-										if (timer.GetGameTime().getElapsedTime().asSeconds() < kraken.GetBonusTime())
-										{
-											score.AddScore(300);
-										}
-										score.AddScore(1000);
-										timer.ResetTime();
-									}
-								}
-							}
-						}
+					}
+				}
 			}
 
 			//collision updating
@@ -950,14 +1101,17 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 		{
 			if (lifePickups[i - 1] != nullptr)
 			{
+				//checks to see if lifepickup is on dead 
 				if (lifePickups[i - 1]->GetAlive() == false)
 				{
+					//clears lifepickup memory and deletes it from vector
 					delete lifePickups[i - 1];
 					lifePickups[i - 1] = nullptr;
 					lifePickups.erase(lifePickups.begin() + (i - 1));
 				}
 				else
 				{
+					//draws lifepickup
 					lifePickups[i -1]->Draw(target);
 				}
 			}
@@ -966,14 +1120,17 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 		{
 			if (anchorPickups[i - 1] != nullptr)
 			{
+				//checks to see if anchorpickup is on dead 
 				if (anchorPickups[i - 1]->GetAlive() == false)
 				{
+					//clears anchorpickup memory and deletes it from vector
 					delete anchorPickups[i - 1];
 					anchorPickups[i - 1] = nullptr;
 					anchorPickups.erase(anchorPickups.begin() + (i - 1));
 				}
 				else
 				{
+					//draws anchorpickup
 					anchorPickups[i - 1]->Draw(target);
 				}
 			}
@@ -982,14 +1139,17 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 		{
 			if (multiFirePickups[i - 1] != nullptr)
 			{
+				//checks to see if multifirepickup is on dead 
 				if (multiFirePickups[i - 1]->GetAlive() == false)
 				{
+					//clears multifirepickup memory and deletes it from vector
 					delete multiFirePickups[i - 1];
 					multiFirePickups[i - 1] = nullptr;
 					multiFirePickups.erase(multiFirePickups.begin() + (i - 1));
 				}
 				else
 				{
+					//draws multifirepickup
 					multiFirePickups[i - 1]->Draw(target);
 				}
 			}
@@ -1000,18 +1160,24 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 		{
 			if (pirateBarricades[i - 1] != nullptr)
 			{
+				//checks to see if piratebarricade is on screen 
 				if (pirateBarricades[i - 1]->GetPosition().y < background->getSize().y)
 				{
+					//draws piratebarricade
 					pirateBarricades[i - 1]->Draw(target);
 				}
+				//checks if piratebarricade is still alive
 				else if (pirateBarricades[i - 1]->GetAlive() == false)
 				{
+					//clears piratebarricade memory and deletes it from vector
 					delete pirateBarricades[i - 1];
 					pirateBarricades[i - 1] = nullptr;
 					pirateBarricades.erase(pirateBarricades.begin() + (i - 1));
 				}
+				//checks to see if position of piratebarricade is off screen
 				else if (pirateBarricades[i - 1]->GetPosition().y >= background->getSize().y)
 				{
+					//clears piratebarricade memory and deletes it from vector
 					if (pirateBarricades[i - 1] != nullptr)
 					{
 						pirateBarricades[i - 1] = nullptr;
@@ -1027,20 +1193,26 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 		{
 			if (smallIslands[i - 1] != nullptr)
 			{
+				//checks to see if smallisland is on screen 
 				if (smallIslands[i - 1]->GetPosition().y < background->getSize().y)
 				{
+					//draws smallisland
 					smallIslands[i - 1]->Draw(target);
 				}
+				//checks if smallisland is still alive
 				else if (smallIslands[i - 1]->GetAlive() == false)
 				{
+					//clears smallisland memory and deletes it from vector
 					delete smallIslands[i - 1];
 					smallIslands[i - 1] = nullptr;
 					smallIslands.erase(smallIslands.begin() + (i - 1));
 				}
+				//checks to see if position of smallisland is off screen
 				else if (smallIslands[i - 1]->GetPosition().y >= background->getSize().y)
 				{
 					if (smallIslands[i - 1] != nullptr)
 					{
+						//clears smallisland memory and deletes it from vector
 						smallIslands[i - 1] = nullptr;
 						delete smallIslands[i - 1];
 						smallIslands.erase(smallIslands.begin() + (i - 1));
@@ -1109,20 +1281,26 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 		{
 			if (sprayers[i - 1] != nullptr)
 			{
+				//checks to see if sprayer is on screen 
 				if (sprayers[i - 1]->GetPosition().y < background->getSize().y)
 				{
+					//draws sprayer
 					sprayers[i - 1]->Draw(target);
 				}
+				//checks if sprayer is still alive
 				else if (sprayers[i - 1]->GetAlive() == false)
 				{
+					//clears sprayer memory and deletes it from vector
 					delete sprayers[i - 1];
 					sprayers[i - 1] = nullptr;
 					sprayers.erase(sprayers.begin() + (i - 1));
 				}
+				//checks to see if position of sprayer is off screen
 				else if (sprayers[i - 1]->GetPosition().y >= background->getSize().y)
 				{
 					if (sprayers[i - 1] != nullptr)
 					{
+						//clears sprayer memory and deletes it from vector
 						delete sprayers[i - 1];
 						sprayers[i - 1] = nullptr;
 						sprayers.erase(sprayers.begin() + (i - 1));
@@ -1285,14 +1463,18 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 		{
 			if (tentacles[i - 1] != nullptr)
 			{
+				//checks to see if tentacle is alive 
 				if (tentacles[i - 1]->GetAlive())
 				{
+					//draws tentacle
 					tentacles[i - 1]->Draw(target);
 				}
+				//checks if tentacle is still alive
 				else if (tentacles[i - 1]->GetAlive() == false)
 				{
 					if (tentacles[i - 1] != nullptr)
 					{
+						//clears tentacle memory and deletes it from vector 
 						tentacles[i - 1] = nullptr;
 						delete tentacles[i - 1];
 						tentacles.erase(tentacles.begin() + (i - 1));
@@ -1305,24 +1487,29 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 		{
 			if (tentacleProjectiles[i - 1] != nullptr)
 			{
+				//checks to see if tentacleprojectile is alive 
 				if (tentacleProjectiles[i - 1]->GetAlive())
 				{
+					//draws tentacleprojectile
 					tentacleProjectiles[i - 1]->Draw(target);
 				}
+				//checks if tentacleprojectile is still alive
 				else if (tentacleProjectiles[i - 1]->GetAlive() == false)
 				{
 					if (tentacleProjectiles[i - 1] != nullptr)
 					{
+						//clears tentacleprojectile memory and deletes it from vector 
 						tentacleProjectiles[i - 1] = nullptr;
 						delete tentacleProjectiles[i - 1];
 						tentacleProjectiles.erase(tentacleProjectiles.begin() + (i - 1));
 					}
 				}
+				//checks to see if position of tentacleprojectile is off screen
 				else if (tentacleProjectiles[i - 1]->GetPosition().y >= background->getSize().y)
 				{
 					if (tentacleProjectiles[i - 1] != nullptr)
 					{
-						//clears charger memory and deletes it from vector
+						//clears tentacleprojectile memory and deletes it from vector
 						delete tentacleProjectiles[i - 1];
 						tentacleProjectiles[i - 1] = nullptr;
 						tentacleProjectiles.erase(tentacleProjectiles.begin() + (i - 1));
@@ -1483,16 +1670,19 @@ void LevelScreen::SpawnProjectile(Projectile projectileType, SpriteObject& sprit
 		switch (projectileType)
 		{
 		case Projectile::CANNONBALL:
+			//add instance to vector
 			cannonBalls.push_back(new CannonBall());
 			cannonBalls.back()->SetPosition(spriteCaller.GetPosition().x - cannonBall.GetWidth() / 8, spriteCaller.GetPosition().y - spriteCaller.GetHeight() / 2);
 			break;
 
 		case Projectile::ANCHOR:
+			//add instance to vector
 			anchors.push_back(new Anchor);
 			anchors.back()->SetPosition(spriteCaller.GetPosition().x, spriteCaller.GetPosition().y - spriteCaller.GetHeight() / 2);
 			break;
 
 		case Projectile::MULTIFIRE:
+			//add instance to vector
 			for (size_t i = 3; i > 0; --i)
 			{
 				cannonBalls.push_back(new CannonBall());
@@ -1502,12 +1692,14 @@ void LevelScreen::SpawnProjectile(Projectile projectileType, SpriteObject& sprit
 			break;
 
 		case Projectile::GOONCANNONBALL:
+			//add instance to vector
 			goonCannonBalls.push_back(new CannonBall());
 			goonCannonBalls.back()->SetVelocity(0, 400);
 			goonCannonBalls.back()->SetPosition(spriteCaller.GetPosition().x, spriteCaller.GetPosition().y + cannonBall.GetHeight() / 2);
 			break;
 
 		case Projectile::SPRAYERCANNONBALL:
+			//add instance to vector
 			sprayerCannonBalls.push_back(new CannonBall());
 			sprayerCannonBalls.back()->SetVelocity(xVelocity, sprayer.GetVelocity().y);
 			sprayerCannonBalls.back()->SetPosition(spriteCaller.GetPosition().x + spriteCaller.GetWidth() / 2, spriteCaller.GetPosition().y + cannonBall.GetHeight() / 2);
@@ -1515,6 +1707,7 @@ void LevelScreen::SpawnProjectile(Projectile projectileType, SpriteObject& sprit
 			break;
 
 		case Projectile::OLDCREWMATECANNONBALLS:
+			//add instance to vector
 			for (size_t i = 5; i > 0; --i)
 			{
 				oldCrewMateCannonBalls.push_back(new CannonBall());
@@ -1523,6 +1716,7 @@ void LevelScreen::SpawnProjectile(Projectile projectileType, SpriteObject& sprit
 			}
 			break;
 		case Projectile::KRAKENTENTACLES:
+			//add instance to vector
 			tentacleProjectiles.push_back(new Tentacle(this));
 			tentacleProjectiles.back()->SetVelocity(0, 400);
 			tentacleProjectiles.back()->SetPosition(spriteCaller.GetPosition().x, spriteCaller.GetPosition().y + tentacle.GetHeight() / 4);
@@ -1543,24 +1737,28 @@ void LevelScreen::SpawnEnemy(EnemyType enemyType)
 	switch (enemyType)
 	{
 	case EnemyType::GOON:
+			//add instance to vector
 			goons.push_back(new Goon(this));
 			goons.back()->SetPosition((float)RandomNumGen((int)xPosMin, (int)xPosMax), 0 - goon.GetHeight());
 			cooldownClocks[0]->restart();
 		break;
 
 	case EnemyType::CHARGER:
+			//add instance to vector
 			chargers.push_back(new Charger(this, &player));
 			chargers.back()->SetPosition(background->getSize().x / 2, 0 - charger.GetHeight());
 			cooldownClocks[1]->restart();
 		break;
 
 	case EnemyType::SPRAYER:
+			//add instance to vector
 			sprayers.push_back(new Sprayer(this));
 			sprayers.back()->SetPosition((float)RandomNumGen((int)xPosMin, (int)xPosMax), 0 - sprayer.GetHeight());
 			cooldownClocks[2]->restart();
 		break;
 
 	case EnemyType::TENTACLE:
+			//add instance to vector
 			tentacles.push_back(new Tentacle(this));
 			tentacles.back()->SetPosition(350, 400);
 			cooldownClocks[5]->restart();
@@ -1579,11 +1777,13 @@ void LevelScreen::SpawnHazard(HazardType hazardType)
 	switch (hazardType)
 	{
 	case HazardType::PIRATEBARRICADE:
+		//add instance to vector
 		pirateBarricades.push_back(new PirateBarricade(this, &levelStageNumber));
 		pirateBarricades.back()->SetPosition(background->getSize().x / 2 - pirateBarricade.GetWidth() / 2 - 250, 0 - pirateBarricade.GetHeight());
 		cooldownClocks[3]->restart();
 		break;
 	case HazardType::SMALLISLAND:
+		//add instance to vector
 		smallIslands.push_back(new SmallIsland(this));
 		smallIslands.back()->SetPosition((float)RandomNumGen((int)xPosMin, (int)xPosMax), 0 - smallIsland.GetHeight());
 		cooldownClocks[4]->restart();
@@ -1598,14 +1798,17 @@ void LevelScreen::SpawnPickUp(PickupType pickupType, sf::Vector2f position)
 	switch (pickupType)
 	{
 	case PickupType::LIFE:
+		//add instance to vector
 		lifePickups.push_back(new LifePickup());
 		lifePickups.back()->SetPosition(position);
 		break;
 	case PickupType::ANCHOR:
+		//add instance to vector
 		anchorPickups.push_back(new AnchorPickup());
 		anchorPickups.back()->SetPosition(position);
 		break;
 	case PickupType::MULTIFIRE:
+		//add instance to vector
 		multiFirePickups.push_back(new MultiFirePickup());
 		multiFirePickups.back()->SetPosition(position);
 		break;
@@ -1636,6 +1839,8 @@ void LevelScreen::Restart()
 	oldCrewMate.SetPosition(350, 300);
 	pirateLord.SetPosition(350, 300);
 	kraken.SetPosition(350, 200);
+
+	//clean up all vectors to have no memory to begin with
 
 	for (size_t i = 0; i < goons.size(); i++)
 	{

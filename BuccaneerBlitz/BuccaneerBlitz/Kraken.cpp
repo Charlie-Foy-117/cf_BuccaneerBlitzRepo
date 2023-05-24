@@ -28,6 +28,10 @@ void Kraken::HandleCollision(SpriteObject& other)
 	{
 		velocity = -velocity;
 	}
+	if (typeid(other).name() == typeid(Player).name())
+	{
+		other.ModifyLives(-1);
+	}
 }
 
 void Kraken::Update(sf::Time frameTime)
