@@ -28,6 +28,7 @@ void Goon::Update(sf::Time frameTime)
 
 	if (cooldownTimer.getElapsedTime().asSeconds() > cooldown)
 	{
+		attackSound.play();
 		levelScreen->SpawnProjectile(Projectile::GOONCANNONBALL, *this);
 		cooldownTimer.restart();
 	}

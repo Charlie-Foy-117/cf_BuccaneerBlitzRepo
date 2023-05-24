@@ -43,6 +43,7 @@ void OldCrewMate::Update(sf::Time frameTime)
 
 	if (cooldownTimer.getElapsedTime().asSeconds() > cooldown)
 	{
+		attackSound.play();
 		levelScreen->SpawnProjectile(Projectile::OLDCREWMATECANNONBALLS, *this);
 		cooldownTimer.restart();
 	}

@@ -148,6 +148,9 @@ private:
     //controls colour of background
     sf::Color targetColor;
     sf::Color currentColor;
+
+    //sound
+    sf::Music backgroundMusic;
 };
 
 

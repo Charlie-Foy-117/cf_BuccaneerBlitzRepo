@@ -24,5 +24,8 @@ protected:
     LevelScreen* levelScreen;
 
     float bonusTime;
+
+    sf::Sound attackSound;
 };
+
 

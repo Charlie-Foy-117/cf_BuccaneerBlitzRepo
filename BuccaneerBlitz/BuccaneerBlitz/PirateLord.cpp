@@ -49,6 +49,8 @@ void PirateLord::Update(sf::Time frameTime)
 
 		if (xPositionMatched)
 		{
+			attackSound.play();
+
 			velocity = sf::Vector2f(0.0f, 1000.0f);
 
 			sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;

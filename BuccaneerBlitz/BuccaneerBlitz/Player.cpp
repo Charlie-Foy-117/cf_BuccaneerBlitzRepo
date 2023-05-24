@@ -18,12 +18,20 @@ Player::Player(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen)
 	, cooldown(1.0f)
 	, hasAnchor(false)
 	, hasMultiFire(false)
+	, attackSound()
+	, pickupSound()
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Player/cf_Player1_PNG.png"));
 	sprite.setOrigin(sprite.getLocalBounds().width / 2.0f, sprite.getLocalBounds().height / 2.0f);
 	collisionScale = sf::Vector2f(0.45f, 0.95f);
 
 	lives = 3;
+
+	attackSound.setBuffer(AssetManager::RequestSoundBuffer("Assets/Sounds/522209__kutejnikov__explosion.wav"));
+	attackSound.setVolume(50.0f);
+
+	pickupSound.setBuffer(AssetManager::RequestSoundBuffer("Assets/Sounds/253172__suntemple__retro-bonus-pickup-sfx.wav"));
+	attackSound.setVolume(50.0f);
 }
 
 void Player::Update(sf::Time frameTime)
@@ -75,11 +83,17 @@ void Player::HandleCollision(SpriteObject& other)
 {
 	if (typeid(other).name() == typeid(AnchorPickup).name())
 	{
+		pickupSound.play();
 		hasAnchor = true;
 	}
 	if (typeid(other).name() == typeid(MultiFirePickup).name())
 	{
+		pickupSound.play();
 		hasMultiFire = true;
+	}
+	if (typeid(other).name() == typeid(LifePickup).name())
+	{
+		pickupSound.play();
 	}
 	else
 	{
@@ -109,6 +123,7 @@ void Player::FireCannonBall(float newCooldown)
 {
 	if (cooldownTimer.getElapsedTime().asSeconds() > newCooldown)
 	{
+		attackSound.play();
 		levelScreen->SpawnProjectile(Projectile::CANNONBALL, *this);
 		cooldownTimer.restart();
 	}
@@ -118,6 +133,7 @@ void Player::FireAnchor(float newCooldown)
 {
 	if (cooldownTimer.getElapsedTime().asSeconds() > newCooldown)
 	{
+		attackSound.play();
 		levelScreen->SpawnProjectile(Projectile::ANCHOR, *this);
 		hasAnchor = false;
 		cooldownTimer.restart();
@@ -128,6 +144,7 @@ void Player::FireMultiFire(float newCooldown)
 {
 	if (cooldownTimer.getElapsedTime().asSeconds() > newCooldown)
 	{
+		attackSound.play();
 		levelScreen->SpawnProjectile(Projectile::MULTIFIRE, *this);
 		hasMultiFire = false;
 		cooldownTimer.restart();

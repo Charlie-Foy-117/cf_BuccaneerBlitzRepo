@@ -42,6 +42,7 @@ void Kraken::Update(sf::Time frameTime)
 
 	if (cooldownTimer.getElapsedTime().asSeconds() > cooldown)
 	{
+		attackSound.play();
 		levelScreen->SpawnProjectile(Projectile::KRAKENTENTACLES, *this);
 		cooldownTimer.restart();
 	}

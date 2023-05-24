@@ -22,5 +22,7 @@ private:
 
     sf::Vector2f acceleration;
     sf::Vector2f velocity;
+
+    sf::Sound collisionSound;
 };
 

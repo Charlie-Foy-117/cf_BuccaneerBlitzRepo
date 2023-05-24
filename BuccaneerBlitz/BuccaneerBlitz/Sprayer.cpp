@@ -25,6 +25,7 @@ void Sprayer::Update(sf::Time frameTime)
 
 	if (cooldownTimer.getElapsedTime().asSeconds() > cooldown)
 	{
+		attackSound.play();
 		levelScreen->SpawnProjectile(Projectile::SPRAYERCANNONBALL, *this);
 		cooldownTimer.restart();
 	}

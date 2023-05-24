@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "LevelScreen.h"
+#include "AssetManager.h"
 #include <random>
 
 Enemy::Enemy(LevelScreen* newLevelScreen)
@@ -8,8 +9,10 @@ Enemy::Enemy(LevelScreen* newLevelScreen)
 	, clock()
 	, levelScreen(newLevelScreen)
 	, bonusTime(0)
+	, attackSound()
 {
-
+	attackSound.setBuffer(AssetManager::RequestSoundBuffer("Assets/Sounds/522209__kutejnikov__explosion.wav"));
+	attackSound.setVolume(50.0f);
 }
 
 void Enemy::DropItem()

@@ -7,7 +7,7 @@
 LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
 	, player(newGamePointer->GetWindow(), this)
-	, levelStageNumber(3)
+	, levelStageNumber(1)
 	, gameRunning(true)
 	, background(newGamePointer->GetWindow())
 	, game(newGamePointer)
@@ -52,12 +52,15 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, xVelocity(100)
 	, targetColor()
 	, currentColor()
+	, backgroundMusic()
 {
 	Restart();
+	backgroundMusic.play();
 }
 
 void LevelScreen::Update(sf::Time frameTime)
 {
+	//displays level number
 	std::cout << levelStageNumber << std::endl;
 
 	//changing colour of background
@@ -66,6 +69,7 @@ void LevelScreen::Update(sf::Time frameTime)
 	//when game is running
 	if (gameRunning)
 	{
+
 		if (kraken.GetAlive() == false)
 		{
 			gameRunning = false;
@@ -339,6 +343,7 @@ void LevelScreen::Update(sf::Time frameTime)
 							player.SetColliding(true);
 							lifePickups[i - 1]->SetColliding(true);
 							//handle collisions between each object
+							player.HandleCollision(*lifePickups[i - 1]);
 							lifePickups[i - 1]->HandleCollision(player);
 							//check lives on the player
 							if (player.GetLives() >= 3)
@@ -1068,6 +1073,8 @@ void LevelScreen::Update(sf::Time frameTime)
 	//when game is not running i.e. win/loss state
 	else
 	{
+		backgroundMusic.stop();
+
 		endPanel.Update(frameTime);
 		if (score.GetScore() > score.LoadHighScore())
 		{
@@ -1839,6 +1846,11 @@ void LevelScreen::Restart()
 	oldCrewMate.SetPosition(350, 300);
 	pirateLord.SetPosition(350, 300);
 	kraken.SetPosition(350, 200);
+
+	//Music
+	backgroundMusic.openFromFile("Assets/Sounds/324566__klavo1985__pirate-at-sea-orgen-music.wav");
+	backgroundMusic.setLoop(true);
+	backgroundMusic.setVolume(5);
 
 	//clean up all vectors to have no memory to begin with
 

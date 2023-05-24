@@ -37,5 +37,8 @@ private:
 
     bool hasAnchor;
     bool hasMultiFire;
+
+    sf::Sound attackSound;
+    sf::Sound pickupSound;
 };
 
