@@ -17,9 +17,5 @@ public:
     sf::Vector2f GetVelocity();
 
     void HandleCollision(PhysicsObject& other) override;
-
-private:
-
-    sf::Sound collisionSound;
 };
 

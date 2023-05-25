@@ -1,5 +1,6 @@
 #include "PhysicsObject.h"
 #include "VectorHelper.h"
+#include "AssetManager.h"
 
 enum class PhysicsType
 {
@@ -15,7 +16,9 @@ PhysicsObject::PhysicsObject()
 	, acceleration()
 	, velocity()
 	, twoFramesOldPosition()
+	, collisionSound()
 {
+	collisionSound.setBuffer(AssetManager::RequestSoundBuffer("Assets/Sounds/501104__evretro__8-bit-damage-sound.wav"));
 }
 
 void PhysicsObject::Update(sf::Time frameTime)

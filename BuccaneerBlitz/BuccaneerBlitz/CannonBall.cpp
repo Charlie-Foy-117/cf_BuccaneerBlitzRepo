@@ -3,15 +3,12 @@
 
 CannonBall::CannonBall()
 	: PhysicsObject()
-	, collisionSound()
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Player/cf_CannonBall_PNG.png"));
 	SetSpriteScale(0.25f, 0.25f);
 	collisionScale = sf::Vector2f(0.9f, 0.9f);
 
 	SetEnumUsed(CollisionType::CIRCLE);
-
-	collisionSound.setBuffer(AssetManager::RequestSoundBuffer("Assets/Sounds/501104__evretro__8-bit-damage-sound.wav"));
 
 	velocity = sf::Vector2f(0, -400);
 }
