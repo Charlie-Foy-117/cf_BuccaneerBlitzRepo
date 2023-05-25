@@ -1,16 +1,11 @@
 #pragma once
-#include "SpriteObject.h"
+#include "PhysicsObject.h"
 class Pickups :
-    public SpriteObject
+    public PhysicsObject
 {
 public:
 
     Pickups();
     void Update(sf::Time frameTime) override;
-
-private:
-
-    sf::Vector2f velocity;
-    sf::Vector2f acceleration;
 };
 

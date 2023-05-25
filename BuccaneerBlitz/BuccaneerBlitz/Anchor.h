@@ -1,7 +1,7 @@
 #pragma once
-#include "SpriteObject.h"
+#include "PhysicsObject.h"
 class Anchor :
-    public SpriteObject
+    public PhysicsObject
 {
 public:
 
@@ -10,12 +10,6 @@ public:
     void Update(sf::Time frameTime) override;
     void SetVelocity(float newX, float newY);
 
-    void HandleCollision(SpriteObject& other) override;
-
-private:
-
-    sf::Vector2f acceleration;
-    sf::Vector2f velocity;
-
+    void HandleCollision(PhysicsObject& other) override;
 };
 

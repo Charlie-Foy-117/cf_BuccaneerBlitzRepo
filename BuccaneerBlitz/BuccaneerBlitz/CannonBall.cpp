@@ -2,9 +2,7 @@
 #include "AssetManager.h"
 
 CannonBall::CannonBall()
-	: SpriteObject()
-	, acceleration()
-	, velocity(sf::Vector2f(0, -400))
+	: PhysicsObject()
 	, collisionSound()
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Player/cf_CannonBall_PNG.png"));
@@ -14,6 +12,8 @@ CannonBall::CannonBall()
 	SetEnumUsed(CollisionType::CIRCLE);
 
 	collisionSound.setBuffer(AssetManager::RequestSoundBuffer("Assets/Sounds/501104__evretro__8-bit-damage-sound.wav"));
+
+	velocity = sf::Vector2f(0, -400);
 }
 
 void CannonBall::Update(sf::Time frameTime)
@@ -34,7 +34,7 @@ sf::Vector2f CannonBall::GetVelocity()
 	return velocity;
 }
 
-void CannonBall::HandleCollision(SpriteObject& other)
+void CannonBall::HandleCollision(PhysicsObject& other)
 {
 	alive = false;
 	if (typeid(other).name() != typeid(SideBarrier).name() && typeid(other).name() != typeid(BossRoomBarrier).name() && typeid(other).name() != typeid(Tentacle).name())

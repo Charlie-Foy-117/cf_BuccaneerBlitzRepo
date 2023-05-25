@@ -8,7 +8,7 @@ public:
 
     LifePickup();
 
-    void HandleCollision(SpriteObject& other);
+    void HandleCollision(PhysicsObject& other);
 
 };
 

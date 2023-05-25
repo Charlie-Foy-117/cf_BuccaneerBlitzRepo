@@ -13,14 +13,11 @@ public:
     Sprayer(LevelScreen* newLevelScreen);
 
     void Update(sf::Time frameTime) override;
-    void HandleCollision(SpriteObject& other) override;
+    void HandleCollision(PhysicsObject& other) override;
 
     sf::Vector2f GetVelocity();
 
 private:
-
-    sf::Vector2f acceleration;
-    sf::Vector2f velocity;
 
     sf::Clock cooldownTimer;
     float cooldown;

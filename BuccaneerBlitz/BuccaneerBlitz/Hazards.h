@@ -1,7 +1,7 @@
 #pragma once
-#include "SpriteObject.h"
+#include "PhysicsObject.h"
 class Hazards :
-    public SpriteObject
+    public PhysicsObject
 {
 public:
 

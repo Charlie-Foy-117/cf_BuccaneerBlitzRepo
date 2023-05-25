@@ -8,10 +8,7 @@ enum class PhysicsType
 };
 
 Player::Player(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen)
-	: SpriteObject()
-	, twoFramesOldPosition(0, 0)
-	, velocity()
-	, acceleration()
+	: PhysicsObject()
 	, window(newWindow)
 	, levelScreen(newLevelScreen)
 	, cooldownTimer()
@@ -36,33 +33,7 @@ Player::Player(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen)
 
 void Player::Update(sf::Time frameTime)
 {
-	const float DRAG = 10.0f;
-	const PhysicsType physics = PhysicsType::VELOCITY_VERLET;
-
-	sf::Vector2f lastFramePos = GetPosition();
-
-	switch (physics)
-	{
-	case PhysicsType::VELOCITY_VERLET:
-	{
-		//Velocity Verlet
-		sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
-
-		SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
-		UpdateAcceleration();
-		velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
-
-		//drag
-		velocity.x = velocity.x - velocity.x * DRAG * frameTime.asSeconds();
-		velocity.y = velocity.y - velocity.y * DRAG * frameTime.asSeconds();
-	}
-	break;
-
-	default:
-		//two frames ago (for next frame)
-		twoFramesOldPosition = lastFramePos;
-		break;
-	}
+	PhysicsObject::Update(frameTime);
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && hasAnchor == true)
 	{
@@ -79,7 +50,7 @@ void Player::Update(sf::Time frameTime)
 
 }
 
-void Player::HandleCollision(SpriteObject& other)
+void Player::HandleCollision(PhysicsObject& other)
 {
 	if (typeid(other).name() == typeid(AnchorPickup).name())
 	{

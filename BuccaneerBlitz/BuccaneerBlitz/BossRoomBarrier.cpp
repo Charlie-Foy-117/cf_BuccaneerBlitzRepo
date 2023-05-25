@@ -2,7 +2,7 @@
 #include "AssetManager.h"
 
 BossRoomBarrier::BossRoomBarrier(sf::RenderWindow* newWindow, int* newLevelNumber)
-	: SpriteObject()
+	: PhysicsObject()
 	, levelNumber(newLevelNumber)
 	, window(newWindow)
 {
@@ -14,9 +14,9 @@ BossRoomBarrier::BossRoomBarrier(sf::RenderWindow* newWindow, int* newLevelNumbe
 	collisionOffset = sf::Vector2f(0, -500);
 }
 
-void BossRoomBarrier::HandleCollision(SpriteObject& other)
+void BossRoomBarrier::HandleCollision(PhysicsObject& other)
 {
-	SpriteObject::HandleCollision(other);
+	PhysicsObject::HandleCollision(other);
 }
 
 void BossRoomBarrier::UpdateSpriteAsset(int newLevelNumber)

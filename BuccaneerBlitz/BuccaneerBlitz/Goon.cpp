@@ -4,8 +4,6 @@
 
 Goon::Goon(LevelScreen* newLevelScreen)
 	: Enemy(newLevelScreen)
-	, velocity(0, 200)
-	, acceleration()
 	, levelScreen(newLevelScreen)
 	, cooldownTimer()
 	, cooldown(2.5f)
@@ -17,6 +15,7 @@ Goon::Goon(LevelScreen* newLevelScreen)
 	collisionOffset = sf::Vector2f(-128, -128);
 
 	spawnTime = 2.0f;
+	velocity = sf::Vector2f(0, 200);
 }
 
 void Goon::Update(sf::Time frameTime)
@@ -34,7 +33,7 @@ void Goon::Update(sf::Time frameTime)
 	}
 }
 
-void Goon::HandleCollision(SpriteObject& other)
+void Goon::HandleCollision(PhysicsObject& other)
 {
 	if (typeid(other).name() == typeid(Player).name())
 	{

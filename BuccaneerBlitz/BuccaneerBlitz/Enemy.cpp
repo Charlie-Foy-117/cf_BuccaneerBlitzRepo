@@ -4,7 +4,7 @@
 #include <random>
 
 Enemy::Enemy(LevelScreen* newLevelScreen)
-	: SpriteObject()
+	: PhysicsObject()
 	, spawnTime()
 	, clock()
 	, levelScreen(newLevelScreen)

@@ -13,16 +13,13 @@ public:
     PirateBarricade(LevelScreen* newLevelScreen, int* newLevelNumber);
 
     void Update(sf::Time frameTime) override;
-    void HandleCollision(SpriteObject& other) override;
+    void HandleCollision(PhysicsObject& other) override;
 
     float GetSpawnTime();
 
 private:
 
     void UpdateSpriteAsset(int newLevelNumber);
-
-    sf::Vector2f acceleration;
-    sf::Vector2f velocity;
 
     LevelScreen* levelScreen;
     int* levelNumber;

@@ -5,8 +5,6 @@
 
 OldCrewMate::OldCrewMate(LevelScreen* newLevelScreen)
 	: Enemy(newLevelScreen)
-    , velocity(200, 0)
-    , acceleration()
 	, cooldownTimer()
 	, cooldown(1.0f)
 	, levelScreen(newLevelScreen)
@@ -21,9 +19,10 @@ OldCrewMate::OldCrewMate(LevelScreen* newLevelScreen)
     
 	lives = 5;
 	bonusTime = 30.0f;
+	velocity = sf::Vector2f(200, 0);
 }
 
-void OldCrewMate::HandleCollision(SpriteObject& other)
+void OldCrewMate::HandleCollision(PhysicsObject& other)
 {
 	if (typeid(other).name() == typeid(SideBarrier).name())
 	{

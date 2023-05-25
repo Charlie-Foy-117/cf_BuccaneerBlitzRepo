@@ -3,8 +3,6 @@
 
 Tentacle::Tentacle(LevelScreen* newLevelScreen)
 	: Enemy(newLevelScreen)
-	, velocity(200, 0)
-	, acceleration()
 	, levelScreen(newLevelScreen)
 	, flipX(false)
 
@@ -18,9 +16,10 @@ Tentacle::Tentacle(LevelScreen* newLevelScreen)
 
 	spawnTime = 2.5f;
 	lives = 4;
+	velocity = sf::Vector2f(200, 0);
 }
 
-void Tentacle::HandleCollision(SpriteObject& other)
+void Tentacle::HandleCollision(PhysicsObject& other)
 {
 	if (typeid(other).name() == typeid(SideBarrier).name())
 	{

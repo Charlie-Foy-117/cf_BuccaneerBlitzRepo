@@ -1,14 +1,14 @@
 #pragma once
-#include "SpriteObject.h"
+#include "PhysicsObject.h"
 
 class BossRoomBarrier :
-    public SpriteObject
+    public PhysicsObject
 {
 public:
 
     BossRoomBarrier(sf::RenderWindow* newWindow, int* newLevelNumber);
 
-    void HandleCollision(SpriteObject& other) override;
+    void HandleCollision(PhysicsObject& other) override;
     void UpdateSpriteAsset(int newLevelNumber);
 
 private:

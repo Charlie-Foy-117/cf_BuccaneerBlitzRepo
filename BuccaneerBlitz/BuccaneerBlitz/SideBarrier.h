@@ -1,7 +1,7 @@
 #pragma once
-#include "SpriteObject.h"
+#include "PhysicsObject.h"
 class SideBarrier :
-    public SpriteObject
+    public PhysicsObject
 {
 public:
 
@@ -9,7 +9,7 @@ public:
 
     void ResetPosition(std::string side);
 
-    void HandleCollision(SpriteObject& other) override;
+    void HandleCollision(PhysicsObject& other) override;
 
     void UpdateSpriteAsset(int newLevelNumber);
 private:

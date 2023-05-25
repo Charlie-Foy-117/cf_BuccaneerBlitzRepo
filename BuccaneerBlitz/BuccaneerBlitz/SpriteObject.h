@@ -2,13 +2,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
-enum class CollisionType
-{
-	AABB,
-	CIRCLE,
-	BOSSROOM
-};
-
 class SpriteObject
 {
 public:
@@ -22,17 +15,7 @@ public:
 	virtual void SetPosition(sf::Vector2f newPosition);
 	void SetPosition(float newX, float newY);
 
-	bool CheckColliding(SpriteObject other);
-	void SetColliding(bool newColliding);
-
-	virtual void HandleCollision(SpriteObject& other);
-
-	sf::Vector2f GetCollisionDepth(SpriteObject other);
-
-	void SetEnumUsed(CollisionType newEnum);
-
 	void SetSpriteScale(float xScale, float yScale);
-	void SetCollisionOffest(float xOffset, float yOffset);
 	float GetHeight();
 	float GetWidth();
 
@@ -46,23 +29,8 @@ protected:
 	sf::Sprite sprite;
 	sf::Sound sound;
 
-	sf::Vector2f collisionOffset;
-	sf::Vector2f collisionScale;
-	CollisionType collisionType;
-
-	bool alive;
-
-	int lives;
-
-private:
-
-
-	sf::Vector2f GetCollisionCentre();
-	float GetCircleColliderRadius();
-	sf::FloatRect GetAABB();
-
-
 	sf::Vector2f position;
-	bool colliding;
+	bool alive;
+	int lives;
 };
 

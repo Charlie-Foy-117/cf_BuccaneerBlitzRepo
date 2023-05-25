@@ -7,6 +7,6 @@ public:
 
     AnchorPickup();
 
-    void HandleCollision(SpriteObject& other);
+    void HandleCollision(PhysicsObject& other) override;
 };
 

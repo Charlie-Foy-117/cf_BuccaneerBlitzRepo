@@ -4,8 +4,6 @@
 
 Sprayer::Sprayer(LevelScreen* newLevelScreen)
 	: Enemy(newLevelScreen)
-	, acceleration()
-	, velocity(0, 100)
 	, cooldownTimer()
 	, cooldown(0.5f)
 	, levelScreen(newLevelScreen)
@@ -14,6 +12,7 @@ Sprayer::Sprayer(LevelScreen* newLevelScreen)
 	sprite.setScale(1.1f, 1.1f);
 	collisionScale = sf::Vector2f(0.5f, 1.0f);
 	spawnTime = 15.0f;
+	velocity = sf::Vector2f(0, 100);
 }
 
 void Sprayer::Update(sf::Time frameTime)
@@ -31,7 +30,7 @@ void Sprayer::Update(sf::Time frameTime)
 	}
 }
 
-void Sprayer::HandleCollision(SpriteObject& other)
+void Sprayer::HandleCollision(PhysicsObject& other)
 {
 	if (typeid(other).name() == typeid(Player).name())
 	{

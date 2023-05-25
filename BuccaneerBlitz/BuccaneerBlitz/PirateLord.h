@@ -10,13 +10,11 @@ class PirateLord :
 public:
 
     PirateLord(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen, Player* newPlayer);
-    void HandleCollision(SpriteObject& other) override;
+    void HandleCollision(PhysicsObject& other) override;
     void Update(sf::Time frameTime) override;
 
 private:
 
-    sf::Vector2f velocity;
-    sf::Vector2f acceleration;
     float speed;
     float tolerance;
     float originalY;

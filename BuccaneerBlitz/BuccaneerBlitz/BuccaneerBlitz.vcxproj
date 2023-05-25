@@ -168,6 +168,7 @@
     <ClCompile Include="MultiFireUI.cpp" />
     <ClCompile Include="OldCrewMate.cpp" />
     <ClCompile Include="Overlay.cpp" />
+    <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="Pickups.cpp" />
     <ClCompile Include="PirateBarricade.cpp" />
     <ClCompile Include="PirateLord.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="MultiFireUI.h" />
     <ClInclude Include="OldCrewMate.h" />
     <ClInclude Include="Overlay.h" />
+    <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="Pickups.h" />
     <ClInclude Include="PirateBarricade.h" />
     <ClInclude Include="PirateLord.h" />

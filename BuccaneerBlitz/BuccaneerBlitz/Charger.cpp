@@ -4,8 +4,6 @@
 
 Charger::Charger(LevelScreen* newLevelScreen, Player* newPlayer)
 	: Enemy(newLevelScreen)
-	, acceleration()
-	, velocity(0, 0)
     , speed(400.0f)
 	, levelScreen(newLevelScreen)
 	, player(newPlayer)
@@ -42,7 +40,7 @@ void Charger::Update(sf::Time frameTime)
 	velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
 }
 
-void Charger::HandleCollision(SpriteObject& other)
+void Charger::HandleCollision(PhysicsObject& other)
 {
 	if (typeid(other).name() == typeid(CannonBall).name())
 	{

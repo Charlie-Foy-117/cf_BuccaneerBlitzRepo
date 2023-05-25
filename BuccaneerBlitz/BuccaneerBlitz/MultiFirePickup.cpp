@@ -8,7 +8,7 @@ MultiFirePickup::MultiFirePickup()
 	sprite.setScale(0.5f, 0.5f);
 }
 
-void MultiFirePickup::HandleCollision(SpriteObject& other)
+void MultiFirePickup::HandleCollision(PhysicsObject& other)
 {
 	SetAlive(false);
 }

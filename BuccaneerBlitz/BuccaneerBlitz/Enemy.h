@@ -1,10 +1,10 @@
 #pragma once
-#include "SpriteObject.h"
+#include "PhysicsObject.h"
 
 class LevelScreen;
 
 class Enemy :
-    public SpriteObject
+    public PhysicsObject
 {
 public:
 

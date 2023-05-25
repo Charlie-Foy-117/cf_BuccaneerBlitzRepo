@@ -4,13 +4,12 @@
 
 SmallIsland::SmallIsland(LevelScreen* newLevelScreen)
 	: Hazards()
-	, acceleration()
-	, velocity(0, 150)
 	, levelScreen(newLevelScreen)
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_SmallIsland_PNG.png"));
 
 	spawnTime = 10.0f;
+	velocity = sf::Vector2f(0, 150);
 }
 
 void SmallIsland::Update(sf::Time frameTime)
@@ -21,7 +20,7 @@ void SmallIsland::Update(sf::Time frameTime)
 	velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
 }
 
-void SmallIsland::HandleCollision(SpriteObject& other)
+void SmallIsland::HandleCollision(PhysicsObject& other)
 {
 	if (typeid(other).name() == typeid(Player).name())
 	{

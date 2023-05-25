@@ -12,12 +12,10 @@ public:
     Charger(LevelScreen* newLevelScreen, Player* newPlayer);
 
     void Update(sf::Time frameTime) override;
-    void HandleCollision(SpriteObject& other) override;
+    void HandleCollision(PhysicsObject& other) override;
 
 private:
 
-    sf::Vector2f acceleration;
-    sf::Vector2f velocity;
     float speed;
 
     Player* player;

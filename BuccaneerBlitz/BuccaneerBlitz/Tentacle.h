@@ -8,15 +8,12 @@ class Tentacle :
 public:
 
     Tentacle(LevelScreen* newLevelScreen);
-    void HandleCollision(SpriteObject& other) override;
+    void HandleCollision(PhysicsObject& other) override;
     void Update(sf::Time frameTime) override;
 
     void SetVelocity(float newX, float newY);
 
 private:
-
-    sf::Vector2f velocity;
-    sf::Vector2f acceleration;
 
     LevelScreen* levelScreen;
 

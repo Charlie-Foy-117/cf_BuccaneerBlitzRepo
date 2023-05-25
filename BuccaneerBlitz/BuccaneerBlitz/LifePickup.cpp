@@ -8,7 +8,7 @@ LifePickup::LifePickup()
 	sprite.setScale(0.5f, 0.5f);
 }
 
-void LifePickup::HandleCollision(SpriteObject& other)
+void LifePickup::HandleCollision(PhysicsObject& other)
 {
 	SetAlive(false);
 	if (other.GetAlive())

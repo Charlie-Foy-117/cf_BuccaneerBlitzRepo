@@ -1,7 +1,7 @@
 #include "Hazards.h"
 
 Hazards::Hazards()
-	: SpriteObject()
+	: PhysicsObject()
 	, spawnTime()
 {
 }

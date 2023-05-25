@@ -1,11 +1,11 @@
 #pragma once
-#include "SpriteObject.h"
+#include "PhysicsObject.h"
 #include "CannonBall.h"
 
 class LevelScreen;
 
 class Player :
-    public SpriteObject
+    public PhysicsObject
 {
 public:
 
@@ -13,7 +13,7 @@ public:
 
     void Update(sf::Time frameTime) override;
 
-    void HandleCollision(SpriteObject& other) override;
+    void HandleCollision(PhysicsObject& other) override;
 
     void FireCannonBall(float newCooldown);
     void FireAnchor(float newCooldown);
@@ -23,11 +23,7 @@ public:
     bool GetHasMultiFire();
 
 private:
-    void UpdateAcceleration();
-
-    sf::Vector2f twoFramesOldPosition;
-    sf::Vector2f velocity;
-    sf::Vector2f acceleration;
+    void UpdateAcceleration() override;
 
     sf::RenderWindow* window;
     LevelScreen* levelScreen;

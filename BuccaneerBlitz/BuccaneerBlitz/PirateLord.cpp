@@ -6,8 +6,6 @@
 PirateLord::PirateLord(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen, Player* newPlayer)
 	: Enemy(newLevelScreen)
 	, window(newWindow)
-	, velocity()
-	, acceleration()
 	, speed(500.0f)
 	, tolerance(20.0f)
 	, originalY()
@@ -30,7 +28,7 @@ PirateLord::PirateLord(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen,
 	bonusTime = 45.0f;
 }
 
-void PirateLord::HandleCollision(SpriteObject& other)
+void PirateLord::HandleCollision(PhysicsObject& other)
 {
 	other.ModifyLives(-1);
 	SetPosition(GetPosition().x, originalY);

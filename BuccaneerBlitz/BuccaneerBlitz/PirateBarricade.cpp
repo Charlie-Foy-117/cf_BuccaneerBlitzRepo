@@ -3,8 +3,6 @@
 
 PirateBarricade::PirateBarricade(LevelScreen* newLevelScreen, int* newLevelNumber)
 	: Hazards()
-	, acceleration()
-	, velocity(0, 60)
 	, levelScreen(newLevelScreen)
 	, levelNumber(newLevelNumber)
 {
@@ -12,6 +10,8 @@ PirateBarricade::PirateBarricade(LevelScreen* newLevelScreen, int* newLevelNumbe
 	sprite.setScale(1.5f, 1.5f);
 	collisionScale = sf::Vector2f(1.0f, 0.6f);
 	spawnTime = 30.0f;
+
+	velocity = sf::Vector2f(0, 60);
 }
 
 void PirateBarricade::Update(sf::Time frameTime)
@@ -22,7 +22,7 @@ void PirateBarricade::Update(sf::Time frameTime)
 	velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
 }
 
-void PirateBarricade::HandleCollision(SpriteObject& other)
+void PirateBarricade::HandleCollision(PhysicsObject& other)
 {
 	if (typeid(other).name() == typeid(Anchor).name() || typeid(other).name() == typeid(Player).name())
 	{

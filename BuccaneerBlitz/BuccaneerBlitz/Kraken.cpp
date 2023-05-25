@@ -4,8 +4,6 @@
 
 Kraken::Kraken(LevelScreen* newLevelScreen)
 	: Enemy(newLevelScreen)
-	, velocity(200, 0)
-	, acceleration()
 	, cooldownTimer()
 	, cooldown(3.0f)
 	, levelScreen(newLevelScreen)
@@ -20,9 +18,10 @@ Kraken::Kraken(LevelScreen* newLevelScreen)
 
 	lives = 15;
 	bonusTime = 60.0f;
+	velocity = sf::Vector2f(200, 0);
 }
 
-void Kraken::HandleCollision(SpriteObject& other)
+void Kraken::HandleCollision(PhysicsObject& other)
 {
 	if (typeid(other).name() == typeid(SideBarrier).name())
 	{

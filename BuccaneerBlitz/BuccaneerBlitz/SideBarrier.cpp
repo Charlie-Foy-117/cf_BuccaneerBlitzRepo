@@ -2,7 +2,7 @@
 #include "AssetManager.h"
 
 SideBarrier::SideBarrier(sf::RenderWindow* newWindow, int* newLevelNumber)
-	: SpriteObject()
+	: PhysicsObject()
 	, levelNumber(newLevelNumber)
 	, window(newWindow)
 {
@@ -33,9 +33,9 @@ void SideBarrier::ResetPosition(std::string side)
 
 }
 
-void SideBarrier::HandleCollision(SpriteObject& other)
+void SideBarrier::HandleCollision(PhysicsObject& other)
 {
-	SpriteObject::HandleCollision(other);
+	PhysicsObject::HandleCollision(other);
 }
 
 void SideBarrier::UpdateSpriteAsset(int newLevelNumber)
