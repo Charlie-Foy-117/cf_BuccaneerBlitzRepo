@@ -151,6 +151,7 @@
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Backplate.cpp" />
     <ClCompile Include="BossRoomBarrier.cpp" />
+    <ClCompile Include="Buoy.cpp" />
     <ClCompile Include="CannonBall.cpp" />
     <ClCompile Include="Charger.cpp" />
     <ClCompile Include="Easing.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="Backplate.h" />
     <ClInclude Include="BossRoomBarrier.h" />
+    <ClInclude Include="Buoy.h" />
     <ClInclude Include="CannonBall.h" />
     <ClInclude Include="Charger.h" />
     <ClInclude Include="Easing.h" />

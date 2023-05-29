@@ -5,6 +5,7 @@
 #include "TitleCard.h"
 #include "Overlay.h"
 #include "Backplate.h"
+#include "Buoy.h"
 
 class Game;
 
@@ -25,9 +26,11 @@ private:
 
     Text text;
     Text scoreText;
+    Text toolTip;
     TitleCard titleCard;
     Overlay overlay;
     Backplate backplate;
+    Buoy buoy;
 
     Score score;
 
