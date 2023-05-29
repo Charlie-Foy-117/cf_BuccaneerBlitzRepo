@@ -40,6 +40,7 @@ void Score::ResetScore()
 
 void Score::SaveHighScore(int score)
 {
+	//stores highscore in text file
 	std::ofstream file("highscore.txt");
 	if (file.is_open())
 	{
@@ -50,6 +51,7 @@ void Score::SaveHighScore(int score)
 
 int Score::LoadHighScore()
 {
+	//loads highscore from saved text file
 	std::ifstream file("highscore.txt");
 	int score = 0;
 

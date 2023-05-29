@@ -74,12 +74,15 @@ int SpriteObject::GetLives()
 
 void SpriteObject::ModifyLives(int lifeValue)
 {
+	//adds value to lives
 	lives += lifeValue;
+	//if lives is less than 1 then set object to dead
 	if (lives < 1)
 	{
 		lives = 0;
 		SetAlive(false);
 	}
+	//if lives are more than 3 reset back to 3
 	else if (lifeValue >= 0 && lives > 3)
 	{
 		lives = 3;

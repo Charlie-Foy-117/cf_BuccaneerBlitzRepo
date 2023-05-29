@@ -25,15 +25,19 @@ void Enemy::DropItem()
 
 	int dropChance = dist(rd);
 
+	//randomly chooses on of 4 cases to run
 	switch (dropChance)
 	{
 	case 0:
+		//spawns anchor
 		levelScreen->SpawnPickUp(PickupType::ANCHOR, GetPosition());
 		break;
 	case 1:
+		//spawns life
 		levelScreen->SpawnPickUp(PickupType::LIFE, GetPosition());
 		break;
 	case 2:
+		//spawns multifire
 		levelScreen->SpawnPickUp(PickupType::MULTIFIRE, GetPosition());
 		break;
 	case 3:
@@ -47,6 +51,7 @@ void Enemy::DropItem()
 
 void Enemy::KillBoss()
 {
+	//increases level by 1
 	levelScreen->levelStageNumber++;
 }
 

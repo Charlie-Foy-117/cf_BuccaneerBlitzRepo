@@ -18,11 +18,13 @@ void SideBarrier::ResetPosition(std::string side)
 	float yPos = window->getSize().y / 2.0f - sprite.getGlobalBounds().height / 2.0f;
 	if (side == "left")
 	{
+		//sets position to left sdie of screen
 		SetPosition(sf::Vector2f(0, 0));
 		sprite.setScale(1.0f, 1.05f);
 	}
 	if (side == "right")
 	{
+		//sets position to right side of screen
 		sprite.setScale(1.0f, 1.05f);
 		SetPosition(sf::Vector2f(xPos, 0));
 	}

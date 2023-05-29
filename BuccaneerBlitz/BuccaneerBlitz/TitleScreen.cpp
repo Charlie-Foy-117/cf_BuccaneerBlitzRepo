@@ -24,8 +24,10 @@ void TitleScreen::Update(sf::Time frameTime)
 {
 	window->clear();
 
+	//stops game from instantly restarting on input press
 	if (cooldownTimer.getElapsedTime().asSeconds() > cooldown)
 	{
+		//if input is pressed change screen to level screen
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
 		{
 			game->ChangeGameState(GameState::LEVELSCREEN);

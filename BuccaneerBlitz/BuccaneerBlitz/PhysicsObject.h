@@ -43,6 +43,8 @@ protected:
 
 	sf::Sound collisionSound;
 
+	bool hasDrag;
+
 private:
 
 

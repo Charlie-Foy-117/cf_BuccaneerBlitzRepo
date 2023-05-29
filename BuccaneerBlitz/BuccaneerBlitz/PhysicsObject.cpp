@@ -16,6 +16,7 @@ PhysicsObject::PhysicsObject()
 	, acceleration()
 	, velocity()
 	, twoFramesOldPosition()
+	, hasDrag(false)
 	, collisionSound()
 {
 	collisionSound.setBuffer(AssetManager::RequestSoundBuffer("Assets/Sounds/501104__evretro__8-bit-damage-sound.wav"));
@@ -39,9 +40,13 @@ void PhysicsObject::Update(sf::Time frameTime)
 		UpdateAcceleration();
 		velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
 
-		//drag
-		velocity.x = velocity.x - velocity.x * DRAG * frameTime.asSeconds();
-		velocity.y = velocity.y - velocity.y * DRAG * frameTime.asSeconds();
+		//checks if object uses drag
+		if (hasDrag)
+		{
+			//drag
+			velocity.x = velocity.x - velocity.x * DRAG * frameTime.asSeconds();
+			velocity.y = velocity.y - velocity.y * DRAG * frameTime.asSeconds();
+		}
 	}
 	break;
 
@@ -56,6 +61,7 @@ void PhysicsObject::Draw(sf::RenderTarget& target)
 {
 	SpriteObject::Draw(target);
 
+	//draws visual collision box for debugging
 	bool drawCollider = false;
 	if (drawCollider)
 	{

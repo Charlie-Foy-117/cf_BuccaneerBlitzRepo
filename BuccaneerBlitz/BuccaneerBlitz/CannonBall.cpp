@@ -15,9 +15,7 @@ CannonBall::CannonBall()
 
 void CannonBall::Update(sf::Time frameTime)
 {
-	sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
-	SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
-	velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
+	PhysicsObject::Update(frameTime);
 }
 
 void CannonBall::SetVelocity(float newX, float newY)
@@ -34,6 +32,7 @@ sf::Vector2f CannonBall::GetVelocity()
 void CannonBall::HandleCollision(PhysicsObject& other)
 {
 	alive = false;
+	//checks collision isnt one of 3 types
 	if (typeid(other).name() != typeid(SideBarrier).name() && typeid(other).name() != typeid(BossRoomBarrier).name() && typeid(other).name() != typeid(Tentacle).name())
 	{
 		collisionSound.play();

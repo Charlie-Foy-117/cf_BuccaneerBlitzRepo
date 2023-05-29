@@ -23,9 +23,12 @@ void Tentacle::HandleCollision(PhysicsObject& other)
 {
 	if (typeid(other).name() == typeid(SideBarrier).name())
 	{
+		//reduces life every time it collides to limit how many times it moves back and fourth
 		ModifyLives(-1);
+		//flips the x direction on collision
 		velocity = -velocity;
 		SetPosition(GetPosition().x, GetPosition().y + 40);
+		//flips sprite image depending on direction its moving in
 		if (!flipX)
 		{
 			flipX = true;
@@ -46,10 +49,9 @@ void Tentacle::HandleCollision(PhysicsObject& other)
 
 void Tentacle::Update(sf::Time frameTime)
 {
-	sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
-	SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
-	velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
+	PhysicsObject::Update(frameTime);
 
+	//flips sprite image depending on direction its moving in
 	if (!flipX)
 	{
 		sprite.setScale(0.5f, 0.5f);

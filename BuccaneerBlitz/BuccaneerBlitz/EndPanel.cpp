@@ -39,9 +39,11 @@ void EndPanel::Update(sf::Time frameTime)
 		float yPos = window->getSize().y;
 		float finalYPos = window->getSize().y / 2.0f - background.getGlobalBounds().height / 2.0f;
 
+		//set start and end positions
 		sf::Vector2f begin(xPos, yPos);
 		sf::Vector2f change(0, finalYPos - yPos);
 
+		//set duration of the animation
 		float duration = 1.0f;
 		float time = animationClock.getElapsedTime().asSeconds();
 
@@ -111,6 +113,7 @@ void EndPanel::WinLossPanel(bool alive)
 
 void EndPanel::AddScoreToString(int score)
 {
+	//converts score to string to display
 	std::string scoreString = "Score: ";
 	scoreString += std::to_string((int)ceil(score));
 	message.setString(scoreString);

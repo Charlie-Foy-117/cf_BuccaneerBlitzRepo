@@ -15,9 +15,7 @@ SmallIsland::SmallIsland(LevelScreen* newLevelScreen)
 void SmallIsland::Update(sf::Time frameTime)
 {
 	//moves island down screen
-	sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
-	SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
-	velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
+	PhysicsObject::Update(frameTime);
 }
 
 void SmallIsland::HandleCollision(PhysicsObject& other)
@@ -29,6 +27,8 @@ void SmallIsland::HandleCollision(PhysicsObject& other)
 	}
 	else
 	{
+		//if statements are false the spawn a new instance
+		//this is to handle when objects spawns outside playing area
 		levelScreen->SpawnHazard(HazardType::SMALLISLAND);
 	}
 }

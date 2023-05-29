@@ -18,14 +18,15 @@ Sprayer::Sprayer(LevelScreen* newLevelScreen)
 void Sprayer::Update(sf::Time frameTime)
 {
 	//moves sprayer down screen
-	sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
-	SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
-	velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
+	PhysicsObject::Update(frameTime);
 
+	//spawns projectile whenever timer is larger than cooldown
 	if (cooldownTimer.getElapsedTime().asSeconds() > cooldown)
 	{
 		attackSound.play();
+		//spawns cannonballs
 		levelScreen->SpawnProjectile(Projectile::SPRAYERCANNONBALL, *this);
+		//restarts timer
 		cooldownTimer.restart();
 	}
 }
@@ -45,6 +46,7 @@ void Sprayer::HandleCollision(PhysicsObject& other)
 	}
 	else
 	{
+		//if instance spawns outside playing area it spawns another
 		levelScreen->SpawnEnemy(EnemyType::SPRAYER);
 	}
 }

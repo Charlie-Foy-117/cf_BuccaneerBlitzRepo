@@ -36,10 +36,9 @@ void OldCrewMate::HandleCollision(PhysicsObject& other)
 
 void OldCrewMate::Update(sf::Time frameTime)
 {
-    sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
-    SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
-    velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f; 
+	PhysicsObject::Update(frameTime);
 
+	//only spawns projectile if timer is larger than the cooldown since last spawned
 	if (cooldownTimer.getElapsedTime().asSeconds() > cooldown)
 	{
 		attackSound.play();

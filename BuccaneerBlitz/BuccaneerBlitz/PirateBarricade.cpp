@@ -17,9 +17,7 @@ PirateBarricade::PirateBarricade(LevelScreen* newLevelScreen, int* newLevelNumbe
 void PirateBarricade::Update(sf::Time frameTime)
 {
 	//moves barricade down screen
-	sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
-	SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
-	velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
+	PhysicsObject::Update(frameTime);
 }
 
 void PirateBarricade::HandleCollision(PhysicsObject& other)

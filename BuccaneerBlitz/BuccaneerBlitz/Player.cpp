@@ -23,6 +23,7 @@ Player::Player(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen)
 	collisionScale = sf::Vector2f(0.45f, 0.95f);
 
 	lives = 3;
+	hasDrag = true;
 
 	attackSound.setBuffer(AssetManager::RequestSoundBuffer("Assets/Sounds/522209__kutejnikov__explosion.wav"));
 	attackSound.setVolume(50.0f);
@@ -35,14 +36,17 @@ void Player::Update(sf::Time frameTime)
 {
 	PhysicsObject::Update(frameTime);
 
+	//checks to see if input is pressed while currenly possessing anchor
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && hasAnchor == true)
 	{
 		FireAnchor(cooldown);
 	}
+	//checks to see if input is pressed while currenly possessing multifire
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::I) && hasMultiFire == true)
 	{
 		FireMultiFire(cooldown);
 	}
+	//checks to see if input is pressed
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
 	{
 		FireCannonBall(cooldown);
@@ -92,10 +96,13 @@ void Player::HandleCollision(PhysicsObject& other)
 
 void Player::FireCannonBall(float newCooldown)
 {
+	//checks if timer is more than cooldown
 	if (cooldownTimer.getElapsedTime().asSeconds() > newCooldown)
 	{
 		attackSound.play();
+		//spawns cannonball on screen
 		levelScreen->SpawnProjectile(Projectile::CANNONBALL, *this);
+		//restarts cooldown to avoid multiple spawns
 		cooldownTimer.restart();
 	}
 }
@@ -105,8 +112,11 @@ void Player::FireAnchor(float newCooldown)
 	if (cooldownTimer.getElapsedTime().asSeconds() > newCooldown)
 	{
 		attackSound.play();
+		//spawns anchor on screen
 		levelScreen->SpawnProjectile(Projectile::ANCHOR, *this);
+		//sets to false to only allow one fire per item
 		hasAnchor = false;
+		//restarts cooldown to avoid multiple spawns
 		cooldownTimer.restart();
 	}
 }
@@ -116,8 +126,11 @@ void Player::FireMultiFire(float newCooldown)
 	if (cooldownTimer.getElapsedTime().asSeconds() > newCooldown)
 	{
 		attackSound.play();
+		//spawns cannonballs on screen
 		levelScreen->SpawnProjectile(Projectile::MULTIFIRE, *this);
+		//sets to false to only allow one fire per item
 		hasMultiFire = false;
+		//restarts cooldown to avoid multiple spawns
 		cooldownTimer.restart();
 	}
 }
@@ -144,18 +157,22 @@ void Player::UpdateAcceleration()
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
+		//changes x direction to go right
 		acceleration.x = -ACCEL;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
+		//changes x direction to go left
 		acceleration.x = ACCEL;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sprite.getPosition().y > 0)
 	{
+		//changes y direction to go up
 		acceleration.y = -ACCEL;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && spriteBottom < window->getSize().y)
 	{
+		//changes y direction to go down
 		acceleration.y = ACCEL;
 	}
 }

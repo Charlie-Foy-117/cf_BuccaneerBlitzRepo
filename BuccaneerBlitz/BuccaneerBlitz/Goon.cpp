@@ -20,10 +20,7 @@ Goon::Goon(LevelScreen* newLevelScreen)
 
 void Goon::Update(sf::Time frameTime)
 {
-	//moves goon down screen
-	sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
-	SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
-	velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
+	PhysicsObject::Update(frameTime);
 
 	if (cooldownTimer.getElapsedTime().asSeconds() > cooldown)
 	{
@@ -35,17 +32,21 @@ void Goon::Update(sf::Time frameTime)
 
 void Goon::HandleCollision(PhysicsObject& other)
 {
+	//checks if collision is player
 	if (typeid(other).name() == typeid(Player).name())
 	{
 		ModifyLives(-1);
 		other.ModifyLives(-1);
 	}
+	//checks if collision is cannonball
 	else if (typeid(other).name() == typeid(CannonBall).name())
 	{
 		DropItem();
 		ModifyLives(-1);
 		other.ModifyLives(-1);
 	}
+	//if neither if statements return true then a new goon is spawned
+	//this happens if goons spawns outside playing area
 	else
 	{
 		levelScreen->SpawnEnemy(EnemyType::GOON);

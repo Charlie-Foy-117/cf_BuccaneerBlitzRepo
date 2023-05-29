@@ -40,21 +40,24 @@ void PirateLord::Update(sf::Time frameTime)
 
 	if (cooldownTimer.getElapsedTime().asSeconds() >= cooldown)
 	{
+		//checks if piratelord and player match x coords
 		if (!xPositionMatched && std::abs(GetPosition().x - player->GetPosition().x) < tolerance)
 		{
 			xPositionMatched = true;
 		}
 
+		//checks if x position is true
 		if (xPositionMatched)
 		{
+			//piratelord attacks
 			attackSound.play();
 
+			//moves down screen
 			velocity = sf::Vector2f(0.0f, 1000.0f);
 
-			sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
-			SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
-			velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
+			PhysicsObject::Update(frameTime);
 
+			//resets position to original y coord
 			if (GetPosition().y >= window->getSize().y)
 			{
 				SetPosition(GetPosition().x, originalY);
@@ -86,8 +89,6 @@ void PirateLord::Update(sf::Time frameTime)
 		// Set velocity to unit direction multiplied by speed
 		velocity = unitDirection * speed;
 
-		sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
-		SetPosition(GetPosition() + halfFrameVelocity * frameTime.asSeconds());
-		velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
+		PhysicsObject::Update(frameTime);
 	}
 }
