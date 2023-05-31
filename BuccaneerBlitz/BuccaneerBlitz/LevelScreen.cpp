@@ -1100,9 +1100,9 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 		}
 
 		sideBarrierLeft.Draw(target);
-		sideBarrierLeft.UpdateSpriteAsset(levelStageNumber);
+		sideBarrierLeft.ResetPosition("left");
 		sideBarrierRight.Draw(target);
-		sideBarrierRight.UpdateSpriteAsset(levelStageNumber);
+		sideBarrierRight.ResetPosition("right");
 
 		for (size_t i = lifePickups.size(); i > 0; i--)
 		{

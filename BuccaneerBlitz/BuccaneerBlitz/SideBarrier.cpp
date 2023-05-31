@@ -6,7 +6,6 @@ SideBarrier::SideBarrier(sf::RenderWindow* newWindow, int* newLevelNumber)
 	, levelNumber(newLevelNumber)
 	, window(newWindow)
 {
-	UpdateSpriteAsset(*levelNumber);
 	ResetPosition("left");
 	ResetPosition("right");
 
@@ -21,12 +20,15 @@ void SideBarrier::ResetPosition(std::string side)
 		//sets position to left sdie of screen
 		SetPosition(sf::Vector2f(0, 0));
 		sprite.setScale(1.0f, 1.05f);
+		UpdateSpriteAsset(*levelNumber, "left");
 	}
 	if (side == "right")
 	{
 		//sets position to right side of screen
 		sprite.setScale(1.0f, 1.05f);
 		SetPosition(sf::Vector2f(xPos, 0));
+		UpdateSpriteAsset(*levelNumber, "right");
+
 	}
 	else
 	{
@@ -40,24 +42,46 @@ void SideBarrier::HandleCollision(PhysicsObject& other)
 	PhysicsObject::HandleCollision(other);
 }
 
-void SideBarrier::UpdateSpriteAsset(int newLevelNumber)
+void SideBarrier::UpdateSpriteAsset(int newLevelNumber, std::string side)
 {
 	//checks what input equals to change side barrier to desired look for level
-	if (newLevelNumber == 1 || newLevelNumber == 2)
+	if (side == "left")
 	{
-		sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level1SideBarrier_PNG.png"));
+		if (newLevelNumber == 1 || newLevelNumber == 2)
+		{
+			sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level1SideBarrierFlipped_PNG.png"));
+		}
+		else if (newLevelNumber == 3 || newLevelNumber == 4)
+		{
+			sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level2SideBarrierFlipped_PNG.png"));
+		}
+		else if (newLevelNumber == 5 || newLevelNumber == 6)
+		{
+			sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level3SideBarrierFlipped_PNG.png"));
+		}
+		else
+		{
+			//error...
+		}
 	}
-	else if (newLevelNumber == 3 || newLevelNumber == 4)
+	else if (side == "right")
 	{
-		sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level2SideBarrier_PNG.png"));
-	}
-	else if (newLevelNumber == 5 || newLevelNumber == 6)
-	{
-		sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level3SideBarrier_PNG.png"));
-	}
-	else
-	{
-		//error...
+		if (newLevelNumber == 1 || newLevelNumber == 2)
+		{
+			sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level1SideBarrier_PNG.png"));
+		}
+		else if (newLevelNumber == 3 || newLevelNumber == 4)
+		{
+			sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level2SideBarrier_PNG.png"));
+		}
+		else if (newLevelNumber == 5 || newLevelNumber == 6)
+		{
+			sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Environment/cf_Level3SideBarrier_PNG.png"));
+		}
+		else
+		{
+			//error...
+		}
 	}
 }
 

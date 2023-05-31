@@ -11,7 +11,7 @@ public:
 
     void HandleCollision(PhysicsObject& other) override;
 
-    void UpdateSpriteAsset(int newLevelNumber);
+    void UpdateSpriteAsset(int newLevelNumber, std::string side);
 private:
     
 
