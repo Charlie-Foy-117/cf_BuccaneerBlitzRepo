@@ -29,7 +29,7 @@ Player::Player(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen)
 	attackSound.setVolume(50.0f);
 
 	pickupSound.setBuffer(AssetManager::RequestSoundBuffer("Assets/Sounds/253172__suntemple__retro-bonus-pickup-sfx.wav"));
-	attackSound.setVolume(50.0f);
+	pickupSound.setVolume(50.0f);
 }
 
 void Player::Update(sf::Time frameTime)
