@@ -17,9 +17,7 @@ PhysicsObject::PhysicsObject()
 	, velocity()
 	, twoFramesOldPosition()
 	, hasDrag(false)
-	, collisionSound()
 {
-	collisionSound.setBuffer(AssetManager::RequestSoundBuffer("Assets/Sounds/501104__evretro__8-bit-damage-sound.wav"));
 }
 
 void PhysicsObject::Update(sf::Time frameTime)

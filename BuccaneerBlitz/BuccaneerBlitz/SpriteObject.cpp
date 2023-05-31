@@ -4,7 +4,6 @@
 
 SpriteObject::SpriteObject()
 	: sprite()
-	, sound()
 	, position(0, 0)
 	, alive(true)
 	, lives(1)

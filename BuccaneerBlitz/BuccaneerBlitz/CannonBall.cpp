@@ -35,7 +35,6 @@ void CannonBall::HandleCollision(PhysicsObject& other)
 	//checks collision isnt one of 3 types
 	if (typeid(other).name() != typeid(SideBarrier).name() && typeid(other).name() != typeid(BossRoomBarrier).name() && typeid(other).name() != typeid(Tentacle).name())
 	{
-		collisionSound.play();
 		other.ModifyLives(-1);
 	}
 }

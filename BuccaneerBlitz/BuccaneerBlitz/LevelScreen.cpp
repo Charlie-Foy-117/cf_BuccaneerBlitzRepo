@@ -7,7 +7,7 @@
 LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
 	, player(newGamePointer->GetWindow(), this)
-	, levelStageNumber(1)
+	, levelStageNumber(6)
 	, gameRunning(true)
 	, background(newGamePointer->GetWindow())
 	, game(newGamePointer)
@@ -61,7 +61,7 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 void LevelScreen::Update(sf::Time frameTime)
 {
 	//displays level number
-	std::cout << levelStageNumber << std::endl;
+	//std::cout << levelStageNumber << std::endl;
 
 	//changing colour of background
 	BackgroundColour(levelStageNumber);

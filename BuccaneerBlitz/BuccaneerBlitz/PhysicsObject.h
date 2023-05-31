@@ -41,8 +41,6 @@ protected:
 	sf::Vector2f velocity;
 	sf::Vector2f twoFramesOldPosition;
 
-	sf::Sound collisionSound;
-
 	bool hasDrag;
 
 private:

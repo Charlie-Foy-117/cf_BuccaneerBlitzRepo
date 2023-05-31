@@ -27,7 +27,6 @@ public:
 protected:
 
 	sf::Sprite sprite;
-	sf::Sound sound;
 
 	sf::Vector2f position;
 	bool alive;
