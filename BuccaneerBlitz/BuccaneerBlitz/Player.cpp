@@ -86,8 +86,8 @@ void Player::HandleCollision(PhysicsObject& other)
 		{
 			//move in y direction
 			newPosition.y += depth.y;
-			velocity.x = 0;
-			acceleration.x = 0;
+			velocity.y = 0;
+			acceleration.y = 0;
 		}
 
 		SetPosition(newPosition);
