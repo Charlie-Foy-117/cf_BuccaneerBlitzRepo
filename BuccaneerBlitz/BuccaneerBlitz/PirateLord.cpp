@@ -44,13 +44,14 @@ void PirateLord::Update(sf::Time frameTime)
 		if (!xPositionMatched && std::abs(GetPosition().x - player->GetPosition().x) < tolerance)
 		{
 			xPositionMatched = true;
+
+			//piratelord attacks
+			attackSound.play();
 		}
 
 		//checks if x position is true
 		if (xPositionMatched)
 		{
-			//piratelord attacks
-			attackSound.play();
 
 			//moves down screen
 			velocity = sf::Vector2f(0.0f, 1000.0f);
@@ -74,7 +75,7 @@ void PirateLord::Update(sf::Time frameTime)
 		sf::Vector2f directionToPlayer = sf::Vector2f(player->GetPosition().x, GetPosition().y) - GetPosition();
 
 		// Distance
-		float distance = std::sqrt(std::pow(directionToPlayer.x, 2) + std::pow(directionToPlayer.y, 2));
+		float distance = std::sqrt(std::pow(directionToPlayer.x, 2.0f) + std::pow(directionToPlayer.y, 2.0f));
 		// Normalize direction vector
 		sf::Vector2f unitDirection;
 		if (distance > 0)

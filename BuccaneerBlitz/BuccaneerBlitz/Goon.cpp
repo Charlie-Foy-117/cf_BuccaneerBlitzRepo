@@ -24,7 +24,10 @@ void Goon::Update(sf::Time frameTime)
 
 	if (cooldownTimer.getElapsedTime().asSeconds() > cooldown)
 	{
-		attackSound.play();
+		if (alive)
+		{
+			attackSound.play();
+		}
 		levelScreen->SpawnProjectile(Projectile::GOONCANNONBALL, *this);
 		cooldownTimer.restart();
 	}
@@ -49,6 +52,7 @@ void Goon::HandleCollision(PhysicsObject& other)
 	//this happens if goons spawns outside playing area
 	else
 	{
+		ModifyLives(-1);
 		levelScreen->SpawnEnemy(EnemyType::GOON);
 	}
 }

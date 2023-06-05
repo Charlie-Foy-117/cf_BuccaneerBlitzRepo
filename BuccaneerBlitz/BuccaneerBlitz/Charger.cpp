@@ -27,12 +27,12 @@ void Charger::Update(sf::Time frameTime)
 	sf::Vector2f directionToPlayer = sf::Vector2f(player->GetPosition().x, player->GetPosition().y) - GetPosition();
 
 	//distance
-	float distance = std::sqrt(std::pow(directionToPlayer.x, 2) + std::pow(directionToPlayer.y, 2));
+	float distance = std::sqrt(std::pow(directionToPlayer.x, 2.0f) + std::pow(directionToPlayer.y, 2.0f));
 	//normalize direction vector
 	sf::Vector2f unitDirection = directionToPlayer / distance;
 
 	//set velocity to unit direction multiplied by speed
-	sf::Vector2f velocity = unitDirection * speed;
+	velocity = unitDirection * speed;
 
 	//apply movement code
 	PhysicsObject::Update(frameTime);

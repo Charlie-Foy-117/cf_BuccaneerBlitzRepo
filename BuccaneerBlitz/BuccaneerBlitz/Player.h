@@ -36,5 +36,6 @@ private:
 
     sf::Sound attackSound;
     sf::Sound pickupSound;
+    sf::Sound collisionSound;
 };
 

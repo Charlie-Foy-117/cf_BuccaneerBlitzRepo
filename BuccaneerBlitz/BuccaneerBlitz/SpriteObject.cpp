@@ -82,7 +82,7 @@ void SpriteObject::ModifyLives(int lifeValue)
 		SetAlive(false);
 	}
 	//if lives are more than 3 reset back to 3
-	else if (lifeValue >= 0 && lives > 3)
+	else if (lifeValue > 0 && lives > 3)
 	{
 		lives = 3;
 	}

@@ -118,59 +118,61 @@ bool PhysicsObject::CheckColliding(PhysicsObject other)
 	}
 	switch (collisionType)
 	{
-	case CollisionType::AABB:
-	{
-		if (other.collisionType == CollisionType::AABB)
+		case CollisionType::AABB:
 		{
-			return GetAABB().intersects(other.GetAABB());
+			if (other.collisionType == CollisionType::AABB)
+			{
+				return GetAABB().intersects(other.GetAABB());
+			}
+			else
+			{
+				//handles a rectangle colliding with a circle
+				sf::Vector2f nearestPointToCircle = other.GetCollisionCentre(); //actual circle centre
+				sf::FloatRect thisAABB = GetAABB();
+				//clamp the circle centre to min and max aabb
+				nearestPointToCircle.x = fmaxf(thisAABB.left, fminf(nearestPointToCircle.x, thisAABB.left + thisAABB.width));
+				nearestPointToCircle.y = fmaxf(thisAABB.top, fminf(nearestPointToCircle.y, thisAABB.top + thisAABB.height));
+				sf::Vector2f displacement = nearestPointToCircle - other.GetCollisionCentre();
+				float squareDistance = VectorHelper::SquareMagnitude(displacement);
+				float circleRadius = other.GetCircleColliderRadius();
+
+				return squareDistance <= circleRadius * circleRadius;
+			}
 		}
-		else
+		break;
+		case CollisionType::CIRCLE:
 		{
-			//handles a rectangle colliding with a circle
-			sf::Vector2f nearestPointToCircle = other.GetCollisionCentre(); //actual circle centre
-			sf::FloatRect thisAABB = GetAABB();
-			//clamp the circle centre to min and max aabb
-			nearestPointToCircle.x = fmaxf(thisAABB.left, fminf(nearestPointToCircle.x, thisAABB.left + thisAABB.width));
-			nearestPointToCircle.y = fmaxf(thisAABB.top, fminf(nearestPointToCircle.y, thisAABB.top + thisAABB.height));
-			sf::Vector2f displacement = nearestPointToCircle - other.GetCollisionCentre();
-			float squareDistance = VectorHelper::SquareMagnitude(displacement);
-			float circleRadius = other.GetCircleColliderRadius();
+			if (other.collisionType == CollisionType::CIRCLE)
+			{
+				//get the vector representing the displacement between the two circles
+				sf::Vector2f displacement = GetCollisionCentre() - other.GetCollisionCentre();
 
-			return squareDistance <= circleRadius * circleRadius;
+				//get the magnitude of that vector, which is how far apart the circle centres
+				float sqaureDistance = VectorHelper::SquareMagnitude(displacement);
+
+				//compare that to the comvined radii of the two circles
+				float combinedRadii = GetCircleColliderRadius() + other.GetCircleColliderRadius();
+
+				return sqaureDistance <= combinedRadii * combinedRadii;
+			}
+			else
+			{
+				sf::Vector2f nearestPointToCircle = GetCollisionCentre(); //actual circle centre
+				sf::FloatRect otherAABB = other.GetAABB();
+				//clamp the circle centre to min and max aabb
+				nearestPointToCircle.x = fmaxf(otherAABB.left, fminf(nearestPointToCircle.x, otherAABB.left + otherAABB.width));
+				nearestPointToCircle.y = fmaxf(otherAABB.top, fminf(nearestPointToCircle.y, otherAABB.top + otherAABB.height));
+				sf::Vector2f displacement = nearestPointToCircle - GetCollisionCentre();
+				float squareDistance = VectorHelper::SquareMagnitude(displacement);
+				float circleRadius = GetCircleColliderRadius();
+
+				return squareDistance <= circleRadius * circleRadius;
+			}
 		}
-	}
-	break;
-	case CollisionType::CIRCLE:
-	{
-		if (other.collisionType == CollisionType::CIRCLE)
-		{
-			//get the vector representing the displacement between the two circles
-			sf::Vector2f displacement = GetCollisionCentre() - other.GetCollisionCentre();
+		break;
 
-			//get the magnitude of that vector, which is how far apart the circle centres
-			float sqaureDistance = VectorHelper::SquareMagnitude(displacement);
-
-			//compare that to the comvined radii of the two circles
-			float combinedRadii = GetCircleColliderRadius() + other.GetCircleColliderRadius();
-
-			return sqaureDistance <= combinedRadii * combinedRadii;
-		}
-		else
-		{
-			sf::Vector2f nearestPointToCircle = GetCollisionCentre(); //actual circle centre
-			sf::FloatRect otherAABB = other.GetAABB();
-			//clamp the circle centre to min and max aabb
-			nearestPointToCircle.x = fmaxf(otherAABB.left, fminf(nearestPointToCircle.x, otherAABB.left + otherAABB.width));
-			nearestPointToCircle.y = fmaxf(otherAABB.top, fminf(nearestPointToCircle.y, otherAABB.top + otherAABB.height));
-			sf::Vector2f displacement = nearestPointToCircle - GetCollisionCentre();
-			float squareDistance = VectorHelper::SquareMagnitude(displacement);
-			float circleRadius = GetCircleColliderRadius();
-
-			return squareDistance <= circleRadius * circleRadius;
-		}
-	}
-	break;
-	default:
+		default:
+			return 0;
 		break;
 	};
 }

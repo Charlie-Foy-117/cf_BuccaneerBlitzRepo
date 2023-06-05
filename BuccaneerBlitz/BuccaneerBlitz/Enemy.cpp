@@ -12,7 +12,7 @@ Enemy::Enemy(LevelScreen* newLevelScreen)
 	, attackSound()
 {
 	attackSound.setBuffer(AssetManager::RequestSoundBuffer("Assets/Sounds/522209__kutejnikov__explosion.wav"));
-	attackSound.setVolume(50.0f);
+	attackSound.setVolume(10.0f);
 }
 
 void Enemy::DropItem()

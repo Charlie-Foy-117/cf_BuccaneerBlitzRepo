@@ -26,10 +26,13 @@ Player::Player(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen)
 	hasDrag = true;
 
 	attackSound.setBuffer(AssetManager::RequestSoundBuffer("Assets/Sounds/522209__kutejnikov__explosion.wav"));
-	attackSound.setVolume(50.0f);
+	attackSound.setVolume(10.0f);
 
 	pickupSound.setBuffer(AssetManager::RequestSoundBuffer("Assets/Sounds/253172__suntemple__retro-bonus-pickup-sfx.wav"));
 	pickupSound.setVolume(50.0f);
+
+	collisionSound.setBuffer(AssetManager::RequestSoundBuffer("Assets/Sounds/501104__evretro__8-bit-damage-sound.wav"));
+	attackSound.setVolume(10.0f);
 }
 
 void Player::Update(sf::Time frameTime)
@@ -56,6 +59,10 @@ void Player::Update(sf::Time frameTime)
 
 void Player::HandleCollision(PhysicsObject& other)
 {
+	if (typeid(other).name() != typeid(SideBarrier).name() && typeid(other).name() != typeid(AnchorPickup).name() && typeid(other).name() != typeid(MultiFirePickup).name() && typeid(other).name() != typeid(LifePickup).name())
+	{
+		collisionSound.play();
+	}
 	if (typeid(other).name() == typeid(AnchorPickup).name())
 	{
 		pickupSound.play();

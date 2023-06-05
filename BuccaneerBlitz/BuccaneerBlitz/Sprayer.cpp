@@ -23,7 +23,10 @@ void Sprayer::Update(sf::Time frameTime)
 	//spawns projectile whenever timer is larger than cooldown
 	if (cooldownTimer.getElapsedTime().asSeconds() > cooldown)
 	{
-		attackSound.play();
+		if (alive)
+		{
+			attackSound.play();
+		}
 		//spawns cannonballs
 		levelScreen->SpawnProjectile(Projectile::SPRAYERCANNONBALL, *this);
 		//restarts timer
@@ -47,6 +50,7 @@ void Sprayer::HandleCollision(PhysicsObject& other)
 	else
 	{
 		//if instance spawns outside playing area it spawns another
+		ModifyLives(-1);
 		levelScreen->SpawnEnemy(EnemyType::SPRAYER);
 	}
 }
