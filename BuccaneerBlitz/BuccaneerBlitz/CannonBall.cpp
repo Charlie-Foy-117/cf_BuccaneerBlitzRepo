@@ -3,7 +3,6 @@
 
 CannonBall::CannonBall()
 	: PhysicsObject()
-	, collisionSound()
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Player/cf_CannonBall_PNG.png"));
 	SetSpriteScale(0.25f, 0.25f);
@@ -12,8 +11,6 @@ CannonBall::CannonBall()
 	SetEnumUsed(CollisionType::CIRCLE);
 
 	velocity = sf::Vector2f(0, -400);
-
-	collisionSound.setBuffer(AssetManager::RequestSoundBuffer("Assets/Sounds/501104__evretro__8-bit-damage-sound.wav"));
 }
 
 void CannonBall::Update(sf::Time frameTime)
@@ -38,7 +35,6 @@ void CannonBall::HandleCollision(PhysicsObject& other)
 	//checks collision isnt one of 3 types
 	if (typeid(other).name() != typeid(SideBarrier).name() && typeid(other).name() != typeid(BossRoomBarrier).name() && typeid(other).name() != typeid(Tentacle).name())
 	{
-		collisionSound.play();
 		other.ModifyLives(-1);
 	}
 

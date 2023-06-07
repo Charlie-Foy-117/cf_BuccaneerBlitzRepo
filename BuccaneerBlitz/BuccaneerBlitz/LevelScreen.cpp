@@ -1825,9 +1825,9 @@ void LevelScreen::Restart()
 	sideBarrierLeft.ResetPosition("left");
 	sideBarrierRight.ResetPosition("right");
 	player.SetPosition(background->getSize().x / 2 - player.GetWidth() / 2, 800);
-	timer.SetPosition((float)background->getSize().x - 300, 10);
+	timer.SetPosition((float)background->getSize().x - 400, 10);
 	timer.ResetTime();
-	score.SetPosition((float)background->getSize().x - 300, timer.GetPosition().y + 50);
+	score.SetPosition((float)background->getSize().x - 400, timer.GetPosition().y + 50);
 	score.ResetScore();
 	anchorUI.SetPosition(0, 20 + anchorUI.GetHeight() / 2);
 	multiFireUI.SetPosition(anchorUI.GetWidth() / 2 + 10, 30 + anchorUI.GetHeight() / 2);
