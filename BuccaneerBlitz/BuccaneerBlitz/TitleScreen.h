@@ -16,6 +16,8 @@ public:
 
     TitleScreen(Game* newGamePointer);
 
+    ~TitleScreen() override;
+
     void Update(sf::Time frameTime) override;
     void Draw(sf::RenderTarget& target) override;
 

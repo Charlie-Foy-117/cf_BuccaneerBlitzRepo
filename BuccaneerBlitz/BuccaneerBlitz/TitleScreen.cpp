@@ -24,6 +24,11 @@ TitleScreen::TitleScreen(Game* newGamePointer)
 	buoy.SetPosition(100, 100);
 }
 
+TitleScreen::~TitleScreen()
+{
+	Screen::~Screen();
+}
+
 void TitleScreen::Update(sf::Time frameTime)
 {
 	window->clear();

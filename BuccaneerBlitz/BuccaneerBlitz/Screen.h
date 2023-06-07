@@ -8,6 +8,8 @@ public:
 
 	Screen(Game* newGamePointer);
 
+	virtual ~Screen();
+
 	virtual void Update(sf::Time frameTime);
 	virtual void Draw(sf::RenderTarget& target);
 

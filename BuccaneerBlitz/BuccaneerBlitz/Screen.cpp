@@ -5,6 +5,10 @@ Screen::Screen(Game* newGamePointer)
 {
 }
 
+Screen::~Screen()
+{
+}
+
 void Screen::Update(sf::Time frameTime)
 {
 }

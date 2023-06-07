@@ -71,6 +71,8 @@ public:
 
     LevelScreen(Game* newGamePointer);
 
+    ~LevelScreen() override;
+
     void Update(sf::Time frameTime) override;
     void Draw(sf::RenderTarget& target) override;
     void BackgroundColour(int currentLevel);

@@ -58,6 +58,90 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	backgroundMusic.play();
 }
 
+LevelScreen::~LevelScreen()
+{
+	for (size_t i = 0; i < cannonBalls.size(); i++)
+	{
+		delete cannonBalls[i];
+		cannonBalls[i] = nullptr;
+	}
+	for (size_t i = 0; i < anchors.size(); i++)
+	{
+		delete anchors[i];
+		anchors[i] = nullptr;
+	}
+	for (size_t i = 0; i < goonCannonBalls.size(); i++)
+	{
+		delete goonCannonBalls[i];
+		goonCannonBalls[i] = nullptr;
+	}
+	for (size_t i = 0; i < sprayerCannonBalls.size(); i++)
+	{
+		delete sprayerCannonBalls[i];
+		sprayerCannonBalls[i] = nullptr;
+	}
+	for (size_t i = 0; i < oldCrewMateCannonBalls.size(); i++)
+	{
+		delete oldCrewMateCannonBalls[i];
+		oldCrewMateCannonBalls[i] = nullptr;
+	}
+	for (size_t i = 0; i < pirateBarricades.size(); i++)
+	{
+		delete pirateBarricades[i];
+		pirateBarricades[i] = nullptr;
+	}
+	for (size_t i = 0; i < smallIslands.size(); i++)
+	{
+		delete smallIslands[i];
+		smallIslands[i] = nullptr;
+	}
+
+
+	for (size_t i = 0; i < tentacles.size(); i++)
+	{
+		delete tentacles[i];
+		tentacles[i] = nullptr;
+	}
+
+	for (size_t i = 0; i < cooldownClocks.size(); i++)
+	{
+		delete cooldownClocks[i];
+		cooldownClocks[i] = nullptr;
+	}
+	for (size_t i = 0; i < goons.size(); i++)
+	{
+		delete goons[i];
+		goons[i] = nullptr;
+	}
+	for (size_t i = 0; i < chargers.size(); i++)
+	{
+		delete chargers[i];
+		chargers[i] = nullptr;
+	}
+	for (size_t i = 0; i < sprayers.size(); i++)
+	{
+		delete sprayers[i];
+		sprayers[i] = nullptr;
+	}
+
+
+	for (size_t i = 0; i < lifePickups.size(); i++)
+	{
+		delete lifePickups[i];
+		lifePickups[i] = nullptr;
+	}
+	for (size_t i = 0; i < anchorPickups.size(); i++)
+	{
+		delete anchorPickups[i];
+		anchorPickups[i] = nullptr;
+	}
+	for (size_t i = 0; i < multiFirePickups.size(); i++)
+	{
+		delete multiFirePickups[i];
+		multiFirePickups[i] = nullptr;
+	}
+}
+
 void LevelScreen::Update(sf::Time frameTime)
 {
 	//changing colour of background

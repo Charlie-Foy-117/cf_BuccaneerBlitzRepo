@@ -47,13 +47,10 @@ void Game::Update()
 {
 	sf::Time frameTime = gameClock.restart();
 
-	//TODO: Update current screen
 	if (currentScreen)
 	{
 		currentScreen->Update(frameTime);
 	}
-
-	//TODO: Handle changes to other screens
 }
 
 void Game::Draw()
@@ -76,12 +73,19 @@ sf::RenderWindow* Game::GetWindow()
 
 void Game::ChangeGameState(GameState newGameState)
 {
+	if (currentScreen)
+	{
+		delete currentScreen;
+		currentScreen = nullptr;
+	}
 	switch (newGameState)
 	{
 	case GameState::TITLESCREEN:
+		
 		currentScreen = new TitleScreen(this);
 		break;
 	case GameState::LEVELSCREEN:
+		
 		currentScreen = new LevelScreen(this);
 		break;
 	default:
