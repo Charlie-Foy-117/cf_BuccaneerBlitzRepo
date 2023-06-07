@@ -1896,6 +1896,30 @@ void LevelScreen::Restart()
 		tentacles[i] = nullptr;
 		tentacles.erase(tentacles.begin() + i);
 	}
+	for (size_t i = 0; i < cannonBalls.size(); i++)
+	{
+		delete cannonBalls[i];
+		cannonBalls[i] = nullptr;
+		cannonBalls.erase(cannonBalls.begin() + i);
+	}
+	for (size_t i = 0; i < goonCannonBalls.size(); i++)
+	{
+		delete goonCannonBalls[i];
+		goonCannonBalls[i] = nullptr;
+		goonCannonBalls.erase(goonCannonBalls.begin() + i);
+	}
+	for (size_t i = 0; i < sprayerCannonBalls.size(); i++)
+	{
+		delete sprayerCannonBalls[i];
+		sprayerCannonBalls[i] = nullptr;
+		sprayerCannonBalls.erase(sprayerCannonBalls.begin() + i);
+	}
+	for (size_t i = 0; i < oldCrewMateCannonBalls.size(); i++)
+	{
+		delete oldCrewMateCannonBalls[i];
+		oldCrewMateCannonBalls[i] = nullptr;
+		oldCrewMateCannonBalls.erase(oldCrewMateCannonBalls.begin() + i);
+	}
 
 	gameRunning = true;
 }
