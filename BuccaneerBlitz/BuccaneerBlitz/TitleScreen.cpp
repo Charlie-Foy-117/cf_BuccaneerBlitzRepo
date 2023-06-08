@@ -11,11 +11,11 @@ TitleScreen::TitleScreen(Game* newGamePointer)
 	, cooldownTimer()
 	, cooldown(0.1f)
 {
-	text.SetText("Press 'L' to start");
+	text.SetText("Press 'Bottom Right' to start");
 	text.SetPosition(10, 40);
 	scoreText.SetText("Highscore: " + std::to_string(score.LoadHighScore()));
 	scoreText.SetPosition(10, 140);
-	toolTip.SetText("'L' = cannonball, 'J' = anchor, 'I' = multifire");
+	toolTip.SetText("'BRight' = cannonball, 'BLeft' = anchor, 'BMiddle' = multifire");
 	toolTip.SetPosition(10, 1000);
 
 	overlay.SetPosition(overlay.GetPosition().x, window->getSize().y - overlay.GetHeight() * 2.4f);
@@ -37,7 +37,7 @@ void TitleScreen::Update(sf::Time frameTime)
 	if (cooldownTimer.getElapsedTime().asSeconds() > cooldown)
 	{
 		//if input is pressed change screen to level screen
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad6))
 		{
 			game->ChangeGameState(GameState::LEVELSCREEN);
 		}

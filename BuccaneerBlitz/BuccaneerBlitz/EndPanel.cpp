@@ -26,7 +26,7 @@ EndPanel::EndPanel(sf::RenderWindow* newWindow)
 	continueMsg.setFont(AssetManager::RequestFont("Assets/Graphics/UI/Font/PublicPixel-z84yD.ttf"));
 	continueMsg.setCharacterSize(50);
 	continueMsg.setFillColor(sf::Color::Black);
-	continueMsg.setString("Press 'L' to continue");
+	continueMsg.setString("Press 'Bottom Right' to continue");
 
 	ResetPosition();
 }

@@ -40,17 +40,17 @@ void Player::Update(sf::Time frameTime)
 	PhysicsObject::Update(frameTime);
 
 	//checks to see if input is pressed while currenly possessing anchor
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && hasAnchor == true)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad4) && hasAnchor == true)
 	{
 		FireAnchor(cooldown);
 	}
 	//checks to see if input is pressed while currenly possessing multifire
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::I) && hasMultiFire == true)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad5) && hasMultiFire == true)
 	{
 		FireMultiFire(cooldown);
 	}
 	//checks to see if input is pressed
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad6))
 	{
 		FireCannonBall(cooldown);
 	}
@@ -162,22 +162,22 @@ void Player::UpdateAcceleration()
 	acceleration.x = 0;
 	acceleration.y = 0;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
 		//changes x direction to go right
 		acceleration.x = -ACCEL;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 		//changes x direction to go left
 		acceleration.x = ACCEL;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sprite.getPosition().y > 0)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sprite.getPosition().y > 0)
 	{
 		//changes y direction to go up
 		acceleration.y = -ACCEL;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && spriteBottom < window->getSize().y)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && spriteBottom < window->getSize().y)
 	{
 		//changes y direction to go down
 		acceleration.y = ACCEL;
