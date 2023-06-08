@@ -1906,7 +1906,7 @@ void LevelScreen::Restart()
 	//Music
 	backgroundMusic.openFromFile("Assets/Sounds/324566__klavo1985__pirate-at-sea-orgen-music.wav");
 	backgroundMusic.setLoop(true);
-	backgroundMusic.setVolume(5);
+	backgroundMusic.setVolume(30);
 
 	//clean up all vectors to have no memory to begin with
 
