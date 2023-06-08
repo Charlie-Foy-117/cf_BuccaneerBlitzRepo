@@ -41,6 +41,7 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	, krakenLifeUI()
 	, endPanel(newGamePointer->GetWindow())
 	, cooldownClocks()
+	, numOfClocks(0)
 	, goons()
 	, chargers()
 	, sprayers()
@@ -167,9 +168,13 @@ void LevelScreen::Update(sf::Time frameTime)
 		else
 		{
 			//cooldown clocks
-			for (size_t i = 0; i < 6; i++)
+			if (numOfClocks < 7)
 			{
-				cooldownClocks.push_back(new sf::Clock());
+				for (size_t i = 0; i < 6; i++)
+				{
+					cooldownClocks.push_back(new sf::Clock());
+					numOfClocks++;
+				}
 			}
 			//Cooldown clocks
 			//clock 0 = goons

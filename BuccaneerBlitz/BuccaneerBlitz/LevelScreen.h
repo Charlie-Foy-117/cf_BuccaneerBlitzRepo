@@ -136,6 +136,8 @@ private:
     EndPanel endPanel;
 
     std::vector<sf::Clock*> cooldownClocks;
+    int numOfClocks;
+
     std::vector<Goon*> goons;
     std::vector<Charger*> chargers;
     std::vector<Sprayer*> sprayers;
