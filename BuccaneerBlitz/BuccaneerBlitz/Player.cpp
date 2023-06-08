@@ -157,7 +157,7 @@ void Player::UpdateAcceleration()
 	const float ACCEL = 10000;
 
 	sf::Vector2f pos = sprite.getPosition();
-	float spriteBottom = pos.y + sprite.getGlobalBounds().height;
+	float spriteBottom = pos.y + sprite.getGlobalBounds().height / 2.0f;
 
 	acceleration.x = 0;
 	acceleration.y = 0;

@@ -3,8 +3,6 @@
 #include "Player.h"
 #include "CannonBall.h"
 
-class LevelScreen;
-
 class Sprayer :
     public Enemy
 {
@@ -21,7 +19,5 @@ private:
 
     sf::Clock cooldownTimer;
     float cooldown;
-
-    LevelScreen* levelScreen;
 };
 

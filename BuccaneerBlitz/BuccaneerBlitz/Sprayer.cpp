@@ -6,7 +6,6 @@ Sprayer::Sprayer(LevelScreen* newLevelScreen)
 	: Enemy(newLevelScreen)
 	, cooldownTimer()
 	, cooldown(0.5f)
-	, levelScreen(newLevelScreen)
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Enemies/cf_Sprayer_PNG.png"));
 	sprite.setScale(1.1f, 1.1f);

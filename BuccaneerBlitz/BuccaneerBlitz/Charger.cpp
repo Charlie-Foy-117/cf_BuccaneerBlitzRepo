@@ -5,7 +5,6 @@
 Charger::Charger(LevelScreen* newLevelScreen, Player* newPlayer)
 	: Enemy(newLevelScreen)
     , speed(400.0f)
-	, levelScreen(newLevelScreen)
 	, player(newPlayer)
 	, cooldownTimer()
 	, cooldown(1.0f)

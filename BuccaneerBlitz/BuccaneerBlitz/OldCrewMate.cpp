@@ -7,7 +7,6 @@ OldCrewMate::OldCrewMate(LevelScreen* newLevelScreen)
 	: Enemy(newLevelScreen)
 	, cooldownTimer()
 	, cooldown(1.0f)
-	, levelScreen(newLevelScreen)
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Enemies/cf_OldCrewMate_PNG.png"));
 	sprite.setScale(0.5f, 0.5f);

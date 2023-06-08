@@ -4,7 +4,6 @@
 
 Goon::Goon(LevelScreen* newLevelScreen)
 	: Enemy(newLevelScreen)
-	, levelScreen(newLevelScreen)
 	, cooldownTimer()
 	, cooldown(2.5f)
 {

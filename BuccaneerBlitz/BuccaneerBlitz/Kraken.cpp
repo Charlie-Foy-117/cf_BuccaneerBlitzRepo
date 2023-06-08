@@ -6,7 +6,6 @@ Kraken::Kraken(LevelScreen* newLevelScreen)
 	: Enemy(newLevelScreen)
 	, cooldownTimer()
 	, cooldown(3.0f)
-	, levelScreen(newLevelScreen)
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Enemies/cf_Kraken_PNG.png"));
 	sprite.setScale(0.75f, 0.75f);

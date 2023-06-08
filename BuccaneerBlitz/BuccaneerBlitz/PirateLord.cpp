@@ -12,7 +12,6 @@ PirateLord::PirateLord(sf::RenderWindow* newWindow, LevelScreen* newLevelScreen,
 	, xPositionMatched(false)
 	, cooldownTimer()
 	, cooldown(3)
-	, levelScreen(newLevelScreen)
 	, player(newPlayer)
 {
 	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Enemies/cf_PirateLord_PNG.png"));

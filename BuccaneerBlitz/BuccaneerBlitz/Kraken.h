@@ -2,8 +2,6 @@
 #include "Enemy.h"
 #include "SideBarrier.h"
 
-class LevelScreen;
-
 class Kraken :
     public Enemy
 {
@@ -17,7 +15,5 @@ private:
 
     sf::Clock cooldownTimer;
     float cooldown;
-
-    LevelScreen* levelScreen;
 };
 

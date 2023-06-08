@@ -1,8 +1,6 @@
 #pragma once
 #include "Enemy.h"
 
-class LevelScreen;
-
 class OldCrewMate :
     public Enemy
 {
@@ -16,7 +14,5 @@ private:
 
     sf::Clock cooldownTimer;
     float cooldown;
-
-    LevelScreen* levelScreen;
 };
 

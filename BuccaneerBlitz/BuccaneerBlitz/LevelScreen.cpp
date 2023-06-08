@@ -1,13 +1,11 @@
 #include "LevelScreen.h"
-#include "Player.h"
 #include "Game.h"
-#include "Timer.h"
 #include <iostream>
 
 LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
 	, player(newGamePointer->GetWindow(), this)
-	, levelStageNumber(3)
+	, levelStageNumber(1)
 	, gameRunning(true)
 	, background(newGamePointer->GetWindow())
 	, game(newGamePointer)
@@ -101,6 +99,11 @@ LevelScreen::~LevelScreen()
 	{
 		delete tentacles[i];
 		tentacles[i] = nullptr;
+	}
+	for (size_t i = 0; i < tentacleProjectiles.size(); i++)
+	{
+		delete tentacleProjectiles[i];
+		tentacleProjectiles[i] = nullptr;
 	}
 
 	for (size_t i = 0; i < cooldownClocks.size(); i++)
@@ -1262,12 +1265,9 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				else if (pirateBarricades[i - 1]->GetPosition().y >= background->getSize().y)
 				{
 					//clears piratebarricade memory and deletes it from vector
-					if (pirateBarricades[i - 1] != nullptr)
-					{
-						pirateBarricades[i - 1] = nullptr;
-						delete pirateBarricades[i - 1];
-						pirateBarricades.erase(pirateBarricades.begin() + (i - 1));
-					}
+					pirateBarricades[i - 1] = nullptr;
+					delete pirateBarricades[i - 1];
+					pirateBarricades.erase(pirateBarricades.begin() + (i - 1));
 				}
 				//checks to see if piratebarricade is on screen 
 				else if (pirateBarricades[i - 1]->GetPosition().y < background->getSize().y)
@@ -1294,13 +1294,10 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				//checks to see if position of smallisland is off screen
 				else if (smallIslands[i - 1]->GetPosition().y >= background->getSize().y)
 				{
-					if (smallIslands[i - 1] != nullptr)
-					{
-						//clears smallisland memory and deletes it from vector
-						smallIslands[i - 1] = nullptr;
-						delete smallIslands[i - 1];
-						smallIslands.erase(smallIslands.begin() + (i - 1));
-					}
+					//clears smallisland memory and deletes it from vector
+					delete smallIslands[i - 1];
+					smallIslands[i - 1] = nullptr;
+					smallIslands.erase(smallIslands.begin() + (i - 1));
 				}
 				//checks to see if smallisland is on screen 
 				else if (smallIslands[i - 1]->GetPosition().y < background->getSize().y)
@@ -1327,13 +1324,10 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				//checks to see if position of cannonball is off screen
 				else if (goonCannonBalls[i - 1]->GetPosition().y >= background->getSize().y)
 				{
-					if (goonCannonBalls[i - 1] != nullptr)
-					{
-						//clears cannonball memory and deletes it from vector
-						delete goonCannonBalls[i - 1];
-						goonCannonBalls[i - 1] = nullptr;
-						goonCannonBalls.erase(goonCannonBalls.begin() + (i - 1));
-					}
+					//clears cannonball memory and deletes it from vector
+					delete goonCannonBalls[i - 1];
+					goonCannonBalls[i - 1] = nullptr;
+					goonCannonBalls.erase(goonCannonBalls.begin() + (i - 1));
 				}
 				//checks to see if cannonball is on screen 
 				else if (goonCannonBalls[i - 1]->GetPosition().y < background->getSize().y)
@@ -1382,13 +1376,10 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				//checks to see if position of sprayer is off screen
 				else if (sprayers[i - 1]->GetPosition().y >= background->getSize().y)
 				{
-					if (sprayers[i - 1] != nullptr)
-					{
-						//clears sprayer memory and deletes it from vector
-						delete sprayers[i - 1];
-						sprayers[i - 1] = nullptr;
-						sprayers.erase(sprayers.begin() + (i - 1));
-					}
+					//clears sprayer memory and deletes it from vector
+					delete sprayers[i - 1];
+					sprayers[i - 1] = nullptr;
+					sprayers.erase(sprayers.begin() + (i - 1));
 				}
 				//checks to see if sprayer is on screen 
 				else if (sprayers[i - 1]->GetPosition().y < background->getSize().y)
@@ -1487,13 +1478,10 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 				//checks to see if position of cannonball is off screen
 				else if (oldCrewMateCannonBalls[i - 1]->GetPosition().y <= 0)
 				{
-					if (oldCrewMateCannonBalls[i - 1] != nullptr)
-					{
-						//clears cannonball memory and deletes it from vector
-						delete oldCrewMateCannonBalls[i - 1];
-						oldCrewMateCannonBalls[i - 1] = nullptr;
-						oldCrewMateCannonBalls.erase(oldCrewMateCannonBalls.begin() + (i - 1));
-					}
+					//clears cannonball memory and deletes it from vector
+					delete oldCrewMateCannonBalls[i - 1];
+					oldCrewMateCannonBalls[i - 1] = nullptr;
+					oldCrewMateCannonBalls.erase(oldCrewMateCannonBalls.begin() + (i - 1));
 				}
 				//checks to see if cannonball is on screen 
 				else if (oldCrewMateCannonBalls[i - 1]->GetPosition().y > 0)
@@ -1548,8 +1536,8 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 					if (tentacles[i - 1] != nullptr)
 					{
 						//clears tentacle memory and deletes it from vector 
-						tentacles[i - 1] = nullptr;
 						delete tentacles[i - 1];
+						tentacles[i - 1] = nullptr;
 						tentacles.erase(tentacles.begin() + (i - 1));
 					}
 				}
@@ -1572,21 +1560,18 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 					if (tentacleProjectiles[i - 1] != nullptr)
 					{
 						//clears tentacleprojectile memory and deletes it from vector 
-						tentacleProjectiles[i - 1] = nullptr;
 						delete tentacleProjectiles[i - 1];
+						tentacleProjectiles[i - 1] = nullptr;
 						tentacleProjectiles.erase(tentacleProjectiles.begin() + (i - 1));
 					}
 				}
 				//checks to see if position of tentacleprojectile is off screen
 				else if (tentacleProjectiles[i - 1]->GetPosition().y >= background->getSize().y)
 				{
-					if (tentacleProjectiles[i - 1] != nullptr)
-					{
-						//clears tentacleprojectile memory and deletes it from vector
-						delete tentacleProjectiles[i - 1];
-						tentacleProjectiles[i - 1] = nullptr;
-						tentacleProjectiles.erase(tentacleProjectiles.begin() + (i - 1));
-					}
+					//clears tentacleprojectile memory and deletes it from vector
+					delete tentacleProjectiles[i - 1];
+					tentacleProjectiles[i - 1] = nullptr;
+					tentacleProjectiles.erase(tentacleProjectiles.begin() + (i - 1));
 				}
 				//checks to see if tentacleprojectile is alive 
 				else if (tentacleProjectiles[i - 1]->GetAlive())
@@ -1622,13 +1607,10 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 			//checks to see if position of cannonball is off screen
 			else if (cannonBalls[i - 1]->GetPosition().y <= 0)
 			{
-				if (cannonBalls[i - 1] != nullptr)
-				{
-					//clears cannonball memory and deletes it from vector
-					delete cannonBalls[i - 1];
-					cannonBalls[i - 1] = nullptr;
-					cannonBalls.erase(cannonBalls.begin() + (i - 1));
-				}
+				//clears cannonball memory and deletes it from vector
+				delete cannonBalls[i - 1];
+				cannonBalls[i - 1] = nullptr;
+				cannonBalls.erase(cannonBalls.begin() + (i - 1));
 			}
 			//checks to see if cannonball is on screen 
 			else if (cannonBalls[i - 1]->GetPosition().y > 0)
@@ -1656,13 +1638,10 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 			//checks to see if position of cannonball is off screen
 			else if (anchors[i - 1]->GetPosition().y <= 0)
 			{
-				if (anchors[i - 1] != nullptr)
-				{
-					//clears cannonball memory and deletes it from vector
-					delete anchors[i - 1];
-					anchors[i - 1] = nullptr;
-					anchors.erase(anchors.begin() + (i - 1));
-				}
+				//clears cannonball memory and deletes it from vector
+				delete anchors[i - 1];
+				anchors[i - 1] = nullptr;
+				anchors.erase(anchors.begin() + (i - 1));
 			}
 			//checks to see if cannonball is on screen 
 			else if (anchors[i - 1]->GetPosition().y > 0)
@@ -2003,6 +1982,18 @@ void LevelScreen::Restart()
 		delete oldCrewMateCannonBalls[i];
 		oldCrewMateCannonBalls[i] = nullptr;
 		oldCrewMateCannonBalls.erase(oldCrewMateCannonBalls.begin() + i);
+	}
+	for (size_t i = 0; i < tentacleProjectiles.size(); i++)
+	{
+		delete tentacleProjectiles[i];
+		tentacleProjectiles[i] = nullptr;
+		tentacleProjectiles.erase(tentacleProjectiles.begin() + i);
+	}
+	for (size_t i = 0; i < cooldownClocks.size(); i++)
+	{
+		delete cooldownClocks[i];
+		cooldownClocks[i] = nullptr;
+		cooldownClocks.erase(cooldownClocks.begin() + i);
 	}
 
 	gameRunning = true;

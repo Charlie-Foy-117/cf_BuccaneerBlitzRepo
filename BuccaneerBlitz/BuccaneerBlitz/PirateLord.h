@@ -1,7 +1,6 @@
 #pragma once
 #include "Enemy.h"
 
-class LevelScreen;
 class Player;
 
 class PirateLord :
@@ -23,7 +22,6 @@ private:
     sf::Clock cooldownTimer;
     float cooldown;
 
-    LevelScreen* levelScreen;
     sf::RenderWindow* window;
     Player* player;
 };

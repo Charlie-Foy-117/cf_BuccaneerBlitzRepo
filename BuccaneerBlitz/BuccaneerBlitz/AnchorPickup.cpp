@@ -1,6 +1,5 @@
 #include "AnchorPickup.h"
 #include "AssetManager.h"
-#include "Player.h"
 
 AnchorPickup::AnchorPickup()
 	: Pickups()

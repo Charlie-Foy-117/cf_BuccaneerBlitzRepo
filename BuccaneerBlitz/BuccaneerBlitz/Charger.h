@@ -1,7 +1,6 @@
 #pragma once
 #include "Enemy.h"
 
-class LevelScreen;
 class Player;
 
 class Charger :
@@ -19,7 +18,6 @@ private:
     float speed;
 
     Player* player;
-    LevelScreen* levelScreen;
 
     sf::Clock cooldownTimer;
     float cooldown;

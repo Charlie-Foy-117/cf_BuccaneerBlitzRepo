@@ -4,7 +4,6 @@
 #include "BossRoomBarrier.h"
 #include "Tentacle.h"
 
-
 class CannonBall :
     public PhysicsObject
 {
