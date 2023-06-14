@@ -1171,7 +1171,7 @@ void LevelScreen::Update(sf::Time frameTime)
 		{
 			score.SaveHighScore(score.GetScore());
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad6))
 		{
 			game->ChangeGameState(GameState::TITLESCREEN);
 		}
