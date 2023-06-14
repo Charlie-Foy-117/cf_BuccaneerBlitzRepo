@@ -11,11 +11,11 @@ TitleScreen::TitleScreen(Game* newGamePointer)
 	, cooldownTimer()
 	, cooldown(0.1f)
 {
-	text.SetText("Press 'Bottom Right' to start");
+	text.SetText("Press '6' to start");
 	text.SetPosition(10, 40);
 	scoreText.SetText("Highscore: " + std::to_string(score.LoadHighScore()));
 	scoreText.SetPosition(10, 140);
-	toolTip.SetText("'BRight' = cannonball, 'BLeft' = anchor, 'BMiddle' = multifire");
+	toolTip.SetText("'6' = cannonball, '4' = anchor, '5' = multifire");
 	toolTip.SetPosition(10, 1000);
 
 	overlay.SetPosition(overlay.GetPosition().x, window->getSize().y - overlay.GetHeight() * 2.4f);
